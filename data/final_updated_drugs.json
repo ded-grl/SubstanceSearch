@@ -47,7 +47,8 @@
             "aliases": [
                 "bd",
                 "1,4-bd",
-                "14bd"
+                "14bd",
+                "1,4butanediol"
             ],
             "avoid": "All other CNS depressants.",
             "categories": [
@@ -115,7 +116,8 @@
         "properties": {
             "after-effects": "6-24 hours",
             "aliases": [
-                "1b"
+                "1b",
+                "1blsd"
             ],
             "categories": [
                 "tentative",
@@ -738,7 +740,8 @@
         "pretty_name": "2-FEA",
         "properties": {
             "aliases": [
-                "2-fluoroethylamphetamine"
+                "2-fluoroethylamphetamine",
+                "2fea"
             ],
             "categories": [
                 "stimulant",
@@ -890,6 +893,9 @@
         "pretty_name": "2-Me-DMT",
         "properties": {
             "after-effects": "1-5 hours.",
+            "aliases": [
+                "2medmt"
+            ],
             "categories": [
                 "psychedelic",
                 "research-chemical",
@@ -936,6 +942,9 @@
         "pretty_name": "2-MEC",
         "properties": {
             "after-effects": "1-6 hours.",
+            "aliases": [
+                "2mec"
+            ],
             "categories": [
                 "stimulant",
                 "research-chemical",
@@ -992,7 +1001,8 @@
         "properties": {
             "after-effects": "2-6 hours.",
             "aliases": [
-                "2m2b"
+                "2m2b",
+                "2methyl2butanol"
             ],
             "avoid": "All other CNS depressants.",
             "categories": [
@@ -1066,7 +1076,8 @@
         "properties": {
             "after-effects": "Insufflated: 1-10 hours.",
             "aliases": [
-                "2-ma"
+                "2-ma",
+                "2methylamphetamine"
             ],
             "categories": [
                 "stimulant",
@@ -1121,6 +1132,9 @@
         "pretty_name": "2-MMC",
         "properties": {
             "after-effects": "Oral: 2-8 hours. | Insufflated: 2-4 hours.",
+            "aliases": [
+                "2mmc"
+            ],
             "categories": [
                 "stimulant",
                 "habit-forming",
@@ -1193,7 +1207,8 @@
         "properties": {
             "after-effects": "1-12 hours.",
             "aliases": [
-                "n-piperidinecathinone"
+                "n-piperidinecathinone",
+                "2mppp"
             ],
             "categories": [
                 "research-chemical",
@@ -1215,6 +1230,9 @@
         "name": "2-nmc",
         "pretty_name": "2-NMC",
         "properties": {
+            "aliases": [
+                "2nmc"
+            ],
             "categories": [
                 "inactive"
             ],
@@ -1256,7 +1274,8 @@
         "properties": {
             "after-effects": "1-10 hours.",
             "aliases": [
-                "2-phenylacetamide"
+                "2-phenylacetamide",
+                "2pa"
             ],
             "categories": [
                 "stimulant",
@@ -1307,7 +1326,8 @@
             "after-effects": "1-6 hours.",
             "aliases": [
                 "4-methyl-2-pa",
-                "2-(p-tolyl)acetamide"
+                "2-(p-tolyl)acetamide",
+                "2pta"
             ],
             "categories": [
                 "stimulant",
@@ -1505,6 +1525,9 @@
         "pretty_name": "2C-B-AN",
         "properties": {
             "after-effects": "1-6 hours.",
+            "aliases": [
+                "2cban"
+            ],
             "categories": [
                 "psychedelic",
                 "tentative",
@@ -2214,6 +2237,9 @@
         "pretty_name": "2C-IP",
         "properties": {
             "after-effects": "4-8 hours.",
+            "aliases": [
+                "2cip"
+            ],
             "categories": [
                 "psychedelic",
                 "research-chemical",
@@ -2831,6 +2857,9 @@
         "pretty_name": "2C-T-21",
         "properties": {
             "after-effects": "2-12 hours.",
+            "aliases": [
+                "2ct21"
+            ],
             "avoid": "It is likely that this also has the MAO-A properties of the likes of 2c-t-7.",
             "categories": [
                 "psychedelic",
@@ -3021,6 +3050,9 @@
         "pretty_name": "3-FEA",
         "properties": {
             "after-effects": "1-12 hours.",
+            "aliases": [
+                "3fea"
+            ],
             "categories": [
                 "stimulant",
                 "research-chemical",
@@ -3139,6 +3171,9 @@
         "name": "3-fmc",
         "pretty_name": "3-FMC",
         "properties": {
+            "aliases": [
+                "3fmc"
+            ],
             "categories": [
                 "stimulant",
                 "research-chemical",
@@ -3398,6 +3433,9 @@
         "pretty_name": "3-MEC",
         "properties": {
             "after-effects": "Oral: 2-5 hours. | Insufflated: 1-3 hours.",
+            "aliases": [
+                "3mec"
+            ],
             "categories": [
                 "stimulant",
                 "research-chemical",
@@ -3497,6 +3535,9 @@
         "pretty_name": "3-MeO-PCMO",
         "properties": {
             "after-effects": "2-8 hours.",
+            "aliases": [
+                "3meopcmo"
+            ],
             "avoid": "All other CNS depressants.",
             "categories": [
                 "dissociative",
@@ -3663,6 +3704,9 @@
         "pretty_name": "3-MeO-PCPR",
         "properties": {
             "after-effects": "1-4 hours.",
+            "aliases": [
+                "3meopcpr"
+            ],
             "categories": [
                 "dissociative",
                 "tentative",
@@ -3712,6 +3756,9 @@
         "pretty_name": "3-MeO-PCPY",
         "properties": {
             "after-effects": "1-6 hours.",
+            "aliases": [
+                "3meopcpy"
+            ],
             "avoid": "All other CNS depressants.",
             "categories": [
                 "dissociative",
@@ -3750,6 +3797,9 @@
         "name": "3-meomc",
         "pretty_name": "3-MeOMC",
         "properties": {
+            "aliases": [
+                "3meomc"
+            ],
             "avoid": "Other stimulants.",
             "categories": [
                 "stimulant",
@@ -3883,7 +3933,8 @@
                 "3hop",
                 "3-oh-p",
                 "3ohp",
-                "3-hydroxyphenazepam"
+                "3-hydroxyphenazepam",
+                "3ohPhenazepam"
             ],
             "avoid": "All other CNS depressants.",
             "categories": [
@@ -3956,7 +4007,8 @@
             "after-effects": "2-24 hours.",
             "aliases": [
                 "34ctmp",
-                "3,4-dichloromethylphenidate"
+                "3,4-dichloromethylphenidate",
+                "3,4ctmp"
             ],
             "categories": [
                 "stimulant",
@@ -3979,6 +4031,9 @@
         "name": "3,6-dmpm",
         "pretty_name": "3,6-DMPM",
         "properties": {
+            "aliases": [
+                "3,6dmpm"
+            ],
             "categories": [
                 "stimulant",
                 "tentative",
@@ -4040,6 +4095,9 @@
         "pretty_name": "3C-E",
         "properties": {
             "after-effects": "2-16 hours.",
+            "aliases": [
+                "3ce"
+            ],
             "categories": [
                 "psychedelic",
                 "research-chemical",
@@ -4237,7 +4295,8 @@
             "aliases": [
                 "ethacetin",
                 "ethylacybin",
-                "4-acetoxy-det"
+                "4-acetoxy-det",
+                "4acodet"
             ],
             "categories": [
                 "tentative",
@@ -4700,7 +4759,8 @@
         "pretty_name": "4-Benzylpiperidine",
         "properties": {
             "aliases": [
-                "4-pmpd"
+                "4-pmpd",
+                "4benzylpiperidine"
             ],
             "categories": [
                 "stimulant",
@@ -4755,6 +4815,9 @@
         "pretty_name": "4-CBC",
         "properties": {
             "after-effects": "2-6 hours.",
+            "aliases": [
+                "4cbc"
+            ],
             "avoid": "Other stimulants, pretty much everything that can raise your blood pressure.",
             "categories": [
                 "stimulant",
@@ -4782,7 +4845,8 @@
         "properties": {
             "aliases": [
                 "ro5-4864",
-                "4'-chlorodiazepam"
+                "4'-chlorodiazepam",
+                "4chlorodiazepam"
             ],
             "categories": [
                 "research-chemical",
@@ -4798,6 +4862,9 @@
         "name": "4-cic",
         "pretty_name": "4-CIC",
         "properties": {
+            "aliases": [
+                "4cic"
+            ],
             "categories": [
                 "inactive"
             ],
@@ -4811,6 +4878,9 @@
         "name": "4-cma",
         "pretty_name": "4-CMA",
         "properties": {
+            "aliases": [
+                "4cma"
+            ],
             "categories": [
                 "research-chemical"
             ],
@@ -4936,7 +5006,8 @@
         "properties": {
             "after-effects": "2-8 hours.",
             "aliases": [
-                "4-ethylmethcathinone"
+                "4-ethylmethcathinone",
+                "4emc"
             ],
             "categories": [
                 "stimulant",
@@ -4984,7 +5055,8 @@
         "properties": {
             "after-effects": "1-6 hours.",
             "aliases": [
-                "4-ethylpentedrone"
+                "4-ethylpentedrone",
+                "4epd"
             ],
             "categories": [
                 "stimulant",
@@ -5145,7 +5217,8 @@
         "properties": {
             "after-effects": "1-12 hours.",
             "aliases": [
-                "4-fluoroethylamphetamine"
+                "4-fluoroethylamphetamine",
+                "4fea"
             ],
             "categories": [
                 "stimulant",
@@ -5195,7 +5268,8 @@
             "after-effects": "1-12 hours.",
             "aliases": [
                 "4f-eph",
-                "4-feph"
+                "4-feph",
+                "4fluoroethylphenidate"
             ],
             "categories": [
                 "stimulant",
@@ -5254,7 +5328,8 @@
                 "4-fmph",
                 "4fmph",
                 "4-fl-mph",
-                "4-fluoro-mph"
+                "4-fluoro-mph",
+                "4fluoromethylphenidate"
             ],
             "categories": [
                 "stimulant",
@@ -5286,7 +5361,8 @@
             "aliases": [
                 "4-fpd",
                 "4-f-pentedrone",
-                "4f-pentedrone"
+                "4f-pentedrone",
+                "4fluoropentedrone"
             ],
             "categories": [
                 "stimulant",
@@ -5460,6 +5536,9 @@
         "name": "4-fpm",
         "pretty_name": "4-FPM",
         "properties": {
+            "aliases": [
+                "4fpm"
+            ],
             "categories": [
                 "research-chemical"
             ],
@@ -5492,6 +5571,9 @@
         "name": "4-fpp",
         "pretty_name": "4-FPP",
         "properties": {
+            "aliases": [
+                "4fpp"
+            ],
             "categories": [
                 "psychedelic",
                 "empathogen",
@@ -5630,7 +5712,8 @@
         "properties": {
             "after-effects": "1-6 hours.",
             "aliases": [
-                "iprocin"
+                "iprocin",
+                "4hodipt"
             ],
             "categories": [
                 "psychedelic",
@@ -5718,6 +5801,9 @@
         "pretty_name": "4-HO-EPT",
         "properties": {
             "after-effects": "1-12 hours.",
+            "aliases": [
+                "4hoept"
+            ],
             "categories": [
                 "psychedelic",
                 "tentative"
@@ -5741,6 +5827,9 @@
         "name": "4-ho-mcpt",
         "pretty_name": "4-HO-MCPT",
         "properties": {
+            "aliases": [
+                "4homcpt"
+            ],
             "categories": [
                 "psychedelic",
                 "tentative",
@@ -6022,7 +6111,8 @@
         "pretty_name": "4-HO-MPMI",
         "properties": {
             "aliases": [
-                "lucigenol"
+                "lucigenol",
+                "4hompmi"
             ],
             "categories": [
                 "psychedelic",
@@ -6200,7 +6290,8 @@
         "properties": {
             "after-effects": "1-2 hours.",
             "aliases": [
-                "4-meo-bf"
+                "4-meo-bf",
+                "4meobutryfentanyl"
             ],
             "categories": [
                 "tentative",
@@ -6265,6 +6356,9 @@
         "pretty_name": "4-MeO-MiPT",
         "properties": {
             "after-effects": "1-4 hours.",
+            "aliases": [
+                "4meomipt"
+            ],
             "categories": [
                 "psychedelic",
                 "research-chemical",
@@ -6363,7 +6457,9 @@
         "pretty_name": "4-METHYLAMINOREX",
         "properties": {
             "after-effects": "1-24 hours.",
-            "aliases": [],
+            "aliases": [
+                "4methylaminorex"
+            ],
             "categories": [
                 "stimulant",
                 "habit-forming",
@@ -6436,7 +6532,8 @@
             "aliases": [
                 "4-mmph",
                 "4-me-tmp",
-                "4-metmp"
+                "4-metmp",
+                "4methylmethylphenidate"
             ],
             "categories": [
                 "stimulant",
@@ -6460,6 +6557,9 @@
         "name": "4-mpd",
         "pretty_name": "4-MPD",
         "properties": {
+            "aliases": [
+                "4mpd"
+            ],
             "categories": [
                 "tentative",
                 "stimulant",
@@ -6484,7 +6584,8 @@
         "pretty_name": "4-MTA",
         "properties": {
             "aliases": [
-                "4-methylthioamphetamine"
+                "4-methylthioamphetamine",
+                "4mta"
             ],
             "categories": [
                 "research-chemical",
@@ -6528,7 +6629,8 @@
             "after-effects": "1-12 hours.",
             "aliases": [
                 "serotoni",
-                "4,4-dmap"
+                "4,4-dmap",
+                "4,4dmar"
             ],
             "categories": [
                 "stimulant",
@@ -6574,6 +6676,9 @@
         "pretty_name": "4F-NEB",
         "properties": {
             "after-effects": "1-12 hours.",
+            "aliases": [
+                "4fneb"
+            ],
             "dose": "Oral Light: 75-100mg Common: 100-150mg Strong: 150-300mg | Insufflated Light: 50-75 Common: 75-150mg Strong: 150-250mg",
             "duration": "Oral: 90-180 minutes. | Insufflated: 50-100 minutes.",
             "onset": "Oral: 15-30 minutes. | Insufflated: 5-10 minutes.",
@@ -6607,6 +6712,9 @@
         "pretty_name": "4F-PHP",
         "properties": {
             "after-effects": "1-24 hours.",
+            "aliases": [
+                "4fphp"
+            ],
             "categories": [
                 "stimulant",
                 "research-chemical",
@@ -6650,7 +6758,8 @@
         "properties": {
             "aliases": [
                 "4f-a-pvp",
-                "pfpvp"
+                "pfpvp",
+                "4fpvp"
             ],
             "categories": [
                 "tentative",
@@ -6771,6 +6880,9 @@
         "name": "5-apdb",
         "pretty_name": "5-APDB",
         "properties": {
+            "aliases": [
+                "5apdb"
+            ],
             "categories": [
                 "stimulant",
                 "psychedelic",
@@ -6839,7 +6951,8 @@
         "properties": {
             "after-effects": "1-6 hours.",
             "aliases": [
-                "iap"
+                "iap",
+                "5apdi"
             ],
             "categories": [
                 "empathogen",
@@ -6884,6 +6997,9 @@
         "pretty_name": "5-BPDI",
         "properties": {
             "after-effects": "3-8 hours.",
+            "aliases": [
+                "5bpdi"
+            ],
             "categories": [
                 "habit-forming",
                 "research-chemical",
@@ -6921,6 +7037,9 @@
         "name": "5-br-dmt",
         "pretty_name": "5-Bromo-DMT",
         "properties": {
+            "aliases": [
+                "5brdmt"
+            ],
             "categories": [
                 "psychedelic",
                 "tentative",
@@ -6961,6 +7080,9 @@
         "pretty_name": "5-DBFPV",
         "properties": {
             "after-effects": "4-12 hours.",
+            "aliases": [
+                "5dbfpv"
+            ],
             "categories": [
                 "tentative",
                 "stimulant",
@@ -7207,7 +7329,8 @@
         "properties": {
             "after-effects": "1-48 hours.",
             "aliases": [
-                "5-api"
+                "5-api",
+                "5it"
             ],
             "categories": [
                 "stimulant",
@@ -7581,6 +7704,9 @@
         "pretty_name": "5-MeO-DIBF",
         "properties": {
             "after-effects": "1-12 hours.",
+            "aliases": [
+                "5meodibf"
+            ],
             "categories": [
                 "empathogen",
                 "research-chemical",
@@ -7980,6 +8106,9 @@
         "name": "5-meo-malt",
         "pretty_name": "5-MeO-MALT",
         "properties": {
+            "aliases": [
+                "5meomalt"
+            ],
             "categories": [
                 "psychedelic",
                 "research-chemical"
@@ -8045,6 +8174,9 @@
         "pretty_name": "5-MeO-MET",
         "properties": {
             "after-effects": "1-2 hours.",
+            "aliases": [
+                "5meomet"
+            ],
             "categories": [
                 "psychedelic",
                 "research-chemical"
@@ -8262,6 +8394,9 @@
         "pretty_name": "5-MeO-PYR-T",
         "properties": {
             "after-effects": "1-36 hours.",
+            "aliases": [
+                "5meopyrt"
+            ],
             "categories": [
                 "tentative",
                 "research-chemical",
@@ -8328,7 +8463,8 @@
         "properties": {
             "aliases": [
                 "5-methyl-ethylone",
-                "5-me"
+                "5-me",
+                "5methylbkmdea"
             ],
             "categories": [
                 "stimulant",
@@ -8389,6 +8525,9 @@
         "pretty_name": "5-PPDI",
         "properties": {
             "after-effects": "3-6 hours.",
+            "aliases": [
+                "5ppdi"
+            ],
             "categories": [
                 "stimulant",
                 "research-chemical",
@@ -8484,6 +8623,9 @@
         "pretty_name": "5F-PB-22",
         "properties": {
             "after-effects": "30-60 minutes.",
+            "aliases": [
+                "5fpb22"
+            ],
             "categories": [
                 "tentative",
                 "research-chemical",
@@ -8605,7 +8747,8 @@
         "properties": {
             "after-effects": "Some users report feeling drained the next day lasting a few days. Varies person to person.",
             "aliases": [
-                "4-desoxy-mda"
+                "4-desoxy-mda",
+                "6apdb"
             ],
             "categories": [
                 "stimulant",
@@ -8670,6 +8813,9 @@
         "pretty_name": "6-EAPB",
         "properties": {
             "after-effects": "1-10 hours.",
+            "aliases": [
+                "6eapb"
+            ],
             "categories": [
                 "stimulant",
                 "psychedelic",
@@ -8738,6 +8884,9 @@
         "pretty_name": "6-MAPB",
         "properties": {
             "after-effects": "2-4 hours.",
+            "aliases": [
+                "6mapb"
+            ],
             "categories": [
                 "stimulant",
                 "psychedelic",
@@ -8798,7 +8947,8 @@
         "properties": {
             "after-effects": "1-10 hours.",
             "aliases": [
-                "6-methylenedihydrodesoxymorphine"
+                "6-methylenedihydrodesoxymorphine",
+                "6mddm"
             ],
             "avoid": "All other CNS depressants.",
             "categories": [
@@ -8952,7 +9102,8 @@
         "properties": {
             "after-effects": "2-6 hours.",
             "aliases": [
-                "25b"
+                "25b",
+                "25bnbome"
             ],
             "categories": [
                 "psychedelic",
@@ -9058,6 +9209,9 @@
         "pretty_name": "25C-NBOH",
         "properties": {
             "after-effects": "1-10 hours.",
+            "aliases": [
+                "25cnboh"
+            ],
             "avoid": "Other psychedelics, stimulants, and double dosing.",
             "categories": [
                 "psychedelic",
@@ -9117,7 +9271,8 @@
             "after-effects": "1-24 hours.",
             "aliases": [
                 "25c",
-                "2c-nbome"
+                "2c-nbome",
+                "25cnbome"
             ],
             "categories": [
                 "psychedelic",
@@ -9248,7 +9403,8 @@
             "after-effects": "6-24 hours.",
             "aliases": [
                 "2c-d-nbome",
-                "25d"
+                "25d",
+                "25dnbome"
             ],
             "categories": [
                 "psychedelic",
@@ -9314,7 +9470,8 @@
         "properties": {
             "after-effects": "2-10 hours.",
             "aliases": [
-                "25e"
+                "25e",
+                "25enbome"
             ],
             "categories": [
                 "psychedelic",
@@ -9455,7 +9612,8 @@
             "after-effects": "2-3 hours.",
             "aliases": [
                 "25h",
-                "25-h-nbome"
+                "25-h-nbome",
+                "25hnbome"
             ],
             "categories": [
                 "psychedelic",
@@ -9479,6 +9637,9 @@
         "name": "25i-nbf",
         "pretty_name": "25I-NBF",
         "properties": {
+            "aliases": [
+                "25inbf"
+            ],
             "categories": [
                 "tentative",
                 "psychedelic",
@@ -9518,6 +9679,9 @@
         "pretty_name": "25I-NBMD",
         "properties": {
             "after-effects": "1-8 hours.",
+            "aliases": [
+                "25inbmd"
+            ],
             "avoid": "Other psychedelics, stimulants, and double dosing.",
             "categories": [
                 "psychedelic",
@@ -9588,7 +9752,8 @@
             "after-effects": "1-12 hours.",
             "aliases": [
                 "nboh-2ci",
-                "cimbi-27"
+                "cimbi-27",
+                "25inboh"
             ],
             "avoid": "Other psychedelics, stimulants, and double dosing.",
             "categories": [
@@ -9664,7 +9829,8 @@
             "aliases": [
                 "25i",
                 "2-c-i-nbome",
-                "25-i"
+                "25-i",
+                "25inbome"
             ],
             "categories": [
                 "psychedelic",
@@ -9789,7 +9955,8 @@
         "properties": {
             "after-effects": "1-12 hours.",
             "aliases": [
-                "25ip"
+                "25ip",
+                "25ipnbome"
             ],
             "categories": [
                 "psychedelic",
@@ -9864,7 +10031,8 @@
             "after-effects": "1-12 hours.",
             "aliases": [
                 "2-c-n-nbome",
-                "25n"
+                "25n",
+                "25nnbome"
             ],
             "categories": [
                 "psychedelic",
@@ -9928,6 +10096,9 @@
         "pretty_name": "25P-NBOMe",
         "properties": {
             "after-effects": "1-16 hours.",
+            "aliases": [
+                "25pnbome"
+            ],
             "categories": [
                 "psychedelic",
                 "research-chemical",
@@ -9974,7 +10145,8 @@
         "properties": {
             "after-effects": "2-10 hours.",
             "aliases": [
-                "25t2-nbome"
+                "25t2-nbome",
+                "25t2nbome"
             ],
             "categories": [
                 "psychedelic",
@@ -10021,7 +10193,8 @@
         "properties": {
             "after-effects": "2-12 hours.",
             "aliases": [
-                "25t4-nbome"
+                "25t4-nbome",
+                "25t4nbome"
             ],
             "categories": [
                 "tentative",
@@ -10089,7 +10262,8 @@
         "properties": {
             "after-effects": "6-12 hours.",
             "aliases": [
-                "pihp"
+                "pihp",
+                "apihp"
             ],
             "avoid": "Other stimulants, pretty much everything that can raise your blood pressure.",
             "categories": [
@@ -10292,6 +10466,9 @@
         "pretty_name": "AB-CHMINACA",
         "properties": {
             "after-effects": "Vapourized: 2-4 hours. | Oral: 5-12 hours.",
+            "aliases": [
+                "abchminaca"
+            ],
             "categories": [
                 "research-chemical",
                 "habit-forming",
@@ -10357,7 +10534,8 @@
         "properties": {
             "after-effects": "Vapourized: 1-2 hours | Oral: 2-10 hours",
             "aliases": [
-                "ab-fub"
+                "ab-fub",
+                "abfubinaca"
             ],
             "categories": [
                 "research-chemical",
@@ -10532,6 +10710,9 @@
         "pretty_name": "Acrylfentanyl",
         "properties": {
             "after-effects": "1-16 hours.",
+            "aliases": [
+                "acrylfentanyl"
+            ],
             "categories": [
                 "opioid",
                 "research-chemical",
@@ -11718,7 +11899,8 @@
                 "a-php",
                 "aphp",
                 "\u03b1-php",
-                "\u03b1php"
+                "\u03b1php",
+                "alphaphp"
             ],
             "categories": [
                 "stimulant",
@@ -12965,6 +13147,9 @@
         "name": "benzodioxole-fentanyl",
         "pretty_name": "Benzodioxole-Fentanyl",
         "properties": {
+            "aliases": [
+                "benzodioxolefentanyl"
+            ],
             "categories": [
                 "opioid",
                 "depressant",
@@ -13169,6 +13354,9 @@
         "name": "bk-2c-i",
         "pretty_name": "\u03b2k-2C-I",
         "properties": {
+            "aliases": [
+                "bk2ci"
+            ],
             "categories": [
                 "psychedelic",
                 "research-chemical",
@@ -13204,6 +13392,9 @@
         "name": "bk-ivp",
         "pretty_name": "\u03b2k-IVP",
         "properties": {
+            "aliases": [
+                "bkivp"
+            ],
             "categories": [
                 "stimulant",
                 "research-chemical",
@@ -13555,7 +13746,8 @@
                 "bromo-d-fly",
                 "bdfly",
                 "bromo-dragon-fly",
-                "dob-dragonfly"
+                "dob-dragonfly",
+                "bromodragonfly"
             ],
             "categories": [
                 "psychedelic",
@@ -13770,13 +13962,13 @@
         "name": "bupropion",
         "pretty_name": "Bupropion",
         "properties": {
-            "adverse-effects": "Agitation, dry mouth, insomnia, headache/migraine, nausea/vomiting, constipation, tremor, dizziness, excessive sweating, blurred vision, tachycardia, confusion, rash, hostility, cardiac arrhythmia, and auditory disturbance",
             "after-effects": "1-6 hours.",
             "aliases": [
                 "wellbutrin",
                 "zyban",
                 "amfebutamone"
             ],
+            "adverse-effects": "Agitation, dry mouth, insomnia, headache/migraine, nausea/vomiting, constipation, tremor, dizziness, excessive sweating, blurred vision, tachycardia, confusion, rash, hostility, cardiac arrhythmia, and auditory disturbance",
             "categories": [
                 "stimulant",
                 "habit-forming"
@@ -13962,6 +14154,9 @@
         "name": "c30-nbome",
         "pretty_name": "C30-NBOMe",
         "properties": {
+            "aliases": [
+                "c30nbome"
+            ],
             "categories": [
                 "research-chemical",
                 "inactive"
@@ -14685,6 +14880,9 @@
         "pretty_name": "Chloral betaine",
         "properties": {
             "after-effects": "2-8 hours.",
+            "aliases": [
+                "chloralbetaine"
+            ],
             "categories": [
                 "depressant",
                 "habit-forming"
@@ -15888,7 +16086,8 @@
             "aliases": [
                 "flmodafinil",
                 "lauflumide",
-                "bisfluoromodafinil"
+                "bisfluoromodafinil",
+                "crl40940"
             ],
             "categories": [
                 "stimulant",
@@ -15939,7 +16138,8 @@
             "after-effects": "1-10 hours.",
             "aliases": [
                 "fladrafinil",
-                "fluoromodafinil"
+                "fluoromodafinil",
+                "crl40941"
             ],
             "categories": [
                 "stimulant",
@@ -16028,6 +16228,9 @@
         "name": "cyclo-methiodrone",
         "pretty_name": "Cyclo-Methiodrone",
         "properties": {
+            "aliases": [
+                "cyclomethiodrone"
+            ],
             "categories": [
                 "empathogen",
                 "stimulant",
@@ -16112,7 +16315,8 @@
         "properties": {
             "aliases": [
                 "cp-f",
-                "cpf"
+                "cpf",
+                "cyclopentylfentanyl"
             ],
             "categories": [
                 "opioid",
@@ -16392,6 +16596,9 @@
         "name": "db-mdbp",
         "pretty_name": "DB-MDBP",
         "properties": {
+            "aliases": [
+                "dbmdbp"
+            ],
             "categories": [
                 "inactive"
             ],
@@ -17567,7 +17774,8 @@
         "properties": {
             "after-effects": "1-6 hours | NOTE: The smell will linger for days afterwards.",
             "aliases": [
-                "ether"
+                "ether",
+                "diethylether"
             ],
             "avoid": "Avoid CNS depressants and smoking.",
             "categories": [
@@ -19166,8 +19374,8 @@
         "name": "ephedrine",
         "pretty_name": "Ephedrine",
         "properties": {
-            "adverse-effects": "Tachycardia, cardiac arrhythmias, angina pectoris, vasoconstriction with hypertension, flushing, sweating, acne vulgaris, nausea, decreased urination, difficulty urinating, restlessness, confusion, insomnia, mild euphoria, mania/hallucinations, delusions, formication, dyspnea, pulmonary edema, dizziness, headache, tremor, hyperglycemic reactions, and dry mouth",
             "after-effects": "1-8 hours.",
+            "adverse-effects": "Tachycardia, cardiac arrhythmias, angina pectoris, vasoconstriction with hypertension, flushing, sweating, acne vulgaris, nausea, decreased urination, difficulty urinating, restlessness, confusion, insomnia, mild euphoria, mania/hallucinations, delusions, formication, dyspnea, pulmonary edema, dizziness, headache, tremor, hyperglycemic reactions, and dry mouth",
             "categories": [
                 "stimulant",
                 "habit-forming"
@@ -19770,7 +19978,8 @@
             "after-effects": "1-24 hours.",
             "aliases": [
                 "nep",
-                "n-ethylpentedrone"
+                "n-ethylpentedrone",
+                "ethylpentedrone"
             ],
             "categories": [
                 "stimulant",
@@ -21107,6 +21316,9 @@
         "name": "g-130",
         "pretty_name": "G-130",
         "properties": {
+            "aliases": [
+                "g130"
+            ],
             "categories": [
                 "stimulant",
                 "tentative",
@@ -21584,7 +21796,8 @@
         "properties": {
             "after-effects": "1-8 hours.",
             "aliases": [
-                "ethylnaphthidate"
+                "ethylnaphthidate",
+                "hdep28"
             ],
             "avoid": "Other stimulants.",
             "categories": [
@@ -21638,7 +21851,8 @@
         "properties": {
             "after-effects": "1-8 hours.",
             "aliases": [
-                "methylnaphtidate"
+                "methylnaphtidate",
+                "hdmp28"
             ],
             "avoid": "Other stimulants.",
             "categories": [
@@ -22145,7 +22359,8 @@
         "properties": {
             "after-effects": "1-14 hours.",
             "aliases": [
-                "h-a"
+                "h-a",
+                "huperzinea"
             ],
             "avoid": "Anticholinergic drugs, which include many first generation antihistamines. Acetylcholinesterase inhibitors. Cholinergic drugs. As it may add to the negative side-effects.",
             "categories": [
@@ -23492,7 +23707,8 @@
         "properties": {
             "after-effects": "1-2 hours.",
             "aliases": [
-                "theanine"
+                "theanine",
+                "ltheanine"
             ],
             "categories": [
                 "common",
@@ -24559,7 +24775,8 @@
         "properties": {
             "after-effects": "1-16 hours.",
             "aliases": [
-                "lsm"
+                "lsm",
+                "lsm775"
             ],
             "categories": [
                 "psychedelic",
@@ -27202,7 +27419,8 @@
             "after-effects": "1-4 hours.",
             "aliases": [
                 "maf",
-                "desfluoroocfentanil"
+                "desfluoroocfentanil",
+                "methoxyacetylfentanyl"
             ],
             "categories": [
                 "depressant",
@@ -29844,6 +30062,9 @@
         "pretty_name": "NM-2-AI",
         "properties": {
             "after-effects": "1-8 hours.",
+            "aliases": [
+                "nm2ai"
+            ],
             "categories": [
                 "stimulant",
                 "empathogen"
@@ -30132,7 +30353,8 @@
             "aliases": [
                 "odt",
                 "o-smt",
-                "o-dsmt"
+                "o-dsmt",
+                "odesmethyltramadol"
             ],
             "avoid": "All other CNS depressants.",
             "categories": [
@@ -32202,6 +32424,9 @@
         "name": "pre-084",
         "pretty_name": "PRE-084",
         "properties": {
+            "aliases": [
+                "pre084"
+            ],
             "categories": [
                 "tentative"
             ],
@@ -32369,6 +32594,9 @@
         "name": "pro-lad",
         "pretty_name": "PRO-LAD",
         "properties": {
+            "aliases": [
+                "prolad"
+            ],
             "categories": [
                 "tentative",
                 "psychedelic"
@@ -32976,7 +33204,8 @@
         "properties": {
             "after-effects": "Oral: 6-12 hours | Insufflated: 4-8 hours | Vapourized: 2-5 hours.",
             "aliases": [
-                "a-phpp"
+                "a-phpp",
+                "pv8"
             ],
             "categories": [
                 "stimulant",
@@ -32997,6 +33226,9 @@
         "name": "pv-9",
         "pretty_name": "PV-9",
         "properties": {
+            "aliases": [
+                "pv9"
+            ],
             "categories": [
                 "inactive"
             ],
@@ -33010,6 +33242,9 @@
         "name": "pv-10",
         "pretty_name": "PV-10",
         "properties": {
+            "aliases": [
+                "pv10"
+            ],
             "categories": [
                 "inactive"
             ],
@@ -33219,11 +33454,11 @@
         "name": "quetiapine",
         "pretty_name": "Quetiapine",
         "properties": {
-            "adverse-effects": "dizziness, fatigue, extrapyramidal symptoms, increased diastolic blood pressure, increased triglycerides, increased total cholesterol, increased appetite, constipation, dry mouth, headache, and somnolence",
             "after-effects": "Can last up to 24 hours after one use.",
             "aliases": [
                 "seroquel"
             ],
+            "adverse-effects": "dizziness, fatigue, extrapyramidal symptoms, increased diastolic blood pressure, increased triglycerides, increased total cholesterol, increased appetite, constipation, dry mouth, headache, and somnolence",
             "categories": [
                 "depressant"
             ],
@@ -33455,7 +33690,8 @@
         "properties": {
             "after-effects": "1-6 hours.",
             "aliases": [
-                "dichloropane"
+                "dichloropane",
+                "rti111"
             ],
             "categories": [
                 "stimulant",
@@ -33995,7 +34231,8 @@
         "properties": {
             "aliases": [
                 "thf-f",
-                "thff"
+                "thff",
+                "tetrahydrofuranfentanyl"
             ],
             "categories": [
                 "opioid",
@@ -34090,6 +34327,9 @@
         "name": "th-pvp",
         "pretty_name": "TH-PVP",
         "properties": {
+            "aliases": [
+                "thpvp"
+            ],
             "categories": [
                 "tentative",
                 "research-chemical",
@@ -34477,6 +34717,9 @@
         "name": "tma-2",
         "pretty_name": "TMA-2",
         "properties": {
+            "aliases": [
+                "tma2"
+            ],
             "categories": [
                 "psychedelic",
                 "research-chemical",
@@ -34536,6 +34779,9 @@
         "name": "tma-6",
         "pretty_name": "TMA-6",
         "properties": {
+            "aliases": [
+                "tma6"
+            ],
             "categories": [
                 "psychedelic",
                 "research-chemical",
@@ -35128,6 +35374,9 @@
         "name": "u-49900",
         "pretty_name": "U-49900",
         "properties": {
+            "aliases": [
+                "u49900"
+            ],
             "categories": [
                 "opioid",
                 "dissociative",
@@ -35179,7 +35428,8 @@
             "after-effects": "3-6 hours.",
             "aliases": [
                 "methene-u47700",
-                "methene-u-47700"
+                "methene-u-47700",
+                "u51754"
             ],
             "categories": [
                 "tentative",
@@ -35410,6 +35660,9 @@
         "pretty_name": "W-15",
         "properties": {
             "after-effects": "2-4 hours.",
+            "aliases": [
+                "w15"
+            ],
             "avoid": "All other CNS depressants.",
             "categories": [
                 "opioid",
@@ -35453,6 +35706,9 @@
         "pretty_name": "YERBA-MATE",
         "properties": {
             "after-effects": "1-4 hours.",
+            "aliases": [
+                "yerbamate"
+            ],
             "categories": [
                 "common",
                 "stimulant",
@@ -35750,7 +36006,8 @@
             "after-effects": "1-24 hours.",
             "aliases": [
                 "a-pbp",
-                "alpha-pbp"
+                "alpha-pbp",
+                "\u03b1pbp"
             ],
             "categories": [
                 "stimulant",
@@ -35808,7 +36065,8 @@
                 "bh-2cb",
                 "bohb",
                 "boh-2c-b",
-                "boh-2cb"
+                "boh-2cb",
+                "\u03b2h2cb"
             ],
             "categories": [
                 "psychedelic",
