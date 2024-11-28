@@ -156,7 +156,6 @@
         </div>
 
         <!-- Leaderboard Table -->
-        <h2>Top Contributors</h2>
         <table>
             <thead>
                 <tr>
@@ -166,31 +165,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>🥇</td>
-                    <td>Alice</td>
-                    <td>150</td>
-                </tr>
-                <tr>
-                    <td>🥈</td>
-                    <td>Bob</td>
-                    <td>120</td>
-                </tr>
-                <tr>
-                    <td>🥉</td>
-                    <td>Charlie</td>
-                    <td>100</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>David</td>
-                    <td>90</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Eve</td>
-                    <td>85</td>
-                </tr>
+                {% for row in leaderboard_data %}
+                    <tr>
+                        <td>{{ row.rank }}</td>
+                        <td>{{ row.contributor }}</td>
+                        <td>{{ row.contributions }}</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
