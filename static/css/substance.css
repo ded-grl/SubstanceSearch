@@ -1,0 +1,376 @@
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header styles */
+.header {
+    display: flex;
+    vertical-align: top;       /* Center items vertically */
+    justify-content: flex-start; /* Align items to the left horizontally */
+    padding: 20px 0;
+    border-bottom: 1px solid #ddd;
+    flex-wrap: nowrap;         /* Ensure items don't wrap */
+}
+
+/* Home button styling */
+.header a {
+    flex: 0 0 auto;            /* Do not grow or shrink */
+    font-size: 16px;
+    line-height: 1.5;
+    text-decoration: none;
+    background-color: #ff008b;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 20px;
+    height: 42px;
+    box-sizing: border-box;
+}
+
+/* Search container styling */
+.search-container {
+    flex: 1 1 auto;            /* Allow it to grow and shrink */
+    max-width: 1000px;
+    margin-left: 15px;
+}
+
+/* Search input styling */
+#search {
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 16px;
+    line-height: 1.5;
+    border-bottom: 2px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+/* Hide suggestions when empty */
+#suggestions:empty {
+    display: none;
+}
+
+/* Style the suggestions dropdown */
+#suggestions {
+list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+/* Style each suggestion item */
+#suggestions li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Highlight suggestion on hover */
+#suggestions li:hover {
+    background-color: #f0f0f0;
+}
+
+/* Title and headings */
+h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+p, h2 {
+    color: #444;
+}
+
+/* Note and warning banners */
+.note-banner {
+    background-color: #ffeb3b;
+    color: #000;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.warning-banner {
+    background-color: #EE4B2B;
+    color: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+/* Category links */
+.category-link {
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    background-color: #3498db;
+}
+
+.category-link:hover {
+    opacity: 0.8;
+}
+
+/* Collapsible sections */
+.collapsible {
+    background-color: #f5f5f5;
+    color: #333;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 18px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+}
+
+.collapsible:hover {
+    background-color: #eaeaea;
+}
+
+.collapsible:after {
+    content: '\002B';
+    font-size: 13px;
+    color: #777;
+    float: right;
+    margin-left: 5px;
+}
+
+.active:after {
+    content: "\2212";
+}
+
+.content {
+    padding: 10px 20px;
+    display: none;
+    overflow: hidden;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Combo box styles */
+.combo-box {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+}
+
+.dangerous {
+    background-color: #ff4d4d;
+}
+
+.unsafe {
+    background-color: #ffa500;
+}
+
+.caution {
+    background-color: #ffff66;
+    color: black;
+}
+
+.low-risk-synergy {
+    background-color: #66ff66;
+    color: black;
+}
+
+.low-risk-no-synergy {
+    background-color: #9933ff;
+}
+
+.low-risk-decrease {
+    background-color: #3399ff;
+}
+
+/* Links container */
+.links-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Modern links */
+.modern-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modern-link:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modern-link:active {
+    transform: translateY(0);
+}
+
+/* Source links */
+.sources-section a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    padding: 5px 0;
+    transition: color 0.3s, border-bottom 0.3s;
+    border-bottom: 2px solid transparent;
+}
+
+.sources-section a:hover {
+    color: #2980b9;
+    border-bottom: 2px solid #2980b9;
+}
+
+/* Adjust layout on smaller screens */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;     /* Stack items vertically */
+        align-items: center;        /* Center items horizontally */
+        gap: 10px;
+    }
+
+    .search-container {
+        width: 100%;                /* Make the search bar full width */
+        margin-left: 0;             /* Remove left margin */
+        margin-top: 0;              /* Adjust top margin if needed */
+    }
+
+    .header a {
+        margin-right: 0;            /* Remove right margin */
+        /* No need to set width; it will maintain its natural width */
+    }
+
+    .container {
+        width: 85%;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    p, li {
+        font-size: 1rem;
+    }
+
+    th, td {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .collapsible {
+        font-size: 16px;
+    }
+
+    .category-link {
+        font-size: 14px;
+    }
+
+    .chart-container, .table-container {
+        flex: 1 1 110%;
+        margin: 0 auto; /* Center on mobile */
+    }
+
+    .chart-table-container {
+        flex-direction: column;
+        align-items: center; /* Center the container */
+    }
+
+    .dose-legend {
+        font-size: 12px;
+    }
+
+    /* Adjust canvas size on mobile */
+    #doseChart {
+        max-height: 200px;
+    }
+}
+
+/* Chart and Table Styles */
+.chart-table-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.chart-container, .table-container {
+    flex: 1 1 45%;
+    min-width: 340px;
+}
+
+/* Dose legend styles */
+.dose-legend {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.dose-legend-item {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.dose-legend-color {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
