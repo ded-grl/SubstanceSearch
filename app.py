@@ -3,6 +3,7 @@ from urllib.parse import unquote
 import json
 import unicodedata
 import re
+import csv
 
 app = Flask(__name__)
 
@@ -86,7 +87,26 @@ def home():
 # Route for the leaderboard
 @app.route('/leaderboard')
 def leaderboard():
-    return render_template('leaderboard.html')
+    # Read the leaderboard data from the CSV
+    leaderboard_data = []
+    with open('data/leaderboard.csv', 'r') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            rank = int(row['Rank'])
+            emoji = ''
+            if rank == 1:
+                emoji = '🥇'
+            elif rank == 2:
+                emoji = '🥈'
+            elif rank == 3:
+                emoji = '🥉'
+            leaderboard_data.append({
+                'rank': f"{emoji} {rank}",
+                'contributor': row['Contributor'],
+                'contributions': row['Contributions']
+            })
+# Pass the data to the template
+return render_template('leaderboard.html', leaderboard_data=leaderboard_data)
 
 # Route for fetching autocomplete suggestions
 @app.route('/autocomplete', methods=['GET'])
