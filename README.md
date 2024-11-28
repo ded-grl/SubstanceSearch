@@ -29,6 +29,3 @@ Visit the [Discord Server](https://discord.gg/wFPB9xYRBN) to get started and sel
 **Website**: [SubstanceSearch.org](https://substancesearch.org)  
 **Alternative URL**: [search.dedgrl.com](https://search.dedgrl.com)
 
----
-
-Together, we can empower safer choices and create a stronger, informed community.
