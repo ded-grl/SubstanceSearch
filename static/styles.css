@@ -22,6 +22,10 @@ h1 {
     color: #333;
 }
 
+h1>span {
+    display: inline-block;
+}
+
 input[type="text"] {
     width: 100%;
     padding: 12px 15px;
@@ -30,6 +34,9 @@ input[type="text"] {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 input[type="text"]::placeholder {
@@ -110,6 +117,14 @@ ul#suggestions li:hover {
 @media (max-width: 768px) {
     .category-grid {
         grid-template-columns: repeat(2, 1fr); /* 2 buttons per row for smaller screens */
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .categories h2 {
+        font-size: 1.5rem;
     }
 }
 
