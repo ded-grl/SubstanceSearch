@@ -46,6 +46,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
         }
 
         .substance-card:hover {
@@ -58,6 +59,7 @@
             font-weight: bold;
             margin: 10px 0;
             color: #333;
+            overflow-wrap: break-word;
         }
 
         .substance-link {
@@ -81,6 +83,9 @@
             transition: background-color 0.3s ease;
             text-align: center;
             margin-top: 20px;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
         }
 
         .back-button:hover {
@@ -116,11 +121,9 @@
         <!-- Display substances in the category with card-like layout -->
         <div class="substance-grid">
             {% for substance_name, details in substances.items() %}
-                <div class="substance-card">
-                    <a href="/substance/{{ slugify(substance_name) }}" class="substance-link">
-                        <div class="substance-name">{{ details.pretty_name }}</div>
-                    </a>
-                </div>
+                <a class="substance-card" href="/substance/{{ slugify(substance_name) }}" class="substance-link">
+                    <div class="substance-name">{{ details.pretty_name }}</div>
+                </a>
             {% endfor %}
         </div>
 

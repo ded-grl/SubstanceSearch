@@ -8,6 +8,11 @@ document.addEventListener('DOMContentLoaded', function () {
             fetch(`/autocomplete?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
+                    if (data.length === 0) {
+                        suggestions.innerHTML = `No results found for "${query}"`;
+                        return;
+                    }
+
                     suggestions.innerHTML = '';
                     data.forEach(item => {
                         const li = document.createElement('li');
@@ -20,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         suggestions.appendChild(li);
                     });
                 });
+        } else if (query.length === 1) {
+            suggestions.innerHTML = 'Please enter at least two characters to search';
         } else {
             suggestions.innerHTML = '';
         }
