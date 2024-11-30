@@ -29,3 +29,91 @@ Visit the [Discord Server](https://discord.gg/wFPB9xYRBN) to get started and sel
 **Website**: [SubstanceSearch.org](https://substancesearch.org)  
 **Alternative URL**: [search.dedgrl.com](https://search.dedgrl.com)
 
+---
+## **How to run Substance Search Locally**
+Follow these instructions to run the app locally on your machine.
+
+### **Prerequisites**
+
+1. **Python**: Install Python 3.7 or higher from [python.org](https://www.python.org/downloads/).
+   - During installation, ensure you check the box **"Add Python to PATH"**.
+   - Verify the installation by running:
+     ```bash
+     python --version
+     ```
+
+2. **Pip**: Pip is included with Python installations. Verify by running:
+     ```bash
+     pip --version
+     ```
+
+---
+
+### **Installation**
+
+1. **Install Required Libraries**
+    Run the following command to install all dependencies:
+    ```bash
+    pip install flask chart.js
+    ```
+
+2. **Directory Structure**
+    Ensure your project folder is structured like this:
+    ```
+    SubstanceSearch/
+    ├── app.py
+    ├── data/
+    │  ├── final_updated_drugs.json
+    │  └── leaderboard.csv
+    ├── templates/
+    │   ├── index.html
+    │   ├── leaderboard.html
+    │   ├── category.html
+    │   └── substance.html
+    └── static/
+        ├── styles.css
+        ├── favicon.ico
+        ├── SubstanceSearchPill.png
+        └── autocomplete.js
+    ```
+
+---
+
+### **Running the App**
+
+1. **Start the Flask Server**
+    Navigate to the project directory and run:
+    ```bash
+    python app.py
+    ```
+
+2. **Access the App**
+    Open your browser and visit:
+    ```
+    http://127.0.0.1:5000/
+    ```
+
+---
+
+### **Stopping the App**
+
+To stop the app, press `CTRL+C` in the terminal where the app is running.
+
+---
+
+### **Troubleshooting**
+
+1. **Missing Libraries**: If you see a `ModuleNotFoundError`, install the missing library:
+    ```bash
+    pip install <library_name>
+    ```
+
+2. **Flask Not Installed**: Install Flask using:
+    ```bash
+    pip install flask
+    ```
+    
+3. **Port in Use**: If the port `5000` is already in use, specify a different port when running the app:
+    ```bash
+    python app.py --port=5001
+    ```
