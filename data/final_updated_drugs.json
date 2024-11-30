@@ -1082,6 +1082,13 @@
         }
     },
     "2-mmc": {
+        "aliases": [
+            "2mmc",
+            "ortomephedrone",
+            "2-methylmethcathinone",
+            "2methylmethcathinone",,
+            "2-mephedrone"
+        ],
         "categories": [
             "stimulant",
             "habit-forming",
@@ -1121,6 +1128,13 @@
         "pretty_name": "2-MMC",
         "properties": {
             "after-effects": "Oral: 2-8 hours. | Insufflated: 2-4 hours.",
+            "aliases": [
+                "2mmc",
+                "ortomephedrone ",
+                "2-methylmethcathinone",
+                "2methylmethcathinone",
+                "2-mephedrone",
+            ],
             "categories": [
                 "stimulant",
                 "habit-forming",
@@ -3765,6 +3779,7 @@
     "3-mmc": {
         "aliases": [
             "3mmc",
+            "metaphedrone",
             "3-methylmethcathinone",
             "3methylmethcathinone",
             "3-meph",
@@ -3817,6 +3832,7 @@
             "after-effects": "3-4 hours.",
             "aliases": [
                 "3mmc",
+                "metaphedrone",
                 "3-methylmethcathinone",
                 "3methylmethcathinone",
                 "3-meph",
