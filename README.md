@@ -54,7 +54,7 @@ Follow these instructions to run the app locally on your machine.
 1. **Install Required Libraries**
     Run the following command to install all dependencies:
     ```bash
-    pip install flask chart.js
+    pip install -r requirements.txt
     ```
 
 2. **Directory Structure**
@@ -62,6 +62,7 @@ Follow these instructions to run the app locally on your machine.
     ```
     SubstanceSearch/
     ├── app.py
+    ├── requirements.txt
     ├── data/
     │  ├── final_updated_drugs.json
     │  └── leaderboard.csv
