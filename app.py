@@ -105,8 +105,8 @@ def leaderboard():
                 'contributor': row['Contributor'],
                 'contributions': row['Contributions']
             })
-# Pass the data to the template
-return render_template('leaderboard.html', leaderboard_data=leaderboard_data)
+    # Pass the data to the template
+    return render_template('leaderboard.html', leaderboard_data=leaderboard_data)
 
 # Route for fetching autocomplete suggestions
 @app.route('/autocomplete', methods=['GET'])
