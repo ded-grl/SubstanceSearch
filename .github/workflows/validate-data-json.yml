@@ -3,7 +3,7 @@ name: "Validate Substances Data JSON"
 on:
   push:
     branches:
-      - '**'
+      - main
     paths:
       - '**.json'
   pull_request:
@@ -12,6 +12,7 @@ on:
       - '**'
     paths:
       - '**.json'
+      - '**.yml'
 
 jobs:
   validate:
