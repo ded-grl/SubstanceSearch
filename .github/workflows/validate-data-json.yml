@@ -29,4 +29,6 @@ jobs:
 
       - name: Print formatted JSON data
         run: |
-          printf '%s' "${{ steps.validate.outputs.value }}"
+          cat <<EOF
+          ${{ steps.validate.outputs.value }}
+          EOF
