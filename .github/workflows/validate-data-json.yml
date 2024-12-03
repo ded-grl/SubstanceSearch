@@ -4,11 +4,15 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '**.json'
   pull_request:
     types:
-      - opened
+      - [opened, reopened, synchronize, ready_for_review]
     branches:
-      - main
+      - **
+    paths:
+      - '**.json'
 
 jobs:
   validate:
