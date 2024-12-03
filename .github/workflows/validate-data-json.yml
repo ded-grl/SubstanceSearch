@@ -9,7 +9,7 @@ on:
       - opened
     branches:
       - main
-    
+
 permissions:
   contents: read
 
@@ -21,5 +21,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Validate JSON
-        run: cat ./data/final_updated_drugs.json | json_pp
+        id: validate
+        uses: sergeysova/jq-action@v2
+        with:
+          cmd: jq -r . ./data/final_updated_drugs.json
+          multiline: true
 
+      - name: Print formatted JSON data
+        run: |
+          printf '%s' "${{ steps.validate.outputs.value }}"
