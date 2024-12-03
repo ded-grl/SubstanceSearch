@@ -20,15 +20,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Add caching step before validation
+      - name: Cache JSON validation
+        id: cache-json
+        uses: actions/cache@v3
+        with:
+          path: ./data/final_updated_drugs.json
+          key: json-validation-${{ hashFiles('./data/final_updated_drugs.json') }}
+
+      # Only run validation if cache miss
       - name: Validate JSON
         id: validate
+        if: steps.cache-json.outputs.cache-hit != 'true'
         uses: sergeysova/jq-action@v2
         with:
           cmd: jq -r . ./data/final_updated_drugs.json
           multiline: true
 
+      # Print either cached or new validation output
       - name: Print formatted JSON data
         run: |
-          cat <<EOF
-          ${{ steps.validate.outputs.value }}
-          EOF
+          if [[ "${{ steps.cache-json.outputs.cache-hit }}" == 'true' ]]; then
+            echo "Using cached validation output"
+            cat ./data/final_updated_drugs.json
+          else
+            cat <<EOF
+            ${{ steps.validate.outputs.value }}
+            EOF
+          fi
