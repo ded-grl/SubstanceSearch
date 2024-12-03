@@ -4,14 +4,15 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '**.json'
   pull_request:
-    types:
-      - opened
+    types: [opened, reopened, synchronize, ready_for_review]
     branches:
-      - main
-    
-permissions:
-  contents: read
+      - '**'
+    paths:
+      - '**.json'
+      - '**.yml'
 
 jobs:
   validate:
@@ -20,6 +21,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate JSON
-        run: cat ./data/final_updated_drugs.json | json_pp
+      - name: Cache JSON validation
+        id: cache-json
+        uses: actions/cache@v3
+        with:
+          path: ./data/final_validated_drugs.json
+          key: json-validation-${{ hashFiles('./data/final_updated_drugs.json') }}
+          restore-keys: |
+            json-validation-${{ hashFiles('./data/final_updated_drugs.json') }}
 
+      - name: Validate JSON
+        id: validate
+        if: steps.cache-json.outputs.cache-hit != 'true'
+        uses: sergeysova/jq-action@v2
+        with:
+          cmd: |
+            jq -r . ./data/final_updated_drugs.json > ./data/final_validated_drugs.json
+          multiline: true
+
+      - name: Print formatted JSON data
+        run: cat ./data/final_validated_drugs.json
