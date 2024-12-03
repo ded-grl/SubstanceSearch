@@ -3,14 +3,14 @@ name: "Validate Substances Data JSON"
 on:
   push:
     branches:
-      - main
+      - '**'
     paths:
       - '**.json'
   pull_request:
     types:
       - [opened, reopened, synchronize, ready_for_review]
     branches:
-      - **
+      - '**'
     paths:
       - '**.json'
 
