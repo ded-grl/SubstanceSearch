@@ -91,8 +91,8 @@ def leaderboard():
     leaderboard_data = []
     with open('data/leaderboard.csv', 'r') as file:
         reader = csv.DictReader(file)
-        for row in reader:
-            rank = int(row['Rank'])
+        for index, row in enumerate(reader):
+            rank = index + 1
             emoji = ''
             if rank == 1:
                 emoji = '🥇'

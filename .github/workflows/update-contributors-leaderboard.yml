@@ -1,0 +1,33 @@
+name: "Update Contributors Leaderboard"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-leaderboard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch contributors
+        uses: github/contributors@v1
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+
+      - name: Update leaderboard data
+        run: |
+          cat contributors.json | jq -r '.contributors[] | {Contributor: .username, Contributions: .contribution_count} | join(",")' > ./data/leaderboard.csv.tmp
+          echo -e "Contributor,Contributions\n$(cat ./data/leaderboard.csv.tmp)" > ./data/leaderboard.csv.tmp
+          cat ./data/leaderboard.csv.tmp | grep -v "\[bot\]" > ./data/leaderboard.csv
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        id: auto-commit-action
+        with:
+          file_pattern: data/leaderboard.csv
+          commit_message: Update contributors leaderboard
+
