@@ -19,21 +19,44 @@
                     <input type="text" id="search" placeholder="Search for a substance..." autocomplete="off">
                     <ul id="suggestions"></ul>
                 </div>
-                <!-- Placeholder Link to Discord -->
-                <a id="discord-link" href="https://discord.gg/substancesearch" rel="noopener" target="_blank">Discord</a>
+                <a id="discord-link" href="https://discord.gg/wFPBxYRBN" rel="noopener" target="_blank">Discord</a>
                 <a id="leaderboard-link" href="/leaderboard">Contributions</a>
             </div>
         {% endblock %}
     </header>
-    {% block content %}{% endblock %}
+    <main>
+        {% block content %}{% endblock %}
+    </main>
     <footer>
         {% block footer %}
-            <div class="tripsit-notice" style="text-align: center; margin-top: 30px;">
-                <a href="https://tripsit.me" target="_blank">
-                    <img src="https://tripsit.me/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.081b8d2e.png&w=3840&q=75" alt="TripSit Logo" style="width: 150px;">
-                </a>
-                <p style="font-size: 14px; color: #666;">💕Data provided by <a href="https://tripsit.me" target="_blank" rel="noopener" style="color: #3498db; text-decoration: none;">TripSit</a> 💕</p>
+            <div class="footer-container">
+                <div class="footer-block">
+                    <h2>Substance categories</h2>
+                    <ul>
+                        <li><a href="/category/barbiturate">Barbiturates</a></li>
+                        <li><a href="/category/benzodiazepine">Benzos</a></li>
+                        <li><a href="/category/deliriant">Deliriants</a></li>
+                        <li><a href="/category/depressant">Depressants</a></li>
+                        <li><a href="/category/dissociative">Dissociatives</a></li>
+                        <li><a href="/category/empathogen">Empathogens</a></li>
+                        <li><a href="/category/nootropic">Nootropics</a></li>
+                        <li><a href="/category/opioid">Opioids</a></li>
+                        <li><a href="/category/psychedelic">Psychedelics</a></li>
+                        <li><a href="/category/research-chemical">RCs</a></li>
+                        <li><a href="/category/stimulant">Stimulants</a></li>
+                        <li><a href="/category/supplement">Supplements</a></li>
+                    </ul>
+                </div>
+                <div class="footer-block">
+                    <h2>Want to contribute?</h2>
+                    <ul>
+                        <li><a href="https://discord.gg/wFPB9xYRBN" rel="noopener" target="_blank">Join our Discord</a></li>
+                        <li><a href="TICKET LINK" rel="noopener" target="_blank">Feedback</a></li>
+                        <li><a href="/leaderboard">Contributors</a></li>
+                    </ul>
+                </div>
             </div>
+            <p class="tripsit-notice">💕Data provided by <a href="https://tripsit.me" target="_blank" rel="noopener"><img src="https://tripsit.me/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.081b8d2e.png&w=3840&q=75" alt="TripSit Logo"></img></a>💕</p>
         {% endblock %}
     </footer>
 </body>
