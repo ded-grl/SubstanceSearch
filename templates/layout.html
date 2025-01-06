@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+        <title>{% block title %}Substance Search{% endblock %}</title>
+        <link rel="stylesheet" href="/static/styles.css">
+        <script src="/static/autocomplete.js"></script>
+    {% endblock %}
+</head>
+<body class="container">
+    <header>
+        {% block header %}
+            <input type="text" id="search" placeholder="Search for a substance..." autocomplete="off">
+            <ul id="suggestions"></ul>
+        {% endblock %}
+    </header>
+    {% block content %}{% endblock %}
+    <footer>
+        {% block footer %}
+            <div class="tripsit-notice" style="text-align: center; margin-top: 30px;">
+                <a href="https://tripsit.me" target="_blank">
+                    <img src="https://tripsit.me/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.081b8d2e.png&w=3840&q=75" alt="TripSit Logo" style="width: 150px;">
+                </a>
+                <p style="font-size: 14px; color: #666;">💕Data provided by <a href="https://tripsit.me" target="_blank" rel="noopener" style="color: #3498db; text-decoration: none;">TripSit</a> 💕</p>
+            </div>
+        {% endblock %}
+    </footer>
+</body>
+</html>

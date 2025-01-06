@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
-    <title>Contributor Leaderboard</title>
+{% extends "layout.html" %}
+
+{% block title %}Contributor Leaderboard - Substance Search{% endblock %}
+
+{% block head %}
+    {{ super() }}
     <style>
         /* Styles for the body and container */
         body {
@@ -136,44 +135,34 @@
             }
         }
     </style>
-</head>
-<body>
-    <div class="container">
-        <!-- Page Header -->
-        <div class="header">
-            <a href="/" aria-label="Return to homepage">
-                <img src="/static/SubstanceSearchPill.png" alt="pill icon" />
-            </a>
-            <h1 class="header-title">Contributor Leaderboard</h1>
-        </div>
+{% endblock %}
 
-        <!-- Title and Purpose -->
-        <p>The leaderboard highlights top contributors to the site. By submitting research papers, dosage feedback, site suggestions, new substances, code contributions, and more, our community ensures the site remains accurate and up-to-date. <strong>Strength in numbers.</strong></p>
+{% block content %}
+    <!-- Title and Purpose -->
+    <p>The leaderboard highlights top contributors to the site. By submitting research papers, dosage feedback, site suggestions, new substances, code contributions, and more, our community ensures the site remains accurate and up-to-date. <strong>Strength in numbers.</strong></p>
 
-        <!-- Discord Invitation -->
-        <div class="note-banner">
-            Want to contribute? Join our Discord community! <a href="https://discord.gg/wFPB9xYRBN" target="_blank">Join Now</a>
-        </div>
-
-        <!-- Leaderboard Table -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Contributor</th>
-                    <th>Contributions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in leaderboard_data %}
-                    <tr>
-                        <td>{{ row.rank }}</td>
-                        <td>{{ row.contributor }}</td>
-                        <td>{{ row.contributions }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <!-- Discord Invitation -->
+    <div class="note-banner">
+        Want to contribute? Join our Discord community! <a href="https://discord.gg/wFPB9xYRBN" target="_blank">Join Now</a>
     </div>
-</body>
-</html>
+
+    <!-- Leaderboard Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Contributor</th>
+                <th>Contributions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in leaderboard_data %}
+                <tr>
+                    <td>{{ row.rank }}</td>
+                    <td>{{ row.contributor }}</td>
+                    <td>{{ row.contributions }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
