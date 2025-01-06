@@ -12,8 +12,107 @@ body {
 }
 
 header {
+    margin-bottom: 2rem;
+}
+
+header>h1 {
     text-align: center;
-    margin-bottom: 40px;
+}
+
+/* Header styles */
+.header-container {
+    display: flex;
+    column-gap: 1rem;
+    justify-content: flex-start; /* Align items to the left horizontally */
+    padding: 1rem 0;
+    flex-wrap: nowrap;         /* Ensure items don't wrap */
+    box-sizing: border-box;
+}
+
+.header-container a {
+    text-decoration: none;
+    padding: 1rem;
+    border-radius: 5px;
+    box-sizing: border-box;
+    flex: 0 1 0;
+    height: 3rem;
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+.header-container a::after {
+    margin-left: 4px;
+}
+
+#home-link {
+    background-color: #ff008b;
+    color: white;
+}
+
+#home-link::after {
+    content: "💊"
+}
+
+#discord-link {
+    background-color: #BA55D3;
+    color: white;
+}
+
+#discord-link::after {
+    content: "💻"
+}
+
+#leaderboard-link {
+    background-color: #CBC3E3;
+    color: #333;
+}
+
+#leaderboard-link::after {
+    content: "🏆"
+}
+
+/* Search container styling */
+.search-container {
+    flex: 1 1 auto;            /* Allow it to grow and shrink */
+    box-sizing: border-box;
+}
+
+/* Search input styling */
+#search {
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 16px;
+    line-height: 1.5;
+    border-bottom: 2px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+/* Hide suggestions when empty */
+#suggestions:empty {
+    display: none;
+}
+
+/* Style the suggestions dropdown */
+#suggestions {
+list-style-type: none;
+    padding: 0;
+    margin: 1rem 0 0 0;
+    text-align: left;
+}
+
+/* Style each suggestion item */
+#suggestions li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Highlight suggestion on hover */
+#suggestions li:hover {
+    background-color: #f0f0f0;
 }
 
 h1 {
@@ -41,24 +140,6 @@ input[type="text"] {
 
 input[type="text"]::placeholder {
     color: #888;
-}
-
-ul#suggestions {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    text-align: left;
-}
-
-ul#suggestions li {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-ul#suggestions li:hover {
-    background-color: #f0f0f0;
 }
 
 .categories h2 {
@@ -135,5 +216,18 @@ ul#suggestions li:hover {
 
     .category-card {
         width: 100%; /* Full width for small screens */
+    }
+
+    #home-link::after {
+        margin: 0;
+        content: "";
+    }
+
+    #discord-link {
+        display: none;
+    }
+
+    #leaderboard-link {
+        display: none;
     }
 }

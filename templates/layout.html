@@ -13,8 +13,16 @@
 <body class="container">
     <header>
         {% block header %}
-            <input type="text" id="search" placeholder="Search for a substance..." autocomplete="off">
-            <ul id="suggestions"></ul>
+            <div class="header-container">
+                <a id="home-link" href="/">Home</a>
+                <div class="search-container">
+                    <input type="text" id="search" placeholder="Search for a substance..." autocomplete="off">
+                    <ul id="suggestions"></ul>
+                </div>
+                <!-- Placeholder Link to Discord -->
+                <a id="discord-link" href="https://discord.gg/substancesearch" rel="noopener" target="_blank">Discord</a>
+                <a id="leaderboard-link" href="/leaderboard">Contributions</a>
+            </div>
         {% endblock %}
     </header>
     {% block content %}{% endblock %}
