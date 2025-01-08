@@ -1,55 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
-    <title>Contributor Leaderboard</title>
+{% extends "layout.html" %}
+
+{% block title %}Contributor Leaderboard - Substance Search{% endblock %}
+
+{% block head %}
+    {{ super() }}
     <style>
-        /* Styles for the body and container */
-        body {
-            font-family: 'Helvetica Neue', sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            width: 80%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Header styles */
-        .header {
-            display: flex;
-            align-items: center; /* Vertically align items */
-            gap: 20px; /* Add spacing between elements */
-            padding: 20px 0;
-            border-bottom: 1px solid #ddd;
-        }
-
-        /* Home button as an image */
-        .header img {
-            width: 50px; /* Adjust the size of the image */
-            height: 50px;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .header img:hover {
-            transform: scale(1.1); /* Slight zoom on hover */
-        }
-
-        /* Header Title */
-        .header-title {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #333;
-            margin: 0;
-        }
-
         /* Title and headings */
         h1 {
             font-size: 2.5rem;
@@ -116,64 +71,39 @@
         }
 
         @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .header-title {
-                text-align: center;
-                margin-top: 10px;
-            }
-
             h1 {
                 font-size: 2rem;
             }
-
-            th, td {
-                font-size: 12px;
-                padding: 8px;
-            }
         }
     </style>
-</head>
-<body>
-    <div class="container">
-        <!-- Page Header -->
-        <div class="header">
-            <a href="/" aria-label="Return to homepage">
-                <img src="/static/SubstanceSearchPill.png" alt="pill icon" />
-            </a>
-            <h1 class="header-title">Contributor Leaderboard</h1>
-        </div>
+{% endblock %}
 
-        <!-- Title and Purpose -->
-        <p>The leaderboard highlights top contributors to the site. By submitting research papers, dosage feedback, site suggestions, new substances, code contributions, and more, our community ensures the site remains accurate and up-to-date. <strong>Strength in numbers.</strong></p>
+{% block content %}
+    <!-- Title and Purpose -->
+    <p>The leaderboard highlights top contributors to the site. By submitting research papers, dosage feedback, site suggestions, new substances, code contributions, and more, our community ensures the site remains accurate and up-to-date. <strong>Strength in numbers.</strong></p>
 
-        <!-- Discord Invitation -->
-        <div class="note-banner">
-            Want to contribute? Join our Discord community! <a href="https://discord.gg/wFPB9xYRBN" target="_blank">Join Now</a>
-        </div>
-
-        <!-- Leaderboard Table -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Contributor</th>
-                    <th>Contributions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in leaderboard_data %}
-                    <tr>
-                        <td>{{ row.rank }}</td>
-                        <td>{{ row.contributor }}</td>
-                        <td>{{ row.contributions }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <!-- Discord Invitation -->
+    <div class="note-banner">
+        Want to contribute? Join our Discord community! <a href="https://discord.gg/wFPB9xYRBN" target="_blank">Join Now</a>
     </div>
-</body>
-</html>
+
+    <!-- Leaderboard Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Contributor</th>
+                <th>Contributions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in leaderboard_data %}
+                <tr>
+                    <td>{{ row.rank }}</td>
+                    <td>{{ row.contributor }}</td>
+                    <td>{{ row.contributions }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

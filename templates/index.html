@@ -1,75 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
-    <title>Substance Search</title>
-    <link rel="stylesheet" href="/static/styles.css">
-    <script src="/static/autocomplete.js"></script>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1><span role="img" aria-label="search icon">🔍</span><span>Substance Search</span></h1>
-            <input type="text" id="search" placeholder="Search for a substance..." autocomplete="off">
-            <ul id="suggestions"></ul>
-        </header>
+{% extends "layout.html" %}
 
-        <!-- Categories Section -->
-        <section class="categories">
-            <h2>Browse by Category</h2>
-            <div class="category-grid">
-                {% for category in categories %}
-                    <a href="/category/{{ category|lower }}" class="category-card" style="background-color: {{ category_colors.get(category.lower(), '#f0f0f0') }}">
-                        <div class="category-name">
-                            {% if category == 'Barbiturate' %}
-                                💊 Barbiturates 💊
-                            {% elif category == 'Benzodiazepine' %}
-                                💤 Benzos 😴
-                            {% elif category == 'Deliriant' %}
-                                🤯 Deliriants 🌫️
-                            {% elif category == 'Depressant' %}
-                                😔 Depressants 🛌
-                            {% elif category == 'Dissociative' %}
-                                🌀 Dissociatives 💫
-                            {% elif category == 'Empathogen' %}
-                                💞 Empathogens ❤️
-                            {% elif category == 'Nootropic' %}
-                                📚 Nootropics 🧠
-                            {% elif category == 'Opioid' %}
-                                💉 Opioids ⚖️
-                            {% elif category == 'Psychedelic' %}
-                                🍄 Psychedelics 🌈
-                            {% elif category == 'Research-chemical' %}
-                                🔬 RCs 🧪
-                            {% elif category == 'Stimulant' %}
-                                🚀 Stimulants ⚡
-                            {% elif category == 'Supplement' %}
-                                🌿 Supplements 🍃
-                            {% else %}
-                                {{ category }}
-                            {% endif %}
-                        </div>
-                    </a>
-                {% endfor %}
-            </div>
-        </section>
-    </div>
-    
-    <!-- TripSit Notice -->
-    <div class="tripsit-notice" style="text-align: center; margin-top: 30px;">
-        <a href="https://tripsit.me" target="_blank">
-            <img src="https://tripsit.me/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.081b8d2e.png&w=3840&q=75" alt="TripSit Logo" style="width: 150px;">
-        </a>
-        <p style="font-size: 14px; color: #666;">💕Data provided by <a href="https://tripsit.me" target="_blank" style="color: #3498db; text-decoration: none;">TripSit</a> 💕</p>
-    </div>
-    
-    <!-- Leaderboard Button -->
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="/leaderboard" style="text-decoration: none; background-color: #CBC3E3; color: #333; padding: 15px 30px; border-radius: 10px; font-size: 18px; font-weight: bold; display: inline-block; transition: background-color 0.3s, transform 0.2s; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-            🏆 Leaderboard! 🏆
-        </a>
-    </div>
-</body>
-</html>
+{% block header %}
+    <h1><span role="img" aria-label="search icon">🔍</span><span>Substance Search</span></h1>
+    <input type="text" id="search" placeholder="Search for a substance..." autocomplete="off">
+    <ul id="suggestions"></ul>
+{% endblock %}
+
+{% block content %}
+    <section class="categories">
+        <h2>Browse by Category</h2>
+        <div class="category-grid">
+            {% for category in categories %}
+                <a href="/category/{{ category|lower }}" class="category-card" style="background-color: {{ category_colors.get(category.lower(), '#f0f0f0') }}">
+                    <div class="category-name">
+                        {% if category == 'Barbiturate' %}
+                            💊 Barbiturates 💊
+                        {% elif category == 'Benzodiazepine' %}
+                            💤 Benzos 😴
+                        {% elif category == 'Deliriant' %}
+                            🤯 Deliriants 🌫️
+                        {% elif category == 'Depressant' %}
+                            😔 Depressants 🛌
+                        {% elif category == 'Dissociative' %}
+                            🌀 Dissociatives 💫
+                        {% elif category == 'Empathogen' %}
+                            💞 Empathogens ❤️
+                        {% elif category == 'Nootropic' %}
+                            📚 Nootropics 🧠
+                        {% elif category == 'Opioid' %}
+                            💉 Opioids ⚖️
+                        {% elif category == 'Psychedelic' %}
+                            🍄 Psychedelics 🌈
+                        {% elif category == 'Research-chemical' %}
+                            🔬 RCs 🧪
+                        {% elif category == 'Stimulant' %}
+                            🚀 Stimulants ⚡
+                        {% elif category == 'Supplement' %}
+                            🌿 Supplements 🍃
+                        {% else %}
+                            {{ category }}
+                        {% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}
+

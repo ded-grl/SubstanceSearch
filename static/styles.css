@@ -7,13 +7,125 @@ body {
 
 .container {
     width: 80%;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
 }
 
-header {
+header>h1 {
     text-align: center;
-    margin-bottom: 40px;
+}
+
+main {
+    margin-bottom: auto;
+    flex-grow: 1;
+}
+
+/* Header styles */
+.header-container {
+    margin-top: 1rem;
+    display: flex;
+    column-gap: 1rem;
+    justify-content: flex-start; /* Align items to the left horizontally */
+    padding: 1rem 0;
+    flex-wrap: nowrap;         /* Ensure items don't wrap */
+    box-sizing: border-box;
+}
+
+.header-container a {
+    text-decoration: none;
+    padding: 1rem;
+    border-radius: 5px;
+    box-sizing: border-box;
+    flex: 0 1 0;
+    height: 3rem;
+    white-space: nowrap;
+    font-weight: bold;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-container a:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.header-container a::after {
+    margin-left: 4px;
+}
+
+#home-link {
+    background-color: #ff008b;
+    color: white;
+}
+
+#home-link::after {
+    content: "💊"
+}
+
+#discord-link {
+    background-color: #BA55D3;
+    color: white;
+}
+
+#discord-link::after {
+    content: "💻"
+}
+
+#leaderboard-link {
+    background-color: #CBC3E3;
+    color: #333;
+}
+
+#leaderboard-link::after {
+    content: "🏆"
+}
+
+/* Search container styling */
+.search-container {
+    flex: 1 1 auto;            /* Allow it to grow and shrink */
+    box-sizing: border-box;
+}
+
+/* Search input styling */
+#search {
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 16px;
+    line-height: 1.5;
+    border-bottom: 2px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+/* Hide suggestions when empty */
+#suggestions:empty {
+    display: none;
+}
+
+/* Style the suggestions dropdown */
+#suggestions {
+list-style-type: none;
+    padding: 0;
+    margin: 1rem 0 0 0;
+    text-align: left;
+}
+
+/* Style each suggestion item */
+#suggestions li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Highlight suggestion on hover */
+#suggestions li:hover {
+    background-color: #f0f0f0;
 }
 
 h1 {
@@ -41,24 +153,6 @@ input[type="text"] {
 
 input[type="text"]::placeholder {
     color: #888;
-}
-
-ul#suggestions {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    text-align: left;
-}
-
-ul#suggestions li {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-ul#suggestions li:hover {
-    background-color: #f0f0f0;
 }
 
 .categories h2 {
@@ -91,8 +185,9 @@ ul#suggestions li:hover {
     color: #333;
     transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 180px; /* Keeping the button width intact */
+    width: 200px; /* Keeping the button width intact */
     height: 100px;
+    box-sizing: border-box;
 }
 
 .category-card:hover {
@@ -108,9 +203,64 @@ ul#suggestions li:hover {
     text-overflow: ellipsis;
 }
 
+.footer-container {
+    display: flex;
+    flex-direction: row;
+    column-gap: 4rem;
+    row-gap: 2rem;
+    color: #777;
+    font-size: 14px;
+    margin: 8rem 0 2rem 0;
+}
+
+.footer-block {
+    flex: 0 1 100%;
+}
+
+.footer-block h2 {
+    font-size: inherit;
+    color: inherit;
+    margin: 0;
+}
+
+.footer-block ul {
+    display: grid;
+    grid-template-columns: repeat(4, fit-content(100%));
+    padding: 0;
+    margin: 0;
+    column-gap: 2rem;
+}
+
+.footer-block li {
+    list-style: none;
+    margin: 1rem 0 0 0;
+}
+
+.footer-block a {
+    text-decoration: none;
+    color: inherit;
+    white-space: nowrap;
+}
+
+.tripsit-notice {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: #777;
+}
+
+.tripsit-notice img {
+    height: 2rem;
+    vertical-align: middle;
+}
+
 @media (max-width: 1200px) {
     .category-grid {
         grid-template-columns: repeat(3, 1fr); /* 3 buttons per row for medium screens */
+    }
+
+    .footer-block ul {
+        grid-template-columns: repeat(2, fit-content(100%));
     }
 }
 
@@ -123,8 +273,29 @@ ul#suggestions li:hover {
         font-size: 2rem;
     }
 
+    .footer-container {
+        flex-direction: column;
+    }
+
+    #home-link::after {
+        margin: 0;
+        content: "";
+    }
+
+    #discord-link {
+        display: none;
+    }
+
+    #leaderboard-link {
+        display: none;
+    }
+
     .categories h2 {
         font-size: 1.5rem;
+    }
+
+    .footer-block ul {
+        grid-template-columns: repeat(4, fit-content(100%));
     }
 }
 
@@ -135,5 +306,9 @@ ul#suggestions li:hover {
 
     .category-card {
         width: 100%; /* Full width for small screens */
+    }
+
+    .footer-block ul {
+        grid-template-columns: repeat(2, fit-content(100%));
     }
 }

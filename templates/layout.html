@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+        <title>{% block title %}Substance Search{% endblock %}</title>
+        <link rel="stylesheet" href="/static/styles.css">
+        <script src="/static/autocomplete.js"></script>
+    {% endblock %}
+</head>
+<body class="container">
+    <header>
+        {% block header %}
+            <div class="header-container">
+                <a id="home-link" href="/">Home</a>
+                <div class="search-container">
+                    <input type="text" id="search" placeholder="Search for a substance..." autocomplete="off">
+                    <ul id="suggestions"></ul>
+                </div>
+                <a id="discord-link" href="https://discord.gg/wFPBxYRBN" rel="noopener" target="_blank">Discord</a>
+                <a id="leaderboard-link" href="/leaderboard">Contributions</a>
+            </div>
+        {% endblock %}
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        {% block footer %}
+            <div class="footer-container">
+                <div class="footer-block">
+                    <h2>Substance categories</h2>
+                    <ul>
+                        <li><a href="/category/barbiturate">Barbiturates</a></li>
+                        <li><a href="/category/benzodiazepine">Benzos</a></li>
+                        <li><a href="/category/deliriant">Deliriants</a></li>
+                        <li><a href="/category/depressant">Depressants</a></li>
+                        <li><a href="/category/dissociative">Dissociatives</a></li>
+                        <li><a href="/category/empathogen">Empathogens</a></li>
+                        <li><a href="/category/nootropic">Nootropics</a></li>
+                        <li><a href="/category/opioid">Opioids</a></li>
+                        <li><a href="/category/psychedelic">Psychedelics</a></li>
+                        <li><a href="/category/research-chemical">RCs</a></li>
+                        <li><a href="/category/stimulant">Stimulants</a></li>
+                        <li><a href="/category/supplement">Supplements</a></li>
+                    </ul>
+                </div>
+                <div class="footer-block">
+                    <h2>Want to contribute?</h2>
+                    <ul>
+                        <li><a href="https://discord.gg/wFPB9xYRBN" rel="noopener" target="_blank">Join our Discord</a></li>
+                        <li><a href="/leaderboard">Contributors</a></li>
+                    </ul>
+                </div>
+            </div>
+            <p class="tripsit-notice">💕Data provided by <a href="https://tripsit.me" target="_blank" rel="noopener"><img src="https://tripsit.me/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.081b8d2e.png&w=3840&q=75" alt="TripSit Home Page"></img></a>💕</p>
+        {% endblock %}
+    </footer>
+</body>
+</html>
