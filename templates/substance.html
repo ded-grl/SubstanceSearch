@@ -1047,19 +1047,27 @@
 
     <!-- Studies Section -->
     {% if substance.get('sources', {}).get('_general') %}
-        <h2>Studies</h2>
-        <button class="collapsible">🔗 Sources</button>
-        <div class="content sources-section">
+      <h2>Studies</h2>
+      <button class="collapsible">🔗 Sources</button>
+      <div class="content sources-section">
         <ul>
-            {% for source in substance['sources']['_general'] %}
-            {# Split the source into the text and the URL #}
-            {% set parts = source.split(' - ') %}
-            <li>
-                <a href="{{ parts[1] }}" target="_blank">{{ parts[0] }}</a>
-            </li>
-            {% endfor %}
+					{% set rgx = '([a-zA-Z0-9-_:'"\?.,()[]\/\\ ]+) - http[s]?:\/\/([a-zA-Z0-9\-%.\/]+)' }
+          {% for source in substance['sources']['_general'] %}
+						{% if '- http' in source %}
+							{% set parts = regex_match(rgx, source) %}
+							<li>
+									<a href="{{ parts[1] }}" target="_blank">{{ parts[0] }}</a>
+							</li>
+						{% elif 'http' in source %}
+							<li>
+									<a href="{{ source }}" target="_blank">{{ source }}</a>
+							</li>
+						{% else %}
+							<li>{{ source }}</li>
+						{% endif %}
+          {% endfor %}
         </ul>
-        </div>
+      </div>
     {% endif %}
 
     <script>
