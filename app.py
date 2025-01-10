@@ -1,11 +1,17 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, make_response
+from flask_caching import Cache, CachedResponse
 from urllib.parse import unquote
 import json
 import unicodedata
 import re
 import csv
+import os
+import requests
 
 app = Flask(__name__)
+
+cache = Cache()
+cache.init_app(app, config={ "CACHE_TYPE": "SimpleCache" })
 
 # Load the substances from JSON with UTF-8 encoding
 with open('data/final_updated_drugs.json', encoding='utf-8') as f:
@@ -84,29 +90,73 @@ def home():
     categories = get_all_categories(substances)
     return render_template('index.html', categories=categories, category_colors=category_colors)
 
+def rank_to_display_string(rank: int) -> str:
+    emoji = ''
+    if rank == 1:
+        emoji = '🥇 '
+    elif rank == 2:
+        emoji = '🥈 '
+    elif rank == 3:
+        emoji = '🥉 '
+    return f'{emoji}{rank}'
+
 # Route for the leaderboard
 @app.route('/leaderboard')
+@cache.cached() # one day timeout
 def leaderboard():
-    # Read the leaderboard data from the CSV
-    leaderboard_data = []
-    with open('data/leaderboard.csv', 'r') as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            rank = int(row['Rank'])
-            emoji = ''
-            if rank == 1:
-                emoji = '🥇'
-            elif rank == 2:
-                emoji = '🥈'
-            elif rank == 3:
-                emoji = '🥉'
-            leaderboard_data.append({
-                'rank': f"{emoji} {rank}",
-                'contributor': row['Contributor'],
-                'contributions': row['Contributions']
-            })
-    # Pass the data to the template
-    return render_template('leaderboard.html', leaderboard_data=leaderboard_data)
+    try:
+        # setup request prerequisites
+        auth_token= os.environ['GITHUB_AUTH_TOKEN'] # get auth token from environment
+        headers = {
+            'Accept': 'application/vnd.github+json',
+            'Authorization': f'Bearer {auth_token}',
+            'X-Github-Api-Version': '2022-11-28'
+        }
+        app.logger.info("Fetching leaderboard data")
+        r = requests.get(
+            'https://api.github.com/repos/ded-grl/SubstanceSearch/contributors',
+            headers=headers
+        )
+
+        if (not r.ok):
+            raise RuntimeError(r.content)
+
+        #parse response data
+        contribution_data= r.json()
+        app.logger.info("Retrieved contribution data: %s", str(contribution_data))
+
+        leaderboard_data = [{
+            'rank': rank_to_display_string(index + 1),
+            'contributor': contribution['login'],
+            'contributions': contribution['contributions']
+        } for index, contribution in enumerate(contribution_data)]
+
+        return CachedResponse(
+            response=make_response(render_template('leaderboard.html', leaderboard_data=leaderboard_data)),
+            timeout = 86400 # one day timeout
+        )
+    except Exception as e:
+        # In case of error, fallback to static cache data in /data/leaderboard.csv
+        app.logger.error(f'Failed to fetch contribution data. [{e}]')
+        app.logger.error('Using cached leaderboard data instead.')
+
+        # Read the leaderboard data from the CSV
+        leaderboard_data = []
+        with open('data/leaderboard.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for index, row in enumerate(reader):
+                rank = index + 1
+                leaderboard_data.append({
+                    'rank': rank_to_display_string(rank),
+                    'contributor': row['Contributor'],
+                    'contributions': row['Contributions']
+                })
+
+        # Pass the data to the template
+        return CachedResponse(
+            response=make_response(render_template('leaderboard.html', leaderboard_data=leaderboard_data)),
+            timeout = 60 # one minute response to retry in case of 500 level upstream errors
+        )
 
 # Route for fetching autocomplete suggestions
 @app.route('/autocomplete', methods=['GET'])
