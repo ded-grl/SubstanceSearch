@@ -17,6 +17,12 @@ cache.init_app(app, config={ "CACHE_TYPE": "SimpleCache" })
 with open('data/final_updated_drugs.json', encoding='utf-8') as f:
     substances = json.load(f)
 
+# Add regex_match func to Jinja
+def regex_match(value, pattern="", flags=0):
+  return re.match(pattern, value, flags)
+
+app.jinja_env.filters["regex_match"] = regex_match
+
 # Function to slugify strings for URL-friendly names
 def slugify(value):
     """
@@ -167,11 +173,11 @@ def autocomplete():
         # Ensure fields are properly handled even if missing
         pretty_name = details.get('pretty_name', 'Unknown')
         aliases = details.get('aliases', [])
-        
+
         # Check if query matches the substance name or any alias
         name_matches = query in substance_name.lower() or query in pretty_name.lower()
         alias_matches = any(query in alias.lower() for alias in aliases)
-        
+
         if name_matches or alias_matches:
             # Use the slugify function to create the slug
             slug = slugify(substance_name)
@@ -180,7 +186,7 @@ def autocomplete():
                 'aliases': aliases,
                 'slug': slug  # Include the slug in the response
             })
-    
+
     return jsonify(results[:10])
 
 # Route for displaying substance information using slugified names
@@ -195,7 +201,7 @@ def substance(slug):
     substance_data = substances.get(substance_name)
     if not substance_data:
         return "Substance not found", 404
-    
+
     # Clean the substance data to remove None values
     cleaned_substance_data = clean_data(substance_data)
     return render_template('substance.html', substance=cleaned_substance_data, category_colors=category_colors)

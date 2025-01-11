@@ -1051,10 +1051,10 @@
       <button class="collapsible">🔗 Sources</button>
       <div class="content sources-section">
         <ul>
-					{% set rgx = '([a-zA-Z0-9-_:'"\?.,()[]\/\\ ]+) - http[s]?:\/\/([a-zA-Z0-9\-%.\/]+)' }
           {% for source in substance['sources']['_general'] %}
 						{% if '- http' in source %}
-							{% set parts = regex_match(rgx, source) %}
+							{% set rgx = '^(.*) - (https?:\/\/.+)$' %}
+							{% set parts = source|regex_match(rgx) %}
 							<li>
 									<a href="{{ parts[1] }}" target="_blank">{{ parts[0] }}</a>
 							</li>
