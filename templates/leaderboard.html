@@ -4,78 +4,7 @@
 
 {% block head %}
     {{ super() }}
-    <style>
-        /* Title and headings */
-        h1 {
-            font-size: 2.5rem;
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        p, h2 {
-            color: #444;
-        }
-
-        /* Note banner */
-        .note-banner {
-            background-color: #CBC3E3;
-            color: #000;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .note-banner a {
-            text-decoration: none;
-            color: #ff008b;
-            font-weight: bold;
-        }
-
-        /* Table styles */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        /* Modern links */
-        .modern-link {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #f0f0f0;
-            color: #333;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: background-color 0.3s, transform 0.2s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .modern-link:hover {
-            background-color: #e0e0e0;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/static/css/leaderboard.css">
 {% endblock %}
 
 {% block content %}

@@ -1,0 +1,335 @@
+body,
+body.light {
+	--chart-transparent: rgba(255, 255, 255, 0);
+	--chart-green: rgb(144, 238, 144);
+	--chart-orange: rgb(255, 165, 0);
+	--chart-red-orange: rgb(255, 99, 71);
+	--chart-red: rgb(255, 69, 0);
+	--chart-text: #333;
+	--chart-text-dim: #666;
+	--chart-grid-line: rgb(102, 102, 102, 25%);
+}
+
+body.dark {
+	--chart-transparent: rgba(18, 18, 18, 0);
+	--chart-green: rgb(119, 207, 119);
+	--chart-orange: hsl(39, 100%, 42%);
+	--chart-red-orange: rgb(213, 78, 54);
+	--chart-red: rgb(208, 56, 0);
+	--chart-text: #fff;
+	--chart-text-dim: #a4a4a4;
+	--chart-grid-line: rgb(51, 51, 51, 75%);
+}
+
+/* Title and headings */
+h1 {
+	font-size: 2.5rem;
+	text-align: center;
+	color: var(--text);
+	margin-bottom: 20px;
+}
+
+p,
+h2 {
+	color: var(--text);
+}
+
+/* Note and warning banners */
+.note-banner {
+	background-color: #ffeb3b;
+	color: #000;
+	padding: 15px;
+	margin-bottom: 20px;
+	border-radius: 5px;
+	font-weight: bold;
+	display: inline-block;
+}
+
+.warning-banner {
+	background-color: #ee4b2b;
+	color: white;
+	padding: 15px;
+	margin-bottom: 20px;
+	border-radius: 5px;
+	font-weight: bold;
+	display: inline-block;
+}
+
+/* Category links */
+.category-link {
+	padding: 5px 10px;
+	border-radius: 5px;
+	margin-right: 5px;
+	color: white;
+	font-weight: bold;
+	text-decoration: none;
+	display: inline-block;
+	background-color: #3498db;
+}
+
+.category-link:hover {
+	opacity: 0.8;
+}
+
+/* Collapsible sections */
+.collapsible {
+	background-color: var(--background-darker);
+	color: var(--text);
+	cursor: pointer;
+	padding: 10px;
+	width: 100%;
+	border: none;
+	text-align: left;
+	outline: none;
+	font-size: 18px;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	transition: background-color 0.3s;
+}
+
+.collapsible:hover {
+	background-color: var(--background-hover);
+}
+
+.collapsible:after {
+	content: "\002B";
+	font-size: 13px;
+	color: var(--text);
+	float: right;
+	margin-left: 5px;
+}
+
+.active:after {
+	content: "\2212";
+}
+
+.content {
+	padding: 10px 20px;
+	display: none;
+	overflow: hidden;
+	background-color: var(--background-darker);
+	color: var(--text);
+	border-radius: 5px;
+	margin-bottom: 10px;
+}
+
+/* Table styles */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+th,
+td {
+	padding: 10px;
+	text-align: center;
+	border-bottom: 1px solid var(--border-alt);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+th {
+	background-color: var(--background-darker-alt);
+	color: var(--text-alt);
+}
+
+/* Combo box styles */
+.combo-box {
+	padding: 15px;
+	margin-bottom: 10px;
+	border-radius: 8px;
+	color: white;
+	font-weight: bold;
+}
+
+.dangerous {
+	background-color: var(--chart-red);
+}
+
+.unsafe {
+	background-color: var(--chart-red-orange);
+}
+
+.caution {
+	background-color: var(--chart-orange);
+	color: black;
+}
+
+.low-risk-synergy {
+	background-color: var(--chart-green);
+	color: black;
+}
+
+.low-risk-no-synergy {
+	background-color: #9933ff;
+}
+
+.low-risk-decrease {
+	background-color: #3399ff;
+}
+
+/* Links container */
+.links-container {
+	color: var(--text);
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 20px;
+}
+
+/* Modern links */
+.modern-link {
+	display: inline-block;
+	padding: 10px 20px;
+	background-color: var(--background-darker);
+	color: var(--text);
+	text-decoration: none;
+	border-radius: 8px;
+	font-weight: bold;
+	transition: background-color 0.3s, transform 0.2s;
+	box-shadow: 0 4px 8px var(--shadow);
+}
+
+.modern-link:hover {
+	background-color: var(--background-hover);
+	transform: translateY(-2px);
+	box-shadow: 0 8px 12px var(--shadow-hover);
+}
+
+.modern-link:active {
+	transform: translateY(0);
+}
+
+/* Source links */
+.sources-section {
+	color: var(--text);
+}
+
+.sources-section a {
+	color: #3498db;
+	text-decoration: none;
+	font-weight: bold;
+	display: inline-block;
+	padding: 5px 0;
+	transition: color 0.3s, border-bottom 0.3s;
+	border-bottom: 2px solid transparent;
+}
+
+.sources-section a:hover {
+	color: #2980b9;
+	border-bottom: 2px solid #2980b9;
+}
+
+
+/* Chart and Table Styles */
+.chart-table-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	align-items: flex-start;
+	margin-bottom: 20px;
+}
+
+.chart-container,
+.table-container {
+	flex: 1 1 45%;
+	min-width: 340px;
+}
+
+/* Dose legend styles */
+.dose-legend {
+	margin-top: 10px;
+	text-align: center;
+}
+
+.dose-legend-item {
+	display: inline-flex;
+	align-items: center;
+	margin-right: 15px;
+}
+
+.dose-legend-color {
+	width: 20px;
+	height: 20px;
+	margin-right: 5px;
+}
+
+/* Misc text color */
+.table-container,
+.onset-duration-box,
+.effects-box {
+	color: var(--text);
+}
+
+/* Adjust layout on smaller screens */
+@media (max-width: 768px) {
+	.header {
+		flex-direction: column; /* Stack items vertically */
+		align-items: center; /* Center items horizontally */
+		gap: 10px;
+	}
+
+	.search-container {
+		width: 100%; /* Make the search bar full width */
+		margin-left: 0; /* Remove left margin */
+		margin-top: 0; /* Adjust top margin if needed */
+	}
+
+	.header a {
+		margin-right: 0; /* Remove right margin */
+		/* No need to set width; it will maintain its natural width */
+	}
+
+	.container {
+		width: 85%;
+	}
+
+	h1 {
+		font-size: 2rem;
+	}
+
+	h2 {
+		font-size: 1.5rem;
+	}
+
+	p,
+	li {
+		font-size: 1rem;
+	}
+
+	th,
+	td {
+		font-size: 12px;
+		padding: 8px;
+	}
+
+	.collapsible {
+		font-size: 16px;
+	}
+
+	.category-link {
+		font-size: 14px;
+	}
+
+	.chart-container,
+	.table-container {
+		flex: 1 1 110%;
+		margin: 0 auto; /* Center on mobile */
+	}
+
+	.chart-table-container {
+		flex-direction: column;
+		align-items: center; /* Center the container */
+	}
+
+	.dose-legend {
+		font-size: 12px;
+	}
+
+	/* Adjust canvas size on mobile */
+	#doseChart {
+		max-height: 200px;
+	}
+}
