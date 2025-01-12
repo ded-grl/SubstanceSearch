@@ -10,6 +10,12 @@ const debounce = (func, wait) => {
   };
 };
 
+const STORAGE_KEYS = {
+    TRIE: 'autocomplete_trie',
+    LRU: 'autocomplete_lru',
+    LAST_CLEANUP: 'autocomplete_cleanup'
+};
+
 class LRUCache {
     constructor(maxSize = 100) {
         this.cache = new Map();
@@ -35,6 +41,33 @@ class LRUCache {
             data: value,
             timestamp: Date.now()
         });
+    }
+}
+
+class PersistentLRUCache extends LRUCache {
+    constructor(maxSize = 100) {
+        super(maxSize);
+        this.loadFromStorage();
+    }
+
+    loadFromStorage() {
+        const stored = localStorage.getItem(STORAGE_KEYS.LRU);
+        if (stored) {
+            const data = JSON.parse(stored);
+            data.forEach(([key, value]) => {
+                this.cache.set(key, value);
+            });
+        }
+    }
+
+    saveToStorage() {
+        const data = Array.from(this.cache.entries());
+        localStorage.setItem(STORAGE_KEYS.LRU, JSON.stringify(data));
+    }
+
+    set(key, value) {
+        super.set(key, value);
+        this.saveToStorage();
     }
 }
 
@@ -72,7 +105,6 @@ class Trie {
             current = current.children[char];
         }
         
-x
         this._collectWords(current, prefix, results);
         return results;
     }
@@ -91,13 +123,69 @@ x
     }
 }
 
+class PersistentTrie extends Trie {
+    constructor() {
+        super();
+        this.loadFromStorage();
+    }
+
+    loadFromStorage() {
+        const stored = localStorage.getItem(STORAGE_KEYS.TRIE);
+        if (stored) {
+            const data = JSON.parse(stored);
+            data.forEach(item => {
+                this.insert(item.term, item.data);
+            });
+        }
+    }
+
+    saveToStorage() {
+        const allWords = [];
+        const collectWords = (node, prefix) => {
+            if (node.isEndOfWord) {
+                allWords.push({ term: prefix, data: node.data });
+            }
+            for (let char in node.children) {
+                collectWords(node.children[char], prefix + char);
+            }
+        };
+        collectWords(this.root, '');
+        localStorage.setItem(STORAGE_KEYS.TRIE, JSON.stringify(allWords));
+    }
+
+    insert(word, data) {
+        super.insert(word, data);
+        this.saveToStorage();
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('search');
     const suggestions = document.getElementById('suggestions');
     const CACHE_DURATION = 5 * 60 * 1000;
-    const cache = new LRUCache();
-    const trie = new Trie();
     
+    const cache = new PersistentLRUCache();
+    const trie = new PersistentTrie();
+    
+    function cleanupOldCache() {
+        const lastCleanup = localStorage.getItem(STORAGE_KEYS.LAST_CLEANUP);
+        const now = Date.now();
+        
+        if (!lastCleanup || now - parseInt(lastCleanup) > CACHE_DURATION) {
+            const stored = localStorage.getItem(STORAGE_KEYS.LRU);
+            if (stored) {
+                const data = JSON.parse(stored);
+                const validData = data.filter(([key, value]) => 
+                    now - value.timestamp < CACHE_DURATION
+                );
+                localStorage.setItem(STORAGE_KEYS.LRU, JSON.stringify(validData));
+            }
+            localStorage.setItem(STORAGE_KEYS.LAST_CLEANUP, now.toString());
+        }
+    }
+    
+    cleanupOldCache();
+
     const handleSearch = debounce(function(query) {
         if (query.length > 1) {
             const trieResults = trie.search(query);
