@@ -20,6 +20,8 @@ h1 {
 	text-align: center;
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
 	text-decoration: none;
+	display: block;
+	min-height: 80px;
 }
 
 .substance-card:hover {
@@ -28,11 +30,17 @@ h1 {
 }
 
 .substance-name {
-	font-size: 18px;
+	font-size: 20px;
 	font-weight: bold;
 	margin: 10px 0;
 	color: var(--text);
-	overflow-wrap: break-word;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 100%;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 .substance-link {
