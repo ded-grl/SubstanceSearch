@@ -18,14 +18,22 @@
     {% endif %}
 
     <!-- Categories Section -->
-    <h2>Categories</h2>
-    <p>
-        {% for category in substance.categories %}
-        <a href="/category/{{ category|lower }}" class="category-link" style="background-color: var(--category-{{ category.lower() }});">
-            {{ category }}
-        </a>
-        {% endfor %}
-    </p>
+    <div class="substance-header">
+        <div class="substance-info">
+            <h2>Categories </h2>
+            <p>
+                {% for category in substance.categories %}
+                <a href="/category/{{ category|lower }}" class="category-link" style="background-color: {{ category_colors.get(category.lower(), '#7a7878') }}">
+                    {{ category }}
+                </a>
+                {% endfor %}
+            </p>
+        </div>
+
+        {% if substance.name + '.svg' in svg_files %}
+        <img src="/static/svg/{{ substance.name }}.svg" alt="{{ substance.pretty_name }} structure" class="substance-svg">
+        {% endif %}
+    </div>
 
     <!-- Summary -->
     {% if substance.get('properties', {}).get('summary') %}
