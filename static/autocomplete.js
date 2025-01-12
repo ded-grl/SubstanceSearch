@@ -1,9 +1,20 @@
+const debounce = (func, wait) => {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+};
+
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('search');
     const suggestions = document.getElementById('suggestions');
-
-    searchInput.addEventListener('input', function () {
-        const query = this.value;
+    
+    const handleSearch = debounce(function(query) {
         if (query.length > 1) {
             fetch(`/autocomplete?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
@@ -30,5 +41,9 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             suggestions.innerHTML = '';
         }
+    }, 300); // 300ms delay
+
+    searchInput.addEventListener('input', function() {
+        handleSearch(this.value);
     });
 });
