@@ -4,23 +4,32 @@
     {% block head %}
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<title>{% block title %}Substance Search{% endblock %}</title>
         <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
-        <title>{% block title %}Substance Search{% endblock %}</title>
-        <link rel="stylesheet" href="/static/styles.css">
-        <script src="/static/autocomplete.js"></script>
+        <link rel="stylesheet" href="/static/css/styles.css">
+				<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+        <script src="/static/js/autocomplete.js"></script>
+				<script src="/static/js/theme.js"></script>
     {% endblock %}
 </head>
-<body class="container">
+<body class="container {{ theme }}">
     <header>
         {% block header %}
             <div class="header-container">
-                <a id="home-link" href="/">Home</a>
+                <a class="nav-link" id="home-link" href="/">Home</a>
+
                 <div class="search-container">
                     <input type="text" id="search" placeholder="Search for a substance..." autocomplete="off">
                     <ul id="suggestions"></ul>
                 </div>
-                <a id="discord-link" href="https://discord.gg/wFPBxYRBN" rel="noopener" target="_blank">Discord</a>
-                <a id="leaderboard-link" href="/leaderboard">Contributions</a>
+
+                <a class="nav-link" id="discord-link" href="https://discord.gg/wFPBxYRBN" rel="noopener" target="_blank">Discord</a>
+                <a class="nav-link" id="leaderboard-link" href="/leaderboard">Contributions</a>
+								<button class="nav-link" id="theme-toggle" onclick="toggleTheme()">
+									<!-- Icons from https://lucide.dev/ -->
+									<svg class="theme-icon" id="theme-icon-sun" style="display: none" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+									<svg class="theme-icon" id="theme-icon-moon" style="display: none" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+								</button>
             </div>
         {% endblock %}
     </header>
