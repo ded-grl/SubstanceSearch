@@ -10,10 +10,38 @@ const debounce = (func, wait) => {
   };
 };
 
+class LRUCache {
+    constructor(maxSize = 100) {
+        this.cache = new Map();
+        this.maxSize = maxSize;
+    }
+
+    get(key) {
+        const item = this.cache.get(key);
+        if (item && Date.now() - item.timestamp < CACHE_DURATION) {
+            this.cache.delete(key);
+            this.cache.set(key, item);
+            return item.data;
+        }
+        return null;
+    }
+
+    set(key, value) {
+        if (this.cache.size >= this.maxSize) {
+            const firstKey = this.cache.keys().next().value;
+            this.cache.delete(firstKey);
+        }
+        this.cache.set(key, {
+            data: value,
+            timestamp: Date.now()
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('search');
     const suggestions = document.getElementById('suggestions');
-    const cache = new Map();
+    const cache = new LRUCache();
     const CACHE_DURATION = 5 * 60 * 1000;
     
     const handleSearch = debounce(function(query) {
