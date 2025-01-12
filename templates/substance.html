@@ -313,7 +313,7 @@
     <h2>Categories</h2>
     <p>
         {% for category in substance.categories %}
-        <a href="/category/{{ category|lower }}" class="category-link" style="background-color: {{ category_colors.get(category.lower(), '#f0f0f0') }}">
+        <a href="/category/{{ category|lower }}" class="category-link" style="background-color: {{ category_colors.get(category.lower(), '#7a7878') }}">
             {{ category }}
         </a>
         {% endfor %}
