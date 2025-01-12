@@ -38,17 +38,77 @@ class LRUCache {
     }
 }
 
+class TrieNode {
+    constructor() {
+        this.children = {};
+        this.isEndOfWord = false;
+        this.data = null;
+    }
+}
+
+class Trie {
+    constructor() {
+        this.root = new TrieNode();
+    }
+
+    insert(word, data) {
+        let current = this.root;
+        for (let char of word.toLowerCase()) {
+            if (!current.children[char]) {
+                current.children[char] = new TrieNode();
+            }
+            current = current.children[char];
+        }
+        current.isEndOfWord = true;
+        current.data = data;
+    }
+
+    search(prefix) {
+        let current = this.root;
+        let results = [];
+        
+        for (let char of prefix.toLowerCase()) {
+            if (!current.children[char]) return results;
+            current = current.children[char];
+        }
+        
+x
+        this._collectWords(current, prefix, results);
+        return results;
+    }
+
+    _collectWords(node, prefix, results) {
+        if (node.isEndOfWord) {
+            results.push({
+                term: prefix,
+                data: node.data
+            });
+        }
+                
+        for (let char in node.children) {
+            this._collectWords(node.children[char], prefix + char, results);
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('search');
     const suggestions = document.getElementById('suggestions');
-    const cache = new LRUCache();
     const CACHE_DURATION = 5 * 60 * 1000;
+    const cache = new LRUCache();
+    const trie = new Trie();
     
     const handleSearch = debounce(function(query) {
         if (query.length > 1) {
+            const trieResults = trie.search(query);
+            if (trieResults.length > 0) {
+                displayResults(trieResults.map(r => r.data));
+                return;
+            }
+
             const cached = cache.get(query);
-            if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-                displayResults(cached.data);
+            if (cached) {
+                displayResults(cached);
                 return;
             }
 
@@ -56,9 +116,12 @@ document.addEventListener('DOMContentLoaded', function () {
             fetch(`/autocomplete?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
-                    cache.set(query, {
-                        data: data,
-                        timestamp: Date.now()
+                    cache.set(query, data);
+                    data.forEach(item => {
+                        trie.insert(item.pretty_name, item);
+                        if (item.aliases) {
+                            item.aliases.forEach(alias => trie.insert(alias, item));
+                        }
                     });
                     displayResults(data);
                 })
