@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     const handleSearch = debounce(function(query) {
         if (query.length > 1) {
+            suggestions.innerHTML = '<div class="loading">Searching...</div>';
             fetch(`/autocomplete?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
@@ -35,6 +36,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                         suggestions.appendChild(li);
                     });
+                })
+                .catch(error => {
+                    suggestions.innerHTML = 'An error occurred while searching';
+                    console.error('Search error:', error);
                 });
         } else if (query.length === 1) {
             suggestions.innerHTML = 'Please enter at least two characters to search';
