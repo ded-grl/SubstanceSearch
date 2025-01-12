@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify, make_response
+from flask import Flask, Request, render_template, request, jsonify, make_response
+from flask_minify import Minify
 from flask_caching import Cache, CachedResponse
 from urllib.parse import unquote
 import json
@@ -9,6 +10,7 @@ import os
 import requests
 
 app = Flask(__name__)
+Minify(app=app, html=True, js=True, cssless=True)
 
 cache = Cache()
 cache.init_app(app, config={ "CACHE_TYPE": "SimpleCache" })
@@ -23,12 +25,6 @@ svg_directory = os.path.join('static', 'svg')
 if os.path.exists(svg_directory):
     svg_files = {f for f in os.listdir(svg_directory) if f.endswith('.svg')}
 
-# Add regex_match func to Jinja
-def regex_match(value, pattern="", flags=0):
-  return re.match(pattern, value, flags)
-
-app.jinja_env.filters["regex_match"] = regex_match
-
 # Function to slugify strings for URL-friendly names
 def slugify(value):
     """
@@ -42,6 +38,12 @@ def slugify(value):
 
 # Make slugify available in templates
 app.jinja_env.globals.update(slugify=slugify)
+
+# Add regex_match func to Jinja
+def regex_match(value, pattern="", flags=0):
+  return re.match(pattern, value, flags)
+
+app.jinja_env.filters["regex_match"] = regex_match
 
 # Create a mapping from slugs to substance names
 slug_to_substance_name = {}
@@ -96,11 +98,19 @@ def clean_data(data):
         return [clean_data(v) for v in data if v is not None]
     return data
 
+# Fetch theme from request cookies
+def fetch_theme(request: Request) -> str:
+	theme = request.cookies.get('Theme', 'light', type=str)
+	if theme not in ['light', 'dark']:
+		theme = 'light'
+
+	return theme
+
 # Route for the home page
 @app.route('/')
 def home():
     categories = get_all_categories(substances)
-    return render_template('index.html', categories=categories, category_colors=category_colors)
+    return render_template('index.html', categories=categories, category_colors=category_colors, theme=fetch_theme(request))
 
 def rank_to_display_string(rank: int) -> str:
     emoji = ''
@@ -144,8 +154,8 @@ def leaderboard():
         } for index, contribution in enumerate(contribution_data)]
 
         return CachedResponse(
-            response=make_response(render_template('leaderboard.html', leaderboard_data=leaderboard_data)),
-            timeout = 86400 # one day timeout
+            response=make_response(render_template('leaderboard.html', leaderboard_data=leaderboard_data, theme=fetch_theme(request))),
+            timeout = 60 * 60 * 24 # one day
         )
     except Exception as e:
         # In case of error, fallback to static cache data in /data/leaderboard.csv
@@ -166,7 +176,7 @@ def leaderboard():
 
         # Pass the data to the template
         return CachedResponse(
-            response=make_response(render_template('leaderboard.html', leaderboard_data=leaderboard_data)),
+            response=make_response(render_template('leaderboard.html', leaderboard_data=leaderboard_data, theme=fetch_theme(request))),
             timeout = 60 # one minute response to retry in case of 500 level upstream errors
         )
 
@@ -210,7 +220,7 @@ def substance(slug):
 
     # Clean the substance data to remove None values
     cleaned_substance_data = clean_data(substance_data)
-    return render_template('substance.html', substance=cleaned_substance_data, category_colors=category_colors, svg_files=svg_files)
+    return render_template('substance.html', substance=cleaned_substance_data, category_colors=category_colors, svg_files=svg_files, theme=fetch_theme(request))
 
 # Route for displaying substances in a category
 @app.route('/category/<path:category_slug>')
@@ -237,7 +247,7 @@ def category(category_slug):
     if not filtered_substances:
         return "Category not found", 404
 
-    return render_template('category.html', category_name=category_name, substances=filtered_substances, category_colors=category_colors)
+    return render_template('category.html', category_name=category_name, substances=filtered_substances, category_colors=category_colors, theme=fetch_theme(request))
 
 if __name__ == '__main__':
     app.run(debug=True)

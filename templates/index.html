@@ -11,7 +11,7 @@
         <h2>Browse by Category</h2>
         <div class="category-grid">
             {% for category in categories %}
-                <a href="/category/{{ category|lower }}" class="category-card" style="background-color: {{ category_colors.get(category.lower(), '#f0f0f0') }}">
+                <a href="/category/{{ category.lower() }}" class="category-card" style="background-color: var(--category-{{ category.lower() }});">
                     <div class="category-name">
                         {% if category == 'Barbiturate' %}
                             💊 Barbiturates 💊

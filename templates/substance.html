@@ -5,358 +5,7 @@
 {% block head %}
     {{ super() }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <style>
-        /* Title and headings */
-        h1 {
-            font-size: 2.5rem;
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        p, h2 {
-            color: #444;
-        }
-
-        /* Note and warning banners */
-        .note-banner {
-            background-color: #ffeb3b;
-            color: #000;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            display: block;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .warning-banner {
-            background-color: #EE4B2B;
-            color: white;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            display: block;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        /* Category links */
-        .category-link {
-            padding: 5px 10px;
-            border-radius: 5px;
-            margin-right: 5px;
-            color: white;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-block;
-            background-color: #3498db;
-        }
-
-        .category-link:hover {
-            opacity: 0.8;
-        }
-
-        /* Collapsible sections */
-        .collapsible {
-            background-color: #f5f5f5;
-            color: #333;
-            cursor: pointer;
-            padding: 10px;
-            width: 100%;
-            border: none;
-            text-align: left;
-            outline: none;
-            font-size: 18px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            transition: background-color 0.3s;
-        }
-
-        .collapsible:hover {
-            background-color: #eaeaea;
-        }
-
-        .collapsible:after {
-            content: '\002B';
-            font-size: 20px;
-            font-weight: bold;
-            color: #555;
-            float: right;
-            margin-left: 5px;
-        }
-
-        .active:after {
-            content: "\2212";
-        }
-
-        .content {
-            padding: 10px 20px;
-            display: none;
-            overflow: hidden;
-            background-color: #f7f7f7;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        /* Table styles */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        /* Combo box styles */
-        .combo-box {
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
-        }
-
-        .dangerous {
-            background-color: #ff4d4d;
-        }
-
-        .unsafe {
-            background-color: #ffa500;
-        }
-
-        .caution {
-            background-color: #ffff66;
-            color: black;
-        }
-
-        .low-risk-synergy {
-            background-color: #66ff66;
-            color: black;
-        }
-
-        .low-risk-no-synergy {
-            background-color: #9933ff;
-        }
-
-        .low-risk-decrease {
-            background-color: #3399ff;
-        }
-
-        /* Links container */
-        .links-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        /* Modern links */
-        .modern-link {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #f0f0f0;
-            color: #333;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: background-color 0.3s, transform 0.2s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .modern-link:hover {
-            background-color: #e0e0e0;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .modern-link:active {
-            transform: translateY(0);
-        }
-
-        /* Source links */
-        .sources-section ul {
-            list-style-position: outside;
-            margin: 0;
-            padding-left: 20px;
-        }
-
-        .sources-section li {
-            line-height: 1.5;
-            padding: 4px 0;
-            margin: 4px 0;
-        }
-
-        .sources-section a {
-            color: #3498db;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s, border-bottom 0.3s;
-            border-bottom: 2px solid transparent;
-        }
-
-        .sources-section a:hover {
-            color: #2980b9;
-            border-bottom: 2px solid #2980b9;
-        }
-
-        /* Adjust layout on smaller screens */
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;     /* Stack items vertically */
-                align-items: center;        /* Center items horizontally */
-                gap: 10px;
-            }
-
-            .search-container {
-                width: 100%;                /* Make the search bar full width */
-                margin-left: 0;             /* Remove left margin */
-                margin-top: 0;              /* Adjust top margin if needed */
-            }
-
-            .header a {
-                margin-right: 0;            /* Remove right margin */
-                /* No need to set width; it will maintain its natural width */
-            }
-
-            .container {
-                width: 85%;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            p, li {
-                font-size: 1rem;
-            }
-
-            th, td {
-                font-size: 12px;
-                padding: 8px;
-            }
-
-            .collapsible {
-                font-size: 16px;
-            }
-
-            .category-link {
-                font-size: 14px;
-            }
-
-            .chart-container, .table-container {
-                flex: 1 1 110%;
-                margin: 0 auto; /* Center on mobile */
-            }
-
-            .chart-table-container {
-                flex-direction: column;
-                align-items: center; /* Center the container */
-            }
-
-            .dose-legend {
-                font-size: 12px;
-            }
-
-            /* Adjust canvas size on mobile */
-            #doseChart {
-                max-height: 200px;
-            }
-        }
-
-        /* Chart and Table Styles */
-        .chart-table-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
-
-        .chart-container, .table-container {
-            flex: 1 1 45%;
-            min-width: 340px;
-        }
-
-        /* Dose legend styles */
-        .dose-legend {
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        .dose-legend-item {
-            display: inline-flex;
-            align-items: center;
-            margin-right: 15px;
-        }
-
-        .dose-legend-color {
-            width: 20px;
-            height: 20px;
-            margin-right: 5px;
-        }
-
-        .substance-header {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: flex-start;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .substance-info {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .substance-svg {
-            width: 250px;
-            height: 250px;
-            object-fit: contain;
-            background-color: transparent;
-            mix-blend-mode: multiply;
-            filter: brightness(1.1);
-        }
-
-        @media (max-width: 768px) {
-            .substance-header {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .substance-svg {
-                order: -1;
-            }
-            
-            .substance-info {
-                width: 100%;
-                text-align: left;
-                padding: 0 15px;
-            }
-
-            .category-link {
-                margin-bottom: 8px;
-                display: inline-block;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/static/css/substance.css">
 {% endblock %}
 
 {% block content %}
@@ -380,7 +29,7 @@
                 {% endfor %}
             </p>
         </div>
-        
+
         {% if substance.name + '.svg' in svg_files %}
         <img src="/static/svg/{{ substance.name }}.svg" alt="{{ substance.pretty_name }} structure" class="substance-svg">
         {% endif %}
@@ -465,432 +114,478 @@
 
     <!-- JavaScript for Dosage Chart -->
     <script>
-        function renderDosageChart() {
-        var ctx = document.getElementById('doseChart').getContext('2d');
+			let chart;
+			let shouldAnimate = true;
 
-        // Fetch dose data from formatted_dose
-        var doseData = {{ substance.get('formatted_dose', {}) | tojson }};
-        var roas = Object.keys(doseData);
+			function renderDosageChart() {
+				if (chart) chart?.destroy?.();
+				var ctx = document.getElementById('doseChart').getContext('2d');
 
-        // Define dose levels and colors
-        var doseLevels = ['Light', 'Common', 'Strong', 'Heavy'];
-        var doseColors = {
-            'Light': 'rgba(144, 238, 144, 1)',      // Light green
-            'Common': 'rgba(255, 165, 0, 1)',       // Orange
-            'Strong': 'rgba(255, 99, 71, 1)',       // Red-orange
-            'Heavy': 'rgba(255, 69, 0, 1)'          // Dark red-orange
-        };
+				// Fetch dose data from formatted_dose
+				var doseData = {{ substance.get('formatted_dose', {}) | tojson }};
+				var roas = Object.keys(doseData);
 
-        // Units and their multipliers to a base unit (e.g., mg)
-        var unitMultipliers = {
-            'g': 1000,
-            'mg': 1,
-            'μg': 0.001,
-            'ug': 0.001,
-            'µg': 0.001,
-            'ml': 1  // Adjust as necessary for your context
-        };
+				// Define dose levels and colors
+				var doseLevels = ['Light', 'Common', 'Strong', 'Heavy'];
+				const bodyStyles = getComputedStyle(document.body);
+				var doseColors = {
+					'Light': bodyStyles.getPropertyValue('--chart-green'),
+					'Common': bodyStyles.getPropertyValue('--chart-orange'),
+					'Strong': bodyStyles.getPropertyValue('--chart-red-orange'),
+					'Heavy': bodyStyles.getPropertyValue('--chart-red')
+				};
 
-        // Prepare to store parsed data and dose segments
-        var parsedDoseData = {};
-        var roaSegments = {};
-        var roaMinDose = {};
-        var roaMaxDose = {};
-        var overallMinDose = 0; // Start from zero
-        var overallMaxDose = 0;
-        var unitsUsed = new Set();
+				// Units and their multipliers to a base unit (e.g., mg)
+				var unitMultipliers = {
+					'g': 1000,
+					'mg': 1,
+					'μg': 0.001,
+					'ug': 0.001,
+					'µg': 0.001,
+					'ml': 1  // Adjust as necessary for your context
+				};
 
-        // Helper function to parse dose values
-        function parseDose(doseStr) {
-            if (!doseStr || doseStr.toLowerCase() === 'no data') return null;
+				// Prepare to store parsed data and dose segments
+				var parsedDoseData = {};
+				var roaSegments = {};
+				var roaMinDose = {};
+				var roaMaxDose = {};
+				var overallMinDose = 0; // Start from zero
+				var overallMaxDose = 0;
+				var unitsUsed = new Set();
 
-            // Regular expressions to match dose units and values
-            var rangeRegex = /([\d\.]+)\s*(μg|ug|µg|mg|g|ml)?\s*-\s*([\d\.]+)\s*(μg|ug|µg|mg|g|ml)?\s*(\+)?/i;
-            var singleValueRegex = /([\d\.]+)\s*(μg|ug|µg|mg|g|ml)?\s*(\+)?/i;
+				// Helper function to parse dose values
+				function parseDose(doseStr) {
+					if (!doseStr || doseStr.toLowerCase() === 'no data') return null;
 
-            var isOpenEnded = false;
-            var low = null, high = null;
-            var unit = 'mg'; // Default unit
+					// Regular expressions to match dose units and values
+					var rangeRegex = /([\d\.]+)\s*(μg|ug|µg|mg|g|ml)?\s*-\s*([\d\.]+)\s*(μg|ug|µg|mg|g|ml)?\s*(\+)?/i;
+					var singleValueRegex = /([\d\.]+)\s*(μg|ug|µg|mg|g|ml)?\s*(\+)?/i;
 
-            // Check for range values
-            var match = doseStr.match(rangeRegex);
-            if (match) {
-            low = parseFloat(match[1]);
-            var lowUnit = match[2] ? match[2].toLowerCase() : unit;
-            high = parseFloat(match[3]);
-            var highUnit = match[4] ? match[4].toLowerCase() : unit;
-            unit = highUnit || lowUnit; // Prefer high unit, else low unit
-            isOpenEnded = !!match[5];
-            } else {
-            // Check for single values
-            match = doseStr.match(singleValueRegex);
-            if (match) {
-                low = parseFloat(match[1]);
-                high = low;
-                unit = match[2] ? match[2].toLowerCase() : unit;
-                isOpenEnded = !!match[3];
-            }
-            }
+					var isOpenEnded = false;
+					var low = null, high = null;
+					var unit = 'mg'; // Default unit
 
-            if (low === null || isNaN(low)) return null;
+					// Check for range values
+					var match = doseStr.match(rangeRegex);
+					if (match) {
+						low = parseFloat(match[1]);
+						var lowUnit = match[2] ? match[2].toLowerCase() : unit;
 
-            unitsUsed.add(unit);
+						high = parseFloat(match[3]);
+						var highUnit = match[4] ? match[4].toLowerCase() : unit;
 
-            return {
-            low: low,
-            high: high,
-            unit: unit,
-            isOpenEnded: isOpenEnded,
-            display: doseStr.trim()
-            };
-        }
+						unit = highUnit || lowUnit; // Prefer high unit, else low unit
+						isOpenEnded = !!match[5];
+					} else {
+						// Check for single values
+						match = doseStr.match(singleValueRegex);
+						if (match) {
+							low = parseFloat(match[1]);
+							high = low;
+							unit = match[2] ? match[2].toLowerCase() : unit;
+							isOpenEnded = !!match[3];
+						}
+					}
 
-        // Step 1: Parse all doses and collect units used
-        roas.forEach(function(roa) {
-            parsedDoseData[roa] = {};
-            doseLevels.forEach(function(level) {
-            var doseStr = doseData[roa][level];
-            var parsedDose = parseDose(doseStr);
+					if (low === null || isNaN(low)) return null;
+					unitsUsed.add(unit);
 
-            if (parsedDose) {
-                parsedDoseData[roa][level] = parsedDose;
-            } else {
-                parsedDoseData[roa][level] = null;
-            }
-            });
-        });
+					return {
+						low: low,
+						high: high,
+						unit: unit,
+						isOpenEnded: isOpenEnded,
+						display: doseStr.trim()
+					};
+				}
 
-        // Step 2: Determine the unit to use for plotting
-        var selectedUnit = null;
-        var unitPriority = ['µg', 'μg', 'ug', 'mg', 'g', 'ml']; // Prioritize smaller units
-        for (var i = 0; i < unitPriority.length; i++) {
-            var unit = unitPriority[i];
-            if (unitsUsed.has(unit)) {
-            selectedUnit = unit;
-            break;
-            }
-        }
-        if (!selectedUnit) {
-            selectedUnit = 'mg'; // Default to mg if no units are found
-        }
+				// Step 1: Parse all doses and collect units used
+				roas.forEach(function (roa) {
+					parsedDoseData[roa] = {};
+					doseLevels.forEach(function (level) {
+						var doseStr = doseData[roa][level];
+						var parsedDose = parseDose(doseStr);
 
-        // Step 3: Convert all doses to the selected unit and update overall max dose
-        roas.forEach(function(roa) {
-            doseLevels.forEach(function(level) {
-            var parsedDose = parsedDoseData[roa][level];
+						if (parsedDose) {
+							parsedDoseData[roa][level] = parsedDose;
+						} else {
+							parsedDoseData[roa][level] = null;
+						}
+					});
+				});
 
-            if (parsedDose) {
-                // Convert doses to the selected unit
-                var multiplier = 1;
-                var doseUnit = parsedDose.unit;
-                if (unitMultipliers[doseUnit]) {
-                multiplier = unitMultipliers[doseUnit] / unitMultipliers[selectedUnit];
-                } else {
-                // If the unit is unknown, assume multiplier is 1
-                multiplier = 1;
-                }
+				// Step 2: Determine the unit to use for plotting
+				var selectedUnit = null;
+				var unitPriority = ['µg', 'μg', 'ug', 'mg', 'g', 'ml']; // Prioritize smaller units
+				for (var i = 0; i < unitPriority.length; i++) {
+					var unit = unitPriority[i];
+					if (unitsUsed.has(unit)) {
+						selectedUnit = unit;
+						break;
+					}
+				}
 
-                parsedDose.low *= multiplier;
-                parsedDose.high *= multiplier;
-                parsedDose.unit = selectedUnit; // Set unit to selectedUnit
+				if (!selectedUnit) {
+					selectedUnit = 'mg'; // Default to mg if no units are found
+				}
 
-                // Adjust for open-ended doses
-                if (parsedDose.isOpenEnded) {
-                parsedDose.high += parsedDose.high * 0.25; // Extend by 25%
-                }
+				// Step 3: Convert all doses to the selected unit and update overall max dose
+				roas.forEach(function (roa) {
+					doseLevels.forEach(function (level) {
+						var parsedDose = parsedDoseData[roa][level];
 
-                // Update max dose value
-                overallMaxDose = Math.max(overallMaxDose, parsedDose.high);
-            }
-            });
-        });
+						if (parsedDose) {
+							// Convert doses to the selected unit
+							var multiplier = 1;
+							var doseUnit = parsedDose.unit;
+							if (unitMultipliers[doseUnit]) {
+								multiplier = unitMultipliers[doseUnit] / unitMultipliers[selectedUnit];
+							} else {
+								// If the unit is unknown, assume multiplier is 1
+								multiplier = 1;
+							}
 
-        // If no valid dose data is available, hide the chart and legend
-        if (overallMaxDose === 0) {
-            document.getElementById('doseChart').style.display = 'none';
-            document.getElementById('doseLegend').style.display = 'none';
-            var noDataMessage = document.createElement('p');
-            noDataMessage.textContent = 'No dosage data available.';
-            document.getElementById('doseChart').parentElement.appendChild(noDataMessage);
-            return;
-        }
+							parsedDose.low *= multiplier;
+							parsedDose.high *= multiplier;
+							parsedDose.unit = selectedUnit; // Set unit to selectedUnit
 
-        // Prepare data and segments for each ROA
-        var validRoas = []; // Will hold the ROAs with valid data
+							// Adjust for open-ended doses
+							if (parsedDose.isOpenEnded) {
+								parsedDose.high += parsedDose.high * 0.25; // Extend by 25%
+							}
 
-        roas.forEach(function(roa) {
-            var doseLevelsData = parsedDoseData[roa];
-            var boundaries = new Set();
+							// Update max dose value
+							overallMaxDose = Math.max(overallMaxDose, parsedDose.high);
+						}
+					});
+				});
 
-            // Collect all dose boundaries (low and high doses)
-            doseLevels.forEach(function(level) {
-            var dose = doseLevelsData[level];
-            if (dose) {
-                boundaries.add(dose.low);
-                boundaries.add(dose.high);
-            }
-            });
+				// If no valid dose data is available, hide the chart and legend
+				if (overallMaxDose === 0) {
+					document.getElementById('doseChart').style.display = 'none';
+					document.getElementById('doseLegend').style.display = 'none';
+					var noDataMessage = document.createElement('p');
+					noDataMessage.textContent = 'No dosage data available.';
+					document.getElementById('doseChart').parentElement.appendChild(noDataMessage);
+					return;
+				}
 
-            // Ensure zero is included for starting point
-            boundaries.add(0);
+				// Prepare data and segments for each ROA
+				var validRoas = []; // Will hold the ROAs with valid data
 
-            // Convert boundaries to array and sort
-            var sortedBoundaries = Array.from(boundaries).sort(function(a, b) { return a - b; });
+				roas.forEach(function (roa) {
+					var doseLevelsData = parsedDoseData[roa];
+					var boundaries = new Set();
 
-            if (sortedBoundaries.length < 2) {
-            // Not enough data to create segments
-            return;
-            }
+					// Collect all dose boundaries (low and high doses)
+					doseLevels.forEach(function (level) {
+						var dose = doseLevelsData[level];
+						if (dose) {
+							boundaries.add(dose.low);
+							boundaries.add(dose.high);
+						}
+					});
 
-            // Build segments with associated dosage levels
-            var segments = [];
-            for (var i = 0; i < sortedBoundaries.length - 1; i++) {
-            var startDose = sortedBoundaries[i];
-            var endDose = sortedBoundaries[i + 1];
+					// Ensure zero is included for starting point
+					boundaries.add(0);
 
-            // Determine the highest dosage level applicable in this segment
-            var applicableLevels = doseLevels.filter(function(level) {
-                var dose = doseLevelsData[level];
-                if (dose) {
-                // For 'Light' level, adjust startDose to zero
-                var doseLow = level === 'Light' ? 0 : dose.low;
-                return startDose < dose.high && endDose > doseLow;
-                }
-                return false;
-            });
-            var highestLevel = applicableLevels[applicableLevels.length - 1]; // Last level is the highest
+					// Convert boundaries to array and sort
+					var sortedBoundaries = Array.from(boundaries).sort(function (a, b) { return a - b; });
 
-            if (highestLevel) {
-                var dose = doseLevelsData[highestLevel];
-                var isOpenEnded = dose.isOpenEnded && endDose >= dose.high;
+					if (sortedBoundaries.length < 2) {
+						// Not enough data to create segments
+						return;
+					}
 
-                // For 'Light' dose, create a gradient from transparent to light green
-                segments.push({
-                startDose: startDose,
-                endDose: endDose,
-                doseLevel: highestLevel,
-                isOpenEnded: isOpenEnded,
-                isLight: highestLevel === 'Light'
-                });
-            }
-            }
+					// Build segments with associated dosage levels
+					var segments = [];
+					for (var i = 0; i < sortedBoundaries.length - 1; i++) {
+						var startDose = sortedBoundaries[i];
+						var endDose = sortedBoundaries[i + 1];
 
-            if (segments.length > 0) {
-            roaSegments[roa] = segments;
+						// Determine the highest dosage level applicable in this segment
+						var applicableLevels = doseLevels.filter(function (level) {
+							var dose = doseLevelsData[level];
+							if (dose) {
+								// For 'Light' level, adjust startDose to zero
+								var doseLow = level === 'Light' ? 0 : dose.low;
+								return startDose < dose.high && endDose > doseLow;
+							}
+							return false;
+						});
+						var highestLevel = applicableLevels[applicableLevels.length - 1]; // Last level is the highest
 
-            // Store min and max doses for this ROA
-            roaMinDose[roa] = 0; // Start from zero
-            roaMaxDose[roa] = segments[segments.length - 1].endDose;
+						if (highestLevel) {
+							var dose = doseLevelsData[highestLevel];
+							var isOpenEnded = dose.isOpenEnded && endDose >= dose.high;
 
-            validRoas.push(roa);
-            }
-        });
+							// For 'Light' dose, create a gradient from transparent to light green
+							segments.push({
+								startDose: startDose,
+								endDose: endDose,
+								doseLevel: highestLevel,
+								isOpenEnded: isOpenEnded,
+								isLight: highestLevel === 'Light'
+							});
+						}
+					}
 
-        // Prepare data for the chart using valid RoAs
-        var data = validRoas.map(function(roa) {
-            return [roaMinDose[roa], roaMaxDose[roa]];
-        });
+					if (segments.length > 0) {
+						roaSegments[roa] = segments;
 
-        // Configure the chart
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-            labels: validRoas,
-            datasets: [{
-                label: 'Dosage',
-                data: data,
-                backgroundColor: function(context) {
-                var index = context.dataIndex;
-                var chart = context.chart;
-                var xScale = chart.scales.x;
-                var ctx = chart.ctx;
+						// Store min and max doses for this ROA
+						roaMinDose[roa] = 0; // Start from zero
+						roaMaxDose[roa] = segments[segments.length - 1].endDose;
 
-                var roa = validRoas[index];
-                var segments = roaSegments[roa];
-                if (!segments || segments.length === 0) {
-                    return 'rgba(0,0,0,0)'; // Transparent
-                }
+						validRoas.push(roa);
+					}
+				});
 
-                // Get the pixel positions for start and end of the bar
-                var barStartValue = roaMinDose[roa];
-                var barEndValue = roaMaxDose[roa];
+				// Prepare data for the chart using valid RoAs
+				var data = validRoas.map(function (roa) {
+					return [roaMinDose[roa], roaMaxDose[roa]];
+				});
 
-                if (barStartValue === undefined || barEndValue === undefined || isNaN(barStartValue) || isNaN(barEndValue)) {
-                    return 'rgba(0,0,0,0)'; // Transparent
-                }
+				// Configure the chart
+				chart = new Chart(ctx, {
+					type: 'bar',
+					data: {
+						labels: validRoas,
+						datasets: [{
+							label: 'Dosage',
+							data: data,
+							backgroundColor: function (context) {
+								var index = context.dataIndex;
+								var chart = context.chart;
+								var xScale = chart.scales.x;
+								var ctx = chart.ctx;
 
-                var barStartPixel = xScale.getPixelForValue(barStartValue);
-                var barEndPixel = xScale.getPixelForValue(barEndValue);
+								var roa = validRoas[index];
+								var segments = roaSegments[roa];
+								if (!segments || segments.length === 0) {
+									return bodyStyles.getPropertyValue('--chart-transparent');
+								}
 
-                if (!isFinite(barStartPixel) || !isFinite(barEndPixel)) {
-                    return 'rgba(0,0,0,0)'; // Transparent
-                }
+								// Get the pixel positions for start and end of the bar
+								var barStartValue = roaMinDose[roa];
+								var barEndValue = roaMaxDose[roa];
 
-                // Create gradient from barStartPixel to barEndPixel
-                var gradient = ctx.createLinearGradient(barStartPixel, 0, barEndPixel, 0);
+								if (barStartValue === undefined || barEndValue === undefined || isNaN(barStartValue) || isNaN(barEndValue)) {
+									return bodyStyles.getPropertyValue('--chart-transparent');
+								}
 
-                var totalDoseRange = barEndValue - barStartValue;
+								var barStartPixel = xScale.getPixelForValue(barStartValue);
+								var barEndPixel = xScale.getPixelForValue(barEndValue);
 
-                segments.forEach(function(segment) {
-                    var startPos = (segment.startDose - barStartValue) / totalDoseRange;
-                    var endPos = (segment.endDose - barStartValue) / totalDoseRange;
+								if (!isFinite(barStartPixel) || !isFinite(barEndPixel)) {
+									return bodyStyles.getPropertyValue('--chart-transparent');
+								}
 
-                    var color = doseColors[segment.doseLevel];
+								// Create gradient from barStartPixel to barEndPixel
+								var gradient = ctx.createLinearGradient(barStartPixel, 0, barEndPixel, 0);
 
-                    // Clamp positions between 0 and 1
-                    startPos = Math.max(0, Math.min(1, startPos));
-                    endPos = Math.max(0, Math.min(1, endPos));
+								var totalDoseRange = barEndValue - barStartValue;
 
-                    if (segment.isLight && segment.startDose === 0) {
-                    // For 'Light' dose starting at zero, fade from transparent to light green
-                    gradient.addColorStop(0, 'rgba(144, 238, 144, 0)'); // Transparent
-                    gradient.addColorStop(endPos, color);
-                    } else if (segment.isOpenEnded) {
-                    // For open-ended segments, fade out to transparent
-                    var midPos = (startPos + endPos) / 2;
-                    gradient.addColorStop(startPos, color);
-                    gradient.addColorStop(midPos, color);
-                    gradient.addColorStop(endPos, 'rgba(255,255,255,0)'); // Fade to transparent
-                    } else {
-                    gradient.addColorStop(startPos, color);
-                    gradient.addColorStop(endPos, color);
-                    }
-                });
+								segments.forEach(function (segment) {
+									var startPos = (segment.startDose - barStartValue) / totalDoseRange;
+									var endPos = (segment.endDose - barStartValue) / totalDoseRange;
 
-                return gradient;
-                },
-                borderWidth: 0,
-                barThickness: 'flex',
-                maxBarThickness: 30,
-            }]
-            },
-            options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                type: 'linear',
-                min: 0, // Start from zero
-                max: overallMaxDose + (overallMaxDose * 0.05),
-                title: {
-                    display: true,
-                    text: 'Dose (' + selectedUnit + ')'
-                }
-                },
-                y: {
-                beginAtZero: true,
-                grid: {
-                    display: false
-                },
-                barPercentage: validRoas.length === 1 ? 0.5 : 0.8,
-                categoryPercentage: validRoas.length === 1 ? 0.8 : 0.9,
-                }
-            },
-            plugins: {
-                tooltip: {
-                callbacks: {
-                    label: function(tooltipItem) {
-                    var index = tooltipItem.dataIndex;
-                    var roa = validRoas[index];
-                    var segments = roaSegments[roa];
-                    if (segments && segments.length > 0) {
-                        var label = roa + ':';
-                        segments.forEach(function(segment) {
-                        var doseLevel = segment.doseLevel;
-                        var doseLevelData = parsedDoseData[roa][doseLevel];
-                        label += '\n' + doseLevel + ': ' + doseLevelData.display;
-                        });
-                        return label;
-                    } else {
-                        return roa + ': No data';
-                    }
-                    }
-                }
-                },
-                legend: {
-                display: true,
-                position: 'bottom',
-                labels: {
-                    generateLabels: function(chart) {
-                    return doseLevels.map(function(level) {
-                        return {
-                        text: level,
-                        fillStyle: doseColors[level],
-                        strokeStyle: doseColors[level],
-                        lineWidth: 0,
-                        hidden: false
-                        };
-                    });
-                    }
-                }
-                }
-            },
-            layout: {
-                padding: {
-                top: 10,
-                bottom: 10
-                }
-            }
-            }
-        });
+									var color = doseColors[segment.doseLevel];
 
-        // Render the dosage table
-        renderDosageTable();
+									// Clamp positions between 0 and 1
+									startPos = Math.max(0, Math.min(1, startPos));
+									endPos = Math.max(0, Math.min(1, endPos));
 
-        function renderDosageTable() {
-            var doseTableHead = document.getElementById('doseTableHead');
-            var doseTableBody = document.getElementById('doseTableBody');
+									if (segment.isLight && segment.startDose === 0) {
+										// For 'Light' dose starting at zero, fade from transparent to light green
+										gradient.addColorStop(0, bodyStyles.getPropertyValue('--chart-transparent')); // Transparent
+										gradient.addColorStop(endPos, color);
+									} else if (segment.isOpenEnded) {
+										// For open-ended segments, fade out to transparent
+										var midPos = (startPos + endPos) / 2;
+										gradient.addColorStop(startPos, color);
+										gradient.addColorStop(midPos, color);
+										gradient.addColorStop(endPos, bodyStyles.getPropertyValue('--chart-transparent')); // Fade to transparent
+									} else {
+										gradient.addColorStop(startPos, color);
+										gradient.addColorStop(endPos, color);
+									}
+								});
 
-            // Clear existing table content
-            doseTableHead.innerHTML = '';
-            doseTableBody.innerHTML = '';
+								return gradient;
+							},
+							borderWidth: 0,
+							barThickness: 'flex',
+							maxBarThickness: 30,
+						}]
+					},
+					options: {
+						animation: shouldAnimate,
+						indexAxis: 'y',
+						responsive: true,
+						maintainAspectRatio: false,
+						scales: {
+							x: {
+								type: 'linear',
+								min: 0, // Start from zero
+								max: overallMaxDose + (overallMaxDose * 0.05),
+								title: {
+									display: true,
+									text: 'Dose (' + selectedUnit + ')',
+									color: bodyStyles.getPropertyValue('--chart-text'),
+								},
+								ticks: {
+									color: bodyStyles.getPropertyValue('--chart-text-dim'),
+								},
+								border: {
+									color: bodyStyles.getPropertyValue('--chart-grid-line')
+								},
+								grid: {
+									color: bodyStyles.getPropertyValue('--chart-grid-line'),
+								}
+							},
+							y: {
+								beginAtZero: true,
+								grid: {
+									display: false
+								},
+								barPercentage: validRoas.length === 1 ? 0.5 : 0.8,
+								categoryPercentage: validRoas.length === 1 ? 0.8 : 0.9,
+								ticks: {
+									color: bodyStyles.getPropertyValue('--chart-text-dim'),
+								}
+							}
+						},
+						plugins: {
+							tooltip: {
+								callbacks: {
+									label: function (tooltipItem) {
+										var index = tooltipItem.dataIndex;
+										var roa = validRoas[index];
+										var segments = roaSegments[roa];
+										if (segments && segments.length > 0) {
+											var label = roa + ':';
+											segments.forEach(function (segment) {
+												var doseLevel = segment.doseLevel;
+												var doseLevelData = parsedDoseData[roa][doseLevel];
+												label += '\n' + doseLevel + ': ' + doseLevelData.display;
+											});
+											return label;
+										} else {
+											return roa + ': No data';
+										}
+									}
+								}
+							},
+							legend: {
+								display: true,
+								position: 'bottom',
+								labels: {
+									generateLabels: function (chart) {
+										return doseLevels.map(function (level) {
+											return {
+												text: level,
+												fontColor: bodyStyles.getPropertyValue('--chart-text'),
+												fillStyle: doseColors[level],
+												strokeStyle: doseColors[level],
+												lineWidth: 0,
+												hidden: false
+											};
+										});
+									}
+								}
+							}
+						},
+						layout: {
+							padding: {
+								top: 10,
+								bottom: 10
+							}
+						}
+					}
+				});
 
-            // Create table headers
-            var headerRow = document.createElement('tr');
-            var roaHeader = document.createElement('th');
-            roaHeader.textContent = 'ROA';
-            headerRow.appendChild(roaHeader);
+				// Render the dosage table
+				renderDosageTable();
 
-            doseLevels.forEach(function(level) {
-            var th = document.createElement('th');
-            th.textContent = level;
-            headerRow.appendChild(th);
-            });
-            doseTableHead.appendChild(headerRow);
+				function renderDosageTable() {
+					var doseTableHead = document.getElementById('doseTableHead');
+					var doseTableBody = document.getElementById('doseTableBody');
 
-            // Create table rows
-            validRoas.forEach(function(roa) {
-            var row = document.createElement('tr');
-            var roaCell = document.createElement('td');
-            roaCell.textContent = roa;
-            row.appendChild(roaCell);
+					// Clear existing table content
+					doseTableHead.innerHTML = '';
+					doseTableBody.innerHTML = '';
 
-            doseLevels.forEach(function(level) {
-                var dose = parsedDoseData[roa][level];
-                var cell = document.createElement('td');
-                cell.style.backgroundColor = doseColors[level];
-                cell.style.color = 'black';
-                cell.style.padding = '5px';
-                cell.style.textAlign = 'center';
+					// Create table headers
+					var headerRow = document.createElement('tr');
+					var roaHeader = document.createElement('th');
+					roaHeader.textContent = 'ROA';
+					headerRow.appendChild(roaHeader);
 
-                if (dose) {
-                cell.textContent = dose.display;
-                } else {
-                cell.textContent = 'No data';
-                cell.style.backgroundColor = '#f0f0f0';
-                }
-                row.appendChild(cell);
-            });
-            doseTableBody.appendChild(row);
-            });
-        }
-        }
+					doseLevels.forEach(function (level) {
+						var th = document.createElement('th');
+						th.textContent = level;
+						headerRow.appendChild(th);
+					});
+					doseTableHead.appendChild(headerRow);
 
-        // Call the renderDosageChart function when the DOM is fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-        renderDosageChart();
-        });
+					// Create table rows
+					validRoas.forEach(function (roa) {
+						var row = document.createElement('tr');
+						var roaCell = document.createElement('td');
+						roaCell.textContent = roa;
+						row.appendChild(roaCell);
+
+						doseLevels.forEach(function (level) {
+							var dose = parsedDoseData[roa][level];
+							var cell = document.createElement('td');
+							cell.style.backgroundColor = doseColors[level];
+							cell.style.color = 'var(--text);';
+							cell.style.padding = '5px';
+							cell.style.textAlign = 'center';
+
+							if (dose) {
+								cell.textContent = dose.display;
+							} else {
+								cell.textContent = 'No data';
+								cell.style.backgroundColor = 'var(--background-darker)';
+							}
+							row.appendChild(cell);
+						});
+						doseTableBody.appendChild(row);
+					});
+				}
+			}
+
+			// Call the renderDosageChart function when the DOM is fully loaded
+			document.addEventListener('DOMContentLoaded', function () {
+				renderDosageChart();
+
+				// watches for theme changes on the body elem
+				const observer = new MutationObserver(function (mutations) {
+					mutations.forEach(function (mutation) {
+						if (mutation.attributeName === 'class') {
+							shouldAnimate = false;
+							renderDosageChart();
+						}
+					});
+				});
+
+				observer.observe(document.body, {
+					attributes: true,
+					attributeFilter: ['class'],
+				});
+
+				// re-render whenever the window has finished resizing
+				let lastX = window.innerWidth;
+				window.addEventListener('resize', (ev) => {
+					if (lastX === window.innerWidth) return;
+					lastX = window.innerWidth;
+					shouldAnimate = false;
+					debounce(renderDosageChart, 250);
+				});
+			});
     </script>
 
     <!-- Onset, Duration & After-effects -->
@@ -1118,14 +813,14 @@
       <button class="collapsible">🔗 Sources</button>
       <div class="content sources-section">
         <ul>
+					{% set rgx = '^(.*) - (https?:\/\/.+)$' %}
           {% for source in substance['sources']['_general'] %}
-						{% if '- http' in source %}
-							{% set rgx = '^(.*) - (https?:\/\/.+)$' %}
+						{% if source|regex_match(rgx) %}
 							{% set parts = source|regex_match(rgx) %}
 							<li>
 									<a href="{{ parts[1] }}" target="_blank">{{ parts[0] }}</a>
 							</li>
-						{% elif 'http' in source %}
+						{% elif source.startswith('http') %}
 							<li>
 									<a href="{{ source }}" target="_blank">{{ source }}</a>
 							</li>
