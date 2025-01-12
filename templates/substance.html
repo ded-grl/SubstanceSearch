@@ -312,6 +312,44 @@
             height: 20px;
             margin-right: 5px;
         }
+
+        .substance-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .substance-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .substance-svg {
+            width: 250px;
+            height: 250px;
+            object-fit: contain;
+            background-color: transparent;
+            mix-blend-mode: multiply;
+            filter: brightness(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .substance-header {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .substance-svg {
+                order: -1;
+            }
+            
+            .substance-info {
+                width: 100%;
+                text-align: center;
+            }
+        }
     </style>
 {% endblock %}
 
@@ -325,14 +363,22 @@
     {% endif %}
 
     <!-- Categories Section -->
-    <h2>Categories</h2>
-    <p>
-        {% for category in substance.categories %}
-        <a href="/category/{{ category|lower }}" class="category-link" style="background-color: {{ category_colors.get(category.lower(), '#7a7878') }}">
-            {{ category }}
-        </a>
-        {% endfor %}
-    </p>
+    <div class="substance-header">
+        <div class="substance-info">
+            <h2>Categories </h2>
+            <p>
+                {% for category in substance.categories %}
+                <a href="/category/{{ category|lower }}" class="category-link" style="background-color: {{ category_colors.get(category.lower(), '#7a7878') }}">
+                    {{ category }}
+                </a>
+                {% endfor %}
+            </p>
+        </div>
+        
+        {% if substance.name + '.svg' in svg_files %}
+        <img src="/static/svg/{{ substance.name }}.svg" alt="{{ substance.pretty_name }} structure" class="substance-svg">
+        {% endif %}
+    </div>
 
     <!-- Summary -->
     {% if substance.get('properties', {}).get('summary') %}

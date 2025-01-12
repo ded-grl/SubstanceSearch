@@ -17,6 +17,12 @@ cache.init_app(app, config={ "CACHE_TYPE": "SimpleCache" })
 with open('data/final_updated_drugs.json', encoding='utf-8') as f:
     substances = json.load(f)
 
+# Get list of SVG files
+svg_files = set()
+svg_directory = os.path.join('static', 'svg')
+if os.path.exists(svg_directory):
+    svg_files = {f for f in os.listdir(svg_directory) if f.endswith('.svg')}
+
 # Add regex_match func to Jinja
 def regex_match(value, pattern="", flags=0):
   return re.match(pattern, value, flags)
@@ -204,7 +210,7 @@ def substance(slug):
 
     # Clean the substance data to remove None values
     cleaned_substance_data = clean_data(substance_data)
-    return render_template('substance.html', substance=cleaned_substance_data, category_colors=category_colors)
+    return render_template('substance.html', substance=cleaned_substance_data, category_colors=category_colors, svg_files=svg_files)
 
 # Route for displaying substances in a category
 @app.route('/category/<path:category_slug>')
