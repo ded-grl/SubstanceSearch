@@ -20,7 +20,10 @@ h1 {
 	text-align: center;
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
 	text-decoration: none;
-	display: block;
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	flex-wrap: wrap;
 	min-height: 80px;
 }
 
@@ -38,9 +41,6 @@ h1 {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	width: 100%;
-	position: relative;
-	top: 50%;
-	transform: translateY(-50%);
 }
 
 .substance-link {
