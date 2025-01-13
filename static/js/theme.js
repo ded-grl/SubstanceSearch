@@ -1,77 +1,89 @@
-const COOKIE_NAME = 'Theme';
-const ACCEPTED_THEMES = ['light', 'dark'];
-let currentTheme;
+const THEME_CFG = {
+	COOKIE_NAME: "Theme",
+	ACCEPTED: Object.freeze({
+		Light: "light",
+		Dark: "dark",
+	}),
+};
 
 function fetchTheme() {
-	let theme = Cookies.get(COOKIE_NAME);
+	let theme = Cookies.get(THEME_CFG.COOKIE_NAME);
 	if (theme) {
 		// if user has theme cookie set but it's not in the
 		// accepted list, default to the first theme in the list
 		// (light theme)
-		if (!ACCEPTED_THEMES.includes(theme)) {
-			theme = ACCEPTED_THEMES[0];
+		if (!Object.values(THEME_CFG.ACCEPTED).includes(theme)) {
+			theme = THEME_CFG.ACCEPTED.Light;
 			setTheme(theme);
 		}
 
-		currentTheme = theme;
 		return theme;
 	}
 
 	// check if user has dark mode enabled
-	if (window.matchMedia?.('(prefers-color-scheme: dark)')?.matches) {
-		setTheme('dark');
-		return 'dark';
+	if (window.matchMedia?.("(prefers-color-scheme: dark)")?.matches) {
+		return THEME_CFG.ACCEPTED.Dark;
 	}
 
 	// default to light theme
-	setTheme('light');
-	return 'light';
+	return THEME_CFG.ACCEPTED.Light;
 }
 
 function setTheme(theme) {
-	if (!ACCEPTED_THEMES.includes(theme)) theme = ACCEPTED_THEMES[0];
+	if (!Object.values(THEME_CFG.ACCEPTED).includes(theme)) {
+		theme = THEME_CFG.ACCEPTED.Light;
+	}
 
-	currentTheme = theme;
-	Cookies.set(COOKIE_NAME, theme);
-	document.body.classList.remove(...ACCEPTED_THEMES);
-	document.body.classList.add(theme);
-	updateToggleButton();
+	Cookies.set(THEME_CFG.COOKIE_NAME, theme);
+
+	updateBodyTheme(theme);
+	updateThemeToggle(theme);
 }
 
 function toggleTheme() {
-	const currentTheme = fetchTheme();
-	const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+	const theme = fetchTheme();
+	const newTheme =
+		theme === THEME_CFG.ACCEPTED.Light
+			? THEME_CFG.ACCEPTED.Dark
+			: THEME_CFG.ACCEPTED.Light;
+
 	setTheme(newTheme);
 }
 
-function updateToggleButton() {
-	// show the icon for the current theme
-	const iconName = `#theme-icon-${currentTheme === 'light' ? 'moon' : 'sun'}`;
-	const icon = document.querySelector(iconName);
-	if (icon) {
-		if (icon.style.display === 'block') return;
-		icon.style.display = 'block';
-	}
+function updateBodyTheme(theme) {
+	if (document.body.classList.contains(theme)) return;
+	const acceptedThemes = Object.values(THEME_CFG.ACCEPTED);
+	document.body.classList.remove(...acceptedThemes);
+	document.body.classList.add(theme);
+}
 
+function updateThemeToggle(theme) {
+	if (!theme) theme = fetchTheme();
+
+	const iconName = theme === THEME_CFG.ACCEPTED.Light ? "moon" : "sun";
+	const iconSelector = `#theme-icon-${iconName}`;
+	const icon = document.querySelector(iconSelector);
+	if (!icon) return;
+
+	if (icon.style.display === "block") return;
+	icon.style.display = "block";
 
 	// hide all existing icons
-	const icons = document.querySelectorAll(`.theme-icon:not(${iconName})`);
-	icons.forEach(icon => icon.style.display = 'none');
+	const icons = document.querySelectorAll(`.theme-icon:not(${iconSelector})`);
+	icons.forEach((icon) => (icon.style.display = "none"));
 }
 
-function pollTheme() {
+function checkTheme() {
 	const theme = fetchTheme();
-	updateToggleButton();
-
-	if (!document.body.classList.contains(theme)) {
-		document.body.classList.remove(...ACCEPTED_THEMES);
-		document.body.classList.add(theme);
-	}
+	updateBodyTheme(theme);
+	updateThemeToggle(theme);
 }
 
-/** Fetch and set theme on page load */
-document.addEventListener('DOMContentLoaded', () => {
-	pollTheme();
-	setInterval(() => pollTheme(), 1000);
+document.addEventListener("DOMContentLoaded", () => {
+	checkTheme();
 });
 
+window.addEventListener("pageshow", (ev) => {
+	if (!ev.persisted) return;
+	checkTheme();
+});
