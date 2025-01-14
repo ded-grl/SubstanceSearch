@@ -134,7 +134,10 @@ class PersistentTrie extends Trie {
         if (stored) {
             const data = JSON.parse(stored);
             data.forEach(item => {
-                this.insert(item.term, item.data);
+                this.insert(item.term, {
+                    ...item.data,
+                    _timestamp: item._timestamp || Date.now()
+                });
             });
         }
     }
@@ -143,7 +146,11 @@ class PersistentTrie extends Trie {
         const allWords = [];
         const collectWords = (node, prefix) => {
             if (node.isEndOfWord) {
-                allWords.push({ term: prefix, data: node.data });
+                allWords.push({ 
+                    term: prefix, 
+                    data: node.data,
+                    _timestamp: node.data._timestamp 
+                });
             }
             for (let char in node.children) {
                 collectWords(node.children[char], prefix + char);
@@ -154,7 +161,30 @@ class PersistentTrie extends Trie {
     }
 
     insert(word, data) {
-        super.insert(word, data);
+        const dataWithTimestamp = {
+            ...data,
+            _timestamp: Date.now()
+        };
+        super.insert(word, dataWithTimestamp);
+        this.saveToStorage();
+    }
+
+    cleanup(maxAge) {
+        const now = Date.now();
+        const cleanNode = (node) => {
+            for (let char in node.children) {
+                const child = node.children[char];
+                cleanNode(child);
+                if (!child.isEndOfWord && Object.keys(child.children).length === 0) {
+                    delete node.children[char];
+                }
+            }
+            if (node.isEndOfWord && now - node.data._timestamp > maxAge) {
+                node.isEndOfWord = false;
+                node.data = null;
+            }
+        };
+        cleanNode(this.root);
         this.saveToStorage();
     }
 }
@@ -180,6 +210,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 );
                 localStorage.setItem(STORAGE_KEYS.LRU, JSON.stringify(validData));
             }
+
+            trie.cleanup(CACHE_DURATION);
+            
             localStorage.setItem(STORAGE_KEYS.LAST_CLEANUP, now.toString());
         }
     }
