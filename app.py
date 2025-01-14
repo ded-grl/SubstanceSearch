@@ -29,11 +29,15 @@ if os.path.exists(svg_directory):
 def slugify(value):
     """
     Converts a string to a URL-friendly slug.
+    Only allows alphanumeric characters and single hyphens.
     """
     value = str(value)
     value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
     value = re.sub(r'[^\w\s-]', '', value).strip().lower()
     value = re.sub(r'[-\s]+', '-', value)
+    # Additional validation to prevent empty or malicious slugs
+    if not value or value.startswith('-') or value.endswith('-'):
+        return ''
     return value
 
 # Make slugify available in templates
@@ -208,9 +212,15 @@ def autocomplete():
 # Route for displaying substance information using slugified names
 @app.route('/substance/<path:slug>')
 def substance(slug):
-    # Decode the slug to handle URL-encoded characters
+    # Add validation before processing
+    if not slug or len(slug) > 100:  # Reasonable maximum length
+        return "Invalid slug", 400
+    
+    # Validate slug format
+    if not re.match(r'^[a-z0-9-]+$', slug):
+        return "Invalid slug format", 400
+        
     decoded_slug = unquote(slug)
-    # Lookup the original substance name using the slug
     substance_name = slug_to_substance_name.get(decoded_slug.lower())
     if not substance_name:
         return "Substance not found", 404
@@ -225,7 +235,14 @@ def substance(slug):
 # Route for displaying substances in a category
 @app.route('/category/<path:category_slug>')
 def category(category_slug):
-    # Decode the slug to handle URL-encoded characters
+    # Add validation before processing
+    if not category_slug or len(category_slug) > 100:
+        return "Invalid category", 400
+    
+    # Validate category slug format
+    if not re.match(r'^[a-z0-9-]+$', category_slug):
+        return "Invalid category format", 400
+        
     decoded_slug = unquote(category_slug).lower()
     # Map of slugified category names to their original form
     category_name_mapping = {}
