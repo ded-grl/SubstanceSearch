@@ -116,17 +116,39 @@ def clean_data(data):
 
 # Fetch theme from request cookies
 def fetch_theme(request: Request) -> str:
-	theme = request.cookies.get('Theme', 'light', type=str)
-	if theme not in ['light', 'dark']:
-		theme = 'light'
-
-	return theme
+    # Get theme
+    theme = request.cookies.get('Theme', default='light', type=str)
+    
+    # Validate theme length to prevent cookie bloat
+    if not theme or len(theme) > 10:
+        return 'light'
+    
+    # Whitelist allowed themes
+    ALLOWED_THEMES = {'light', 'dark'}
+    if theme not in ALLOWED_THEMES:
+        return 'light'
+    
+    return theme
 
 # Route for the home page
 @app.route('/')
 def home():
     categories = get_all_categories(substances)
-    return render_template('index.html', categories=categories, category_colors=category_colors, theme=fetch_theme(request))
+    response = make_response(render_template('index.html', 
+                                          categories=categories, 
+                                          category_colors=category_colors, 
+                                          theme=fetch_theme(request)))
+    
+    response.set_cookie(
+        'Theme',
+        value=fetch_theme(request),
+        max_age=31536000,  
+        secure=True,      
+        httponly=True,     
+        samesite='Lax'    
+    )
+    
+    return response
 
 def rank_to_display_string(rank: int) -> str:
     emoji = ''
