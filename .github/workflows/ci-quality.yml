@@ -1,0 +1,39 @@
+name: CI - Code Quality
+
+on:
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - '**.py'
+      - '**.js'
+      - '**.html'
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 black isort bandit
+          pip install -r requirements.txt
+          
+      - name: Run Flake8
+        run: flake8 .
+        
+      - name: Check formatting with Black
+        run: black --check .
+        
+      - name: Check imports with isort
+        run: isort --check-only .
+        
+      - name: Security check with Bandit
+        run: bandit -r . 
