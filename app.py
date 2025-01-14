@@ -1,6 +1,7 @@
 from flask import Flask, Request, render_template, request, jsonify, make_response
 from flask_minify import Minify
 from flask_caching import Cache, CachedResponse
+from flask_cors import CORS
 from urllib.parse import unquote
 import json
 import unicodedata
@@ -10,6 +11,17 @@ import os
 import requests
 
 app = Flask(__name__)
+CORS(app, resources={
+    r"/autocomplete": {
+        "origins": [
+            "http://localhost:5000",  # Development
+            "https://substancesearch.org",  # Production
+            "https://search.dedgrl.com"  # Production
+        ],
+        "methods": ["GET"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 Minify(app=app, html=True, js=True, cssless=True)
 
 cache = Cache()
