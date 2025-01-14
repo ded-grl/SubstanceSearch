@@ -1,0 +1,44 @@
+name: CI - Test server
+
+on:
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - '**.py'
+      - '**.js'
+      - '**.html'
+      - 'requirements.txt'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Test server
+        run: |
+          python app.py &
+          FLASK_PID=$!
+          sleep 5
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:5000/)
+          kill $FLASK_PID
+          if [ "$response" = "200" ]; then
+            echo "test successful"
+            exit 0
+          else
+            echo "test failed"
+            exit 1
+          fi 
