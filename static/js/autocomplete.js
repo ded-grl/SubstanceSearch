@@ -188,15 +188,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const handleSearch = debounce(function(query) {
         if (query.length > 1) {
-            const trieResults = trie.search(query);
-            if (trieResults.length > 0) {
-                displayResults(trieResults.map(r => r.data));
-                return;
-            }
-
-            const cached = cache.get(query);
-            if (cached) {
-                displayResults(cached);
+            const results = trie.search(query);
+            if (results.length > 0) {
+                displayResults(results.map(r => r.data));
                 return;
             }
 
@@ -204,7 +198,6 @@ document.addEventListener('DOMContentLoaded', function () {
             fetch(`/autocomplete?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
-                    cache.set(query, data);
                     data.forEach(item => {
                         trie.insert(item.pretty_name, item);
                         if (item.name && item.name !== item.pretty_name) {
@@ -214,6 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             item.aliases.forEach(alias => trie.insert(alias, item));
                         }
                     });
+                    cache.set(query, data);
                     displayResults(data);
                 })
                 .catch(error => {
