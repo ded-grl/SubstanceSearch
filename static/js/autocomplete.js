@@ -207,6 +207,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     cache.set(query, data);
                     data.forEach(item => {
                         trie.insert(item.pretty_name, item);
+                        if (item.name && item.name !== item.pretty_name) {
+                            trie.insert(item.name, item);
+                        }
                         if (item.aliases) {
                             item.aliases.forEach(alias => trie.insert(alias, item));
                         }
