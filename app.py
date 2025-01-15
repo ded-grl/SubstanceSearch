@@ -1,6 +1,7 @@
 from flask import Flask, Request, render_template, request, jsonify, make_response
 from flask_minify import Minify
 from flask_caching import Cache, CachedResponse
+from flask_cors import CORS
 from urllib.parse import unquote
 import json
 import unicodedata
@@ -10,6 +11,18 @@ import os
 import requests
 
 app = Flask(__name__)
+CORS(app, resources={
+    r"/autocomplete": {
+        "origins": [
+            "http://localhost:5000",  # Development
+            "http://1.stg.substancesearch.com" # Staging
+            "https://substancesearch.org",  # Production
+            "https://search.dedgrl.com"  # Production
+        ],
+        "methods": ["GET"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 Minify(app=app, html=True, js=True, cssless=True)
 
 cache = Cache()
@@ -29,11 +42,15 @@ if os.path.exists(svg_directory):
 def slugify(value):
     """
     Converts a string to a URL-friendly slug.
+    Only allows alphanumeric characters and single hyphens.
     """
     value = str(value)
     value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
     value = re.sub(r'[^\w\s-]', '', value).strip().lower()
     value = re.sub(r'[-\s]+', '-', value)
+    # Additional validation to prevent empty or malicious slugs
+    if not value or value.startswith('-') or value.endswith('-'):
+        return ''
     return value
 
 # Make slugify available in templates
@@ -100,17 +117,39 @@ def clean_data(data):
 
 # Fetch theme from request cookies
 def fetch_theme(request: Request) -> str:
-	theme = request.cookies.get('Theme', 'light', type=str)
-	if theme not in ['light', 'dark']:
-		theme = 'light'
-
-	return theme
+    # Get theme
+    theme = request.cookies.get('Theme', default='light', type=str)
+    
+    # Validate theme length to prevent cookie bloat
+    if not theme or len(theme) > 10:
+        return 'light'
+    
+    # Whitelist allowed themes
+    ALLOWED_THEMES = {'light', 'dark'}
+    if theme not in ALLOWED_THEMES:
+        return 'light'
+    
+    return theme
 
 # Route for the home page
 @app.route('/')
 def home():
     categories = get_all_categories(substances)
-    return render_template('index.html', categories=categories, category_colors=category_colors, theme=fetch_theme(request))
+    response = make_response(render_template('index.html', 
+                                          categories=categories, 
+                                          category_colors=category_colors, 
+                                          theme=fetch_theme(request)))
+    
+    response.set_cookie(
+        'Theme',
+        value=fetch_theme(request),
+        max_age=31536000,  
+        secure=True,      
+        httponly=True,     
+        samesite='Lax'    
+    )
+    
+    return response
 
 def rank_to_display_string(rank: int) -> str:
     emoji = ''
@@ -190,9 +229,15 @@ def autocomplete():
 # Route for displaying substance information using slugified names
 @app.route('/substance/<path:slug>')
 def substance(slug):
-    # Decode the slug to handle URL-encoded characters
+    # Add validation before processing
+    if not slug or len(slug) > 100:  # Reasonable maximum length
+        return "Invalid slug", 400
+    
+    # Validate slug format
+    if not re.match(r'^[a-z0-9-]+$', slug):
+        return "Invalid slug format", 400
+        
     decoded_slug = unquote(slug)
-    # Lookup the original substance name using the slug
     substance_name = slug_to_substance_name.get(decoded_slug.lower())
     if not substance_name:
         return "Substance not found", 404
@@ -207,7 +252,14 @@ def substance(slug):
 # Route for displaying substances in a category
 @app.route('/category/<path:category_slug>')
 def category(category_slug):
-    # Decode the slug to handle URL-encoded characters
+    # Add validation before processing
+    if not category_slug or len(category_slug) > 100:
+        return "Invalid category", 400
+    
+    # Validate category slug format
+    if not re.match(r'^[a-z0-9-]+$', category_slug):
+        return "Invalid category format", 400
+        
     decoded_slug = unquote(category_slug).lower()
     # Map of slugified category names to their original form
     category_name_mapping = {}
