@@ -15,6 +15,7 @@ CORS(app, resources={
     r"/autocomplete": {
         "origins": [
             "http://localhost:5000",  # Development
+            "https://1.stg.substancesearch.com" # Staging
             "https://substancesearch.org",  # Production
             "https://search.dedgrl.com"  # Production
         ],
