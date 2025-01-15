@@ -184,26 +184,8 @@ def leaderboard():
 @app.route('/autocomplete', methods=['GET'])
 def autocomplete():
     query = request.args.get('query', '').lower()
-    results = []
-    for substance_name, details in substances.items():
-        # Ensure fields are properly handled even if missing
-        pretty_name = details.get('pretty_name', 'Unknown')
-        aliases = details.get('aliases', [])
-
-        # Check if query matches the substance name or any alias
-        name_matches = query in substance_name.lower() or query in pretty_name.lower()
-        alias_matches = any(query in alias.lower() for alias in aliases)
-
-        if name_matches or alias_matches:
-            # Use the slugify function to create the slug
-            slug = slugify(substance_name)
-            results.append({
-                'pretty_name': pretty_name,
-                'aliases': aliases,
-                'slug': slug  # Include the slug in the response
-            })
-
-    return jsonify(results[:10])
+    results = substance_trie.search_prefix(query)
+    return jsonify(results)
 
 # Route for displaying substance information using slugified names
 @app.route('/substance/<path:slug>')
@@ -248,6 +230,69 @@ def category(category_slug):
         return "Category not found", 404
 
     return render_template('category.html', category_name=category_name, substances=filtered_substances, category_colors=category_colors, theme=fetch_theme(request))
+
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end = False
+        self.data = None
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word, data):
+        node = self.root
+        for char in word.lower():
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end = True
+        node.data = data
+    
+    def search_prefix(self, prefix):
+        node = self.root
+        results = []
+        
+        for char in prefix.lower():
+            if char not in node.children:
+                return results
+            node = node.children[char]
+            
+        self._collect_words(node, prefix, results)
+        return results[:10]
+    
+    def _collect_words(self, node, prefix, results):
+        if node.is_end:
+            results.append(node.data)
+        
+        for char, child in node.children.items():
+            self._collect_words(child, prefix + char, results)
+
+substance_trie = Trie()
+for substance_name, details in substances.items():
+    pretty_name = details.get('pretty_name', 'Unknown')
+    aliases = details.get('aliases', [])
+    slug = slugify(substance_name)
+    
+    substance_trie.insert(substance_name, {
+        'pretty_name': pretty_name,
+        'aliases': aliases,
+        'slug': slug
+    })
+    
+    substance_trie.insert(pretty_name, {
+        'pretty_name': pretty_name,
+        'aliases': aliases,
+        'slug': slug
+    })
+    
+    for alias in aliases:
+        substance_trie.insert(alias, {
+            'pretty_name': pretty_name,
+            'aliases': aliases,
+            'slug': slug
+        })
 
 if __name__ == '__main__':
     app.run(debug=True)
