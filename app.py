@@ -223,7 +223,14 @@ def leaderboard():
 @app.route('/autocomplete', methods=['GET'])
 def autocomplete():
     query = request.args.get('query', '').lower()
-    results = substance_trie.search_prefix(query)
+    result_substance_names = set(substance_trie.search_prefix(query))
+    result_substances = [substances.get(substance_name) for substance_name in result_substance_names]
+    results = [{
+        'pretty_name': substance.get('pretty_name', 'Unknown'),
+        'aliases': substance.get('aliases', []),
+        'slug': slugify(substance.get('name', ''))
+    } for substance in result_substances]
+
     return jsonify(results)
 
 # Route for displaying substance information using slugified names
@@ -325,26 +332,12 @@ substance_trie = Trie()
 for substance_name, details in substances.items():
     pretty_name = details.get('pretty_name', 'Unknown')
     aliases = details.get('aliases', [])
-    slug = slugify(substance_name)
-    
-    substance_trie.insert(substance_name, {
-        'pretty_name': pretty_name,
-        'aliases': aliases,
-        'slug': slug
-    })
-    
-    substance_trie.insert(pretty_name, {
-        'pretty_name': pretty_name,
-        'aliases': aliases,
-        'slug': slug
-    })
-    
+
+    substance_trie.insert(substance_name, substance_name)
+    substance_trie.insert(pretty_name, substance_name)
+
     for alias in aliases:
-        substance_trie.insert(alias, {
-            'pretty_name': pretty_name,
-            'aliases': aliases,
-            'slug': slug
-        })
+        substance_trie.insert(alias, substance_name)
 
 if __name__ == '__main__':
     app.run(debug=True)
