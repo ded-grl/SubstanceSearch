@@ -10,7 +10,7 @@ Flask-Minify==0.48
 htmlminf==0.1.13
 idna==3.10
 itsdangerous==2.2.0
-Jinja2==3.1.4
+Jinja2==3.1.5
 jsmin==3.0.1
 lesscpy==0.15.1
 MarkupSafe==3.0.2
