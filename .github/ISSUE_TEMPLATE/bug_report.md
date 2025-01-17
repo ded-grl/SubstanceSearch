@@ -44,6 +44,8 @@ What are the specifications of the environment from which you found the bug? Ple
 
 **Screen size:** Width x Height of your display (Look for your computer's display settings or look up "screen resolution" and your device model)
 
+**Environment:** [Your local environment](http://localhost:5000), [the staging environment](http://1.stg.substancesearch.com/), or [the production environment](https://substancesearch.com/)
+
 ## Screenshots and Logs
 
 Please provide any screenshots, screen recordings, or console logs displaying the bug.

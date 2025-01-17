@@ -1,4 +1,4 @@
-from flask import Flask, Request, render_template, request, jsonify, make_response
+from flask import Flask, Request, Response, render_template, request, jsonify, make_response
 from flask_minify import Minify
 from flask_caching import Cache, CachedResponse
 from flask_cors import CORS
@@ -9,6 +9,7 @@ import re
 import csv
 import os
 import requests
+from functools import wraps
 
 app = Flask(__name__)
 CORS(app, resources={
@@ -131,25 +132,42 @@ def fetch_theme(request: Request) -> str:
     
     return theme
 
+def with_theme_cookie(view_function):
+    @wraps(view_function)
+    def view_function_with_theme_cookie(*args, **kwargs):
+        response = view_function(*args, **kwargs)
+
+        # if function does not return a response, do not add a cookie to it
+        if (not issubclass(response.__class__, Response)):
+            return response
+
+        # if no cookie is given in the request, do not send a theme cookie back
+        if (request.cookies.get('Theme', default=None) is None):
+            return response
+
+        response.set_cookie(
+            'Theme',
+            value=fetch_theme(request),
+            max_age=31536000,  # one year
+            # TODO: change this to be environment config based
+            secure=request.url.startswith('https') or request.host.startswith('localhost:'),
+            httponly=False,
+            samesite='Lax'
+        )
+        return response
+
+    return view_function_with_theme_cookie
+
+
 # Route for the home page
 @app.route('/')
+@with_theme_cookie
 def home():
     categories = get_all_categories(substances)
-    response = make_response(render_template('index.html', 
-                                          categories=categories, 
-                                          category_colors=category_colors, 
-                                          theme=fetch_theme(request)))
-    
-    response.set_cookie(
-        'Theme',
-        value=fetch_theme(request),
-        max_age=31536000,  
-        secure=True,      
-        httponly=True,     
-        samesite='Lax'    
-    )
-    
-    return response
+    return make_response(render_template('index.html', 
+                                         categories=categories, 
+                                         category_colors=category_colors, 
+                                         theme=fetch_theme(request)))
 
 def rank_to_display_string(rank: int) -> str:
     emoji = ''
@@ -163,6 +181,7 @@ def rank_to_display_string(rank: int) -> str:
 
 # Route for the leaderboard
 @app.route('/leaderboard')
+@with_theme_cookie
 @cache.cached() # one day timeout
 def leaderboard():
     try:
@@ -228,6 +247,7 @@ def autocomplete():
 
 # Route for displaying substance information using slugified names
 @app.route('/substance/<path:slug>')
+@with_theme_cookie
 def substance(slug):
     # Add validation before processing
     if not slug or len(slug) > 100:  # Reasonable maximum length
@@ -247,10 +267,11 @@ def substance(slug):
 
     # Clean the substance data to remove None values
     cleaned_substance_data = clean_data(substance_data)
-    return render_template('substance.html', substance=cleaned_substance_data, category_colors=category_colors, svg_files=svg_files, theme=fetch_theme(request))
+    return make_response(render_template('substance.html', substance=cleaned_substance_data, category_colors=category_colors, svg_files=svg_files, theme=fetch_theme(request)))
 
 # Route for displaying substances in a category
 @app.route('/category/<path:category_slug>')
+@with_theme_cookie
 def category(category_slug):
     # Add validation before processing
     if not category_slug or len(category_slug) > 100:
@@ -281,7 +302,7 @@ def category(category_slug):
     if not filtered_substances:
         return "Category not found", 404
 
-    return render_template('category.html', category_name=category_name, substances=filtered_substances, category_colors=category_colors, theme=fetch_theme(request))
+    return make_response(render_template('category.html', category_name=category_name, substances=filtered_substances, category_colors=category_colors, theme=fetch_theme(request)))
 
 class TrieNode:
     def __init__(self):
