@@ -1,21 +1,22 @@
 from flask import Flask
 from flask_minify import Minify
 from flask_cors import CORS
-from .utils import slugify
-from .views import cache, home, leaderboard, autocomplete, substance, category
+from src.utils import slugify
+from src.views import cache, home, leaderboard, autocomplete, substance, category
+from src.config import DefaultConfig
 from re import match
 
 
 def create_app():
     app = Flask(__name__)
+    app.config.from_object(DefaultConfig)
+
+    # override config with any environment variables prefixed with `FLASK_`
+    app.config.from_prefixed_env()
+
     CORS(app, resources={
         r"/autocomplete": {
-            "origins": [
-                "http://localhost:5000",  # Development
-                "http://1.stg.substancesearch.com"  # Staging
-                "https://substancesearch.org",  # Production
-                "https://search.dedgrl.com"  # Production
-            ],
+            "origins": app.config['CORS_ORIGINS'],
             "methods": ["GET"],
             "allow_headers": ["Content-Type"]
         }

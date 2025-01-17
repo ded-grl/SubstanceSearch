@@ -1,7 +1,7 @@
 import json
 import os
-from .utils import slugify
-from .trie import Trie
+from src.utils import slugify
+from src.utils.trie import Trie
 
 
 def _init_substance_data():

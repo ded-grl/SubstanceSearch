@@ -8,7 +8,7 @@ from flask import (
 )
 from flask_caching import Cache, CachedResponse
 import os
-from .data import (
+from src.data import (
     SUBSTANCE_DATA,
     SUBSTANCE_TRIE,
     CATEGORY_CARD_NAMES,
@@ -16,7 +16,7 @@ from .data import (
 )
 import requests
 import csv
-from .utils import validate_slug, clean_data, slugify
+from src.utils import validate_slug, clean_data, slugify
 from urllib.parse import unquote
 
 
@@ -64,7 +64,7 @@ def _rank_to_display_string(rank: int) -> str:
 def leaderboard():
     try:
         # setup request prerequisites
-        auth_token = os.environ['GITHUB_AUTH_TOKEN']
+        auth_token = current_app.config['GITHUB_AUTH_TOKEN']
         headers = {
             'Accept': 'application/vnd.github+json',
             'Authorization': f'Bearer {auth_token}',
