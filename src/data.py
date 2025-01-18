@@ -1,6 +1,5 @@
 import json
 import os
-from src.utils import slugify
 from src.utils.trie import Trie
 
 
@@ -25,36 +24,11 @@ def _init_substance_trie(substance_data):
     for substance_name, details in substance_data.items():
         pretty_name = details.get('pretty_name', 'Unknown')
         aliases = details.get('aliases', [])
-        slug = slugify(substance_name)
 
-        substance_trie.insert(substance_name, {
-            'name': substance_name,
-            'pretty_name': pretty_name,
-            'aliases': aliases,
-            'slug': slug
-        })
-
-        substance_trie.insert(pretty_name, {
-            'name': substance_name,
-            'pretty_name': pretty_name,
-            'aliases': aliases,
-            'slug': slug
-        })
-
-        substance_trie.insert(slug, {
-            'name': substance_name,
-            'pretty_name': pretty_name,
-            'aliases': aliases,
-            'slug': slug
-        })
-
+        substance_trie.insert(substance_name, substance_name)
+        substance_trie.insert(pretty_name, substance_name)
         for alias in aliases:
-            substance_trie.insert(alias, {
-                'name': substance_name,
-                'pretty_name': pretty_name,
-                'aliases': aliases,
-                'slug': slug
-            })
+            substance_trie.insert(alias, substance_name)
 
     return substance_trie
 
