@@ -56,6 +56,9 @@ class PersistentLRUCache extends LRUCache {
         if (stored) {
             const data = JSON.parse(stored);
             data.forEach(([key, value]) => {
+                if (value == null) {
+                    return;
+                }
                 this.cache.set(key, value.data);
             });
         }
@@ -86,8 +89,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const stored = localStorage.getItem(STORAGE_KEYS.LRU);
             if (stored) {
                 const data = JSON.parse(stored);
-                const validData = data.filter(([key, value]) =>
-                    now - value.timestamp < CACHE_DURATION
+                const validData = data.filter(([_, value]) =>
+                    value?.timestamp != null && now - value.timestamp < CACHE_DURATION
                 );
                 localStorage.setItem(STORAGE_KEYS.LRU, JSON.stringify(validData));
             }
@@ -108,8 +111,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
             suggestions.innerHTML = '<div class="loading">Searching...</div>';
             fetch(`/autocomplete?query=${encodeURIComponent(query)}`)
+                .then(response => {
+                    if (response.status < 400) {
+                        return response;
+                    }
+
+                    throw new Error(response.statusText);
+                })
                 .then(response => response.json())
                 .then(data => {
+                    if (data == null) {
+                        throw new Error('No autocomplete data returned');
+                    }
+
                     cache.set(query, data);
                     displayResults(data);
                 })
