@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (query.length > 1) {
             const results = cache.get(query);
             if (results) {
-                displayResults(results.map(r => r.data));
+                displayResults(results);
                 return;
             }
 
@@ -125,7 +125,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 300);
 
     function displayResults(data) {
-        console.log(data);
         if (data.length === 0) {
             suggestions.innerHTML = `No results found for "${searchInput.value}"`;
             return;
