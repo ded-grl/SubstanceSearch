@@ -11,10 +11,11 @@ const debounce = (func, wait) => {
 };
 
 const STORAGE_KEYS = {
-    TRIE: 'autocomplete_trie',
     LRU: 'autocomplete_lru',
     LAST_CLEANUP: 'autocomplete_cleanup'
 };
+
+const CACHE_DURATION = 5 * 60 * 1000;
 
 class LRUCache {
     constructor(maxSize = 100) {
@@ -55,7 +56,10 @@ class PersistentLRUCache extends LRUCache {
         if (stored) {
             const data = JSON.parse(stored);
             data.forEach(([key, value]) => {
-                this.cache.set(key, value);
+                if (value == null) {
+                    return;
+                }
+                this.cache.set(key, value.data);
             });
         }
     }
@@ -71,131 +75,11 @@ class PersistentLRUCache extends LRUCache {
     }
 }
 
-class TrieNode {
-    constructor() {
-        this.children = {};
-        this.isEndOfWord = false;
-        this.data = null;
-    }
-}
-
-class Trie {
-    constructor() {
-        this.root = new TrieNode();
-    }
-
-    insert(word, data) {
-        let current = this.root;
-        for (let char of word.toLowerCase()) {
-            if (!current.children[char]) {
-                current.children[char] = new TrieNode();
-            }
-            current = current.children[char];
-        }
-        current.isEndOfWord = true;
-        current.data = data;
-    }
-
-    search(prefix) {
-        let current = this.root;
-        let results = [];
-
-        for (let char of prefix.toLowerCase()) {
-            if (!current.children[char]) return results;
-            current = current.children[char];
-        }
-
-        this._collectWords(current, prefix, results);
-        return results;
-    }
-
-    _collectWords(node, prefix, results) {
-        if (node.isEndOfWord) {
-            results.push({
-                term: prefix,
-                data: node.data
-            });
-        }
-
-        for (let char in node.children) {
-            this._collectWords(node.children[char], prefix + char, results);
-        }
-    }
-}
-
-class PersistentTrie extends Trie {
-    constructor() {
-        super();
-        this.loadFromStorage();
-    }
-
-    loadFromStorage() {
-        const stored = localStorage.getItem(STORAGE_KEYS.TRIE);
-        if (stored) {
-            const data = JSON.parse(stored);
-            data.forEach(item => {
-                this.insert(item.term, {
-                    ...item.data,
-                    _timestamp: item._timestamp || Date.now()
-                });
-            });
-        }
-    }
-
-    saveToStorage() {
-        const allWords = [];
-        const collectWords = (node, prefix) => {
-            if (node.isEndOfWord) {
-                allWords.push({ 
-                    term: prefix, 
-                    data: node.data,
-                    _timestamp: node.data._timestamp 
-                });
-            }
-            for (let char in node.children) {
-                collectWords(node.children[char], prefix + char);
-            }
-        };
-        collectWords(this.root, '');
-        localStorage.setItem(STORAGE_KEYS.TRIE, JSON.stringify(allWords));
-    }
-
-    insert(word, data) {
-        const dataWithTimestamp = {
-            ...data,
-            _timestamp: Date.now()
-        };
-        super.insert(word, dataWithTimestamp);
-        this.saveToStorage();
-    }
-
-    cleanup(maxAge) {
-        const now = Date.now();
-        const cleanNode = (node) => {
-            for (let char in node.children) {
-                const child = node.children[char];
-                cleanNode(child);
-                if (!child.isEndOfWord && Object.keys(child.children).length === 0) {
-                    delete node.children[char];
-                }
-            }
-            if (node.isEndOfWord && now - node.data._timestamp > maxAge) {
-                node.isEndOfWord = false;
-                node.data = null;
-            }
-        };
-        cleanNode(this.root);
-        this.saveToStorage();
-    }
-}
-
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('search');
     const suggestions = document.getElementById('suggestions');
-    const CACHE_DURATION = 5 * 60 * 1000;
 
     const cache = new PersistentLRUCache();
-    const trie = new PersistentTrie();
 
     function cleanupOldCache() {
         const lastCleanup = localStorage.getItem(STORAGE_KEYS.LAST_CLEANUP);
@@ -205,14 +89,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const stored = localStorage.getItem(STORAGE_KEYS.LRU);
             if (stored) {
                 const data = JSON.parse(stored);
-                const validData = data.filter(([key, value]) =>
-                    now - value.timestamp < CACHE_DURATION
+                const validData = data.filter(([_, value]) =>
+                    value?.timestamp != null && now - value.timestamp < CACHE_DURATION
                 );
                 localStorage.setItem(STORAGE_KEYS.LRU, JSON.stringify(validData));
             }
 
-            trie.cleanup(CACHE_DURATION);
-            
             localStorage.setItem(STORAGE_KEYS.LAST_CLEANUP, now.toString());
         }
     }
@@ -221,25 +103,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const handleSearch = debounce(function(query) {
         if (query.length > 1) {
-            const results = trie.search(query);
-            if (results.length > 0) {
-                displayResults(results.map(r => r.data));
+            const results = cache.get(query);
+            if (results) {
+                displayResults(results);
                 return;
             }
 
             suggestions.innerHTML = '<div class="loading">Searching...</div>';
             fetch(`/autocomplete?query=${encodeURIComponent(query)}`)
+                .then(response => {
+                    if (response.status < 400) {
+                        return response;
+                    }
+
+                    throw new Error(response.statusText);
+                })
                 .then(response => response.json())
                 .then(data => {
-                    data.forEach(item => {
-                        trie.insert(item.pretty_name, item);
-                        if (item.name && item.name !== item.pretty_name) {
-                            trie.insert(item.name, item);
-                        }
-                        if (item.aliases) {
-                            item.aliases.forEach(alias => trie.insert(alias, item));
-                        }
-                    });
+                    if (data == null) {
+                        throw new Error('No autocomplete data returned');
+                    }
+
                     cache.set(query, data);
                     displayResults(data);
                 })

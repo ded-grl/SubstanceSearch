@@ -13,8 +13,10 @@ itsdangerous==2.2.0
 Jinja2==3.1.4
 jsmin==3.0.1
 lesscpy==0.15.1
+Levenshtein==0.26.1
 MarkupSafe==3.0.2
 ply==3.11
+RapidFuzz==3.11.0
 rcssmin==1.2.0
 requests==2.32.3
 six==1.17.0

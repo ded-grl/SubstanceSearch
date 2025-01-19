@@ -9,6 +9,7 @@ import re
 import csv
 import os
 import requests
+from Levenshtein import distance
 from functools import wraps
 
 app = Flask(__name__)
@@ -242,7 +243,16 @@ def leaderboard():
 @app.route('/autocomplete', methods=['GET'])
 def autocomplete():
     query = request.args.get('query', '').lower()
-    results = substance_trie.search_prefix(query)
+    limit = request.args.get('limit', 10)
+    result_substance_names = set(substance_trie.search_substring(query))
+    sorted_result_substance_names = sorted(result_substance_names, key=lambda substance_name: distance(substance_name.lower(), query.lower()))
+    result_substances = [substances.get(substance_name) for substance_name in sorted_result_substance_names]
+    results = [{
+        'pretty_name': substance.get('pretty_name', 'Unknown'),
+        'aliases': substance.get('aliases', []),
+        'slug': slugify(substance.get('name', ''))
+    } for substance in result_substances][:limit]
+
     return jsonify(results)
 
 # Route for displaying substance information using slugified names
@@ -304,68 +314,83 @@ def category(category_slug):
 
     return make_response(render_template('category.html', category_name=category_name, substances=filtered_substances, category_colors=category_colors, theme=fetch_theme(request)))
 
-class TrieNode:
+
+class SuffixTrieNodeMetadatum:
+    """
+    Metadata for what data a suffix trie node points to
+    and which search suffix it points to
+    """
+
+    def __init__(self, data_store_index=-1, suffix_index=-1):
+        assert data_store_index >= 0
+        assert suffix_index >= 0
+
+        self.data_store_index = data_store_index
+        self.suffix_index = suffix_index
+
+
+class SuffixTrieNode:
     def __init__(self):
         self.children = {}
         self.is_end = False
-        self.data = None
+        self.metadata = []
 
-class Trie:
+
+class SuffixTrie:
     def __init__(self):
-        self.root = TrieNode()
-    
+        self.root = SuffixTrieNode()
+        self.data_store = []
+
     def insert(self, word, data):
+        data_store_index = len(self.data_store)
+        self.data_store.append(data)
+
+        for suffix_index in range(len(word) + 1):  # all suffixes including the empty string
+            self._insert_suffix(word[suffix_index:], suffix_index, data_store_index)
+
+    def _insert_suffix(self, suffix: str, suffix_index: int, data_store_index: int):
         node = self.root
-        for char in word.lower():
+        for char in suffix.lower():
             if char not in node.children:
-                node.children[char] = TrieNode()
+                node.children[char] = SuffixTrieNode()
             node = node.children[char]
         node.is_end = True
-        node.data = data
-    
-    def search_prefix(self, prefix):
-        node = self.root
-        results = []
-        
-        for char in prefix.lower():
-            if char not in node.children:
-                return results
-            node = node.children[char]
-            
-        self._collect_words(node, prefix, results)
-        return results[:10]
-    
-    def _collect_words(self, node, prefix, results):
-        if node.is_end:
-            results.append(node.data)
-        
-        for char, child in node.children.items():
-            self._collect_words(child, prefix + char, results)
 
-substance_trie = Trie()
+        suffix_node_metadatum = SuffixTrieNodeMetadatum(data_store_index, suffix_index)
+        node.metadata.append(suffix_node_metadatum)
+
+    def search_substring(self, substring):
+        node = self.root
+        data_store_indices = []
+
+        for char in substring.lower():
+            if char not in node.children:
+                return []
+            node = node.children[char]
+
+        self._collect_words(node, substring, data_store_indices)
+        results = [self.data_store[data_store_index] for data_store_index in set(data_store_indices)]
+
+        return results
+
+    def _collect_words(self, node, substring, data_store_indices):
+        if node.is_end:
+            data_store_indices.extend([metadatum.data_store_index for metadatum in node.metadata])
+
+        for char, child in node.children.items():
+            self._collect_words(child, substring + char, data_store_indices)
+
+
+substance_trie = SuffixTrie()
 for substance_name, details in substances.items():
     pretty_name = details.get('pretty_name', 'Unknown')
     aliases = details.get('aliases', [])
-    slug = slugify(substance_name)
-    
-    substance_trie.insert(substance_name, {
-        'pretty_name': pretty_name,
-        'aliases': aliases,
-        'slug': slug
-    })
-    
-    substance_trie.insert(pretty_name, {
-        'pretty_name': pretty_name,
-        'aliases': aliases,
-        'slug': slug
-    })
-    
+
+    substance_trie.insert(substance_name, substance_name)
+    substance_trie.insert(pretty_name, substance_name)
+
     for alias in aliases:
-        substance_trie.insert(alias, {
-            'pretty_name': pretty_name,
-            'aliases': aliases,
-            'slug': slug
-        })
+        substance_trie.insert(alias, substance_name)
 
 if __name__ == '__main__':
     app.run(debug=True)
