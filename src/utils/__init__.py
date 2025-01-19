@@ -34,6 +34,7 @@ def slugify(value: object) -> str:
     # Additional validation to prevent empty or malicious slugs
     if not value or value.startswith('-') or value.endswith('-'):
         return ''
+
     return value
 
 

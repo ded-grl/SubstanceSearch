@@ -1,11 +1,13 @@
 import json
 import os
-from src.utils.trie import Trie
+from src.utils.trie import SuffixTrie
+from src.utils import slugify
 
 
 def _init_substance_data():
     path = os.path.join('data', 'final_updated_drugs.json')
-    assert os.path.exists(path), 'Error loading substance data. Unable to find data source file.'
+    assert os.path.exists(
+        path), 'Error loading substance data. Unable to find data source file.'
 
     with open(path, encoding='utf-8') as f:
         return json.load(f)
@@ -13,13 +15,14 @@ def _init_substance_data():
 
 def _init_svg_file_names():
     svg_directory = os.path.join('src', 'static', 'svg')
-    assert os.path.exists(svg_directory), 'Error loading svg files. Unable to find svg directory.'
+    assert os.path.exists(
+        svg_directory), 'Error loading svg files. Unable to find svg directory.'
 
     return {f for f in os.listdir(svg_directory) if f.endswith('.svg')}
 
 
 def _init_substance_trie(substance_data):
-    substance_trie = Trie()
+    substance_trie = SuffixTrie()
 
     for substance_name, details in substance_data.items():
         pretty_name = details.get('pretty_name', 'Unknown')
@@ -42,7 +45,19 @@ def _init_category_card_names(substance_data):
     return sorted(categories)
 
 
+def _init_slug_to_substance_name_map(substance_data):
+    map = {}
+    for substance_name in substance_data.keys():
+        slug = slugify(substance_name)
+        assert slug not in map, f'Two substance names map to the same slug[\"{slug}\"]: {substance_name} and {map.get(slug)}'
+
+        map[slug] = substance_name
+
+    return map
+
+
 SUBSTANCE_DATA = _init_substance_data()
 SVG_FILES = _init_svg_file_names()
 SUBSTANCE_TRIE = _init_substance_trie(SUBSTANCE_DATA)
 CATEGORY_CARD_NAMES = _init_category_card_names(SUBSTANCE_DATA)
+SLUG_TO_SUBSTANCE_NAME = _init_slug_to_substance_name_map(SUBSTANCE_DATA)

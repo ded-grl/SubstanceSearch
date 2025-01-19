@@ -12,12 +12,14 @@ from src.data import (
     SUBSTANCE_DATA,
     SUBSTANCE_TRIE,
     CATEGORY_CARD_NAMES,
-    SVG_FILES
+    SVG_FILES,
+    SLUG_TO_SUBSTANCE_NAME
 )
 import requests
 import csv
 from src.utils import validate_slug, clean_data, slugify
 from urllib.parse import unquote
+from Levenshtein import distance
 
 
 def _fetch_theme(request: Request) -> str:
@@ -135,13 +137,16 @@ def leaderboard():
 # Route for fetching autocomplete suggestions
 def autocomplete():
     query = request.args.get('query', '').lower()
-    substance_names = set(SUBSTANCE_TRIE.search_prefix(query))
-    substances = [SUBSTANCE_DATA.get(substance_name, None) for substance_name in substance_names]
+    limit = request.args.get('limit', 10)
+    result_substance_names = set(SUBSTANCE_TRIE.search_substring(query))
+    sorted_result_substance_names = sorted(result_substance_names, key=lambda substance_name: distance(substance_name.lower(), query.lower()))
+    result_substances = [SUBSTANCE_DATA.get(substance_name) for substance_name in sorted_result_substance_names]
     results = [{
         'pretty_name': substance.get('pretty_name', 'Unknown'),
         'aliases': substance.get('aliases', []),
         'slug': slugify(substance.get('name', ''))
-    } for substance in substances if substance is not None]
+    } for substance in result_substances][:limit]
+
     return jsonify(results)
 
 
@@ -152,7 +157,7 @@ def substance(slug):
         return slug_validation_error_mesage, 400
 
     decoded_slug = unquote(slug)
-    substance_name = SUBSTANCE_TRIE.get(decoded_slug.lower())
+    substance_name = SLUG_TO_SUBSTANCE_NAME.get(decoded_slug.lower(), '')
     substance_data = SUBSTANCE_DATA.get(substance_name, None)
 
     if substance_data is None:
