@@ -1,5 +1,6 @@
 from flask import (
     Request,
+    Response,
     render_template,
     request,
     jsonify,
@@ -17,7 +18,7 @@ from src.data import (
 )
 import requests
 import csv
-from src.utils import validate_slug, clean_data, slugify
+from src.utils import validate_slug, slugify
 from urllib.parse import unquote
 from Levenshtein import distance
 
@@ -43,7 +44,7 @@ def _fetch_theme(request: Request) -> str:
 cache = Cache()
 
 
-def home():
+def home() -> Response:
     return make_response(render_template(
         'index.html',
         categories=CATEGORY_CARD_NAMES,
@@ -63,7 +64,7 @@ def _rank_to_display_string(rank: int) -> str:
 
 
 @cache.cached()  # one day timeout
-def leaderboard():
+def leaderboard() -> Response:
     try:
         # setup request prerequisites
         auth_token = current_app.config['GITHUB_AUTH_TOKEN']
@@ -135,7 +136,7 @@ def leaderboard():
 
 
 # Route for fetching autocomplete suggestions
-def autocomplete():
+def autocomplete() -> Response:
     query = request.args.get('query', '').lower()
     limit = request.args.get('limit', 10)
     result_substance_names = set(SUBSTANCE_TRIE.search_substring(query))
@@ -151,34 +152,32 @@ def autocomplete():
 
 
 # Route for displaying substance information using slugified names
-def substance(slug):
+def substance(slug: str) -> Response:
     is_valid_slug, slug_validation_error_mesage = validate_slug(slug)
     if (not is_valid_slug):
-        return slug_validation_error_mesage, 400
+        return make_response(slug_validation_error_mesage, 400)
 
     decoded_slug = unquote(slug)
     substance_name = SLUG_TO_SUBSTANCE_NAME.get(decoded_slug.lower(), '')
     substance_data = SUBSTANCE_DATA.get(substance_name, None)
 
     if substance_data is None:
-        return "Substance not found", 404
+        return make_response("Substance not found", 404)
 
-    # Clean the substance data to remove None values
-    cleaned_substance_data = clean_data(substance_data)
-    return render_template(
+    return make_response(render_template(
         'substance.html',
-        substance=cleaned_substance_data,
+        substance=substance_data,
         svg_files=SVG_FILES,
         theme=_fetch_theme(request)
-    )
+    ))
 
 
 # Route for displaying substances in a category
-def category(category_slug):
+def category(category_slug: str) -> Response:
     # Add validation before processing
     is_valid_slug, slug_validation_error_mesage = validate_slug(category_slug)
     if (not is_valid_slug):
-        return slug_validation_error_mesage, 400
+        return make_response(slug_validation_error_mesage, 400)
 
     decoded_slug = unquote(category_slug).lower()
 
@@ -192,7 +191,7 @@ def category(category_slug):
     # Get the original category name
     category_name = category_name_mapping.get(decoded_slug)
     if not category_name:
-        return "Category not found", 404
+        return make_response("Category not found", 404)
 
     # Filter substances that belong to the category
     filtered_substances = {}
@@ -201,11 +200,11 @@ def category(category_slug):
             filtered_substances[substance_name] = details
 
     if not filtered_substances:
-        return "Category not found", 404
+        return make_response("Category not found", 404)
 
-    return render_template(
+    return make_response(render_template(
         'category.html',
         category_name=category_name,
         substances=filtered_substances,
         theme=_fetch_theme(request)
-    )
+    ))

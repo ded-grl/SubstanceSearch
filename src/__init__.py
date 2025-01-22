@@ -7,7 +7,7 @@ from src.config import DefaultConfig
 from re import match
 
 
-def create_app():
+def create_app() -> Flask:
     app = Flask(__name__)
     app.config.from_object(DefaultConfig)
 

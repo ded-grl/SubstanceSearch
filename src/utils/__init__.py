@@ -1,8 +1,9 @@
 import unicodedata
 import re
+from typing import Tuple
 
 
-def validate_slug(slug: str) -> (bool, str):
+def validate_slug(slug: str) -> Tuple[bool, str]:
     """
     Validates a slug against length and format.
     If invalid, returns False and an error message.
@@ -36,14 +37,3 @@ def slugify(value: object) -> str:
         return ''
 
     return value
-
-
-def clean_data(data):
-    """
-    Recursively clean the data to remove None or undefined values.
-    """
-    if isinstance(data, dict):
-        return {k: clean_data(v) for k, v in data.items() if v is not None}
-    elif isinstance(data, list):
-        return [clean_data(v) for v in data if v is not None]
-    return data

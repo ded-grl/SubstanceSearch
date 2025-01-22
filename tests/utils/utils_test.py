@@ -1,4 +1,4 @@
-from src.utils import validate_slug, slugify, clean_data
+from src.utils import validate_slug, slugify
 
 
 class TestUtilsClass:
@@ -30,9 +30,3 @@ class TestUtilsClass:
         expected_slug = ''
 
         assert expected_slug == slugify(unormalized_str)
-
-    def test_clean_data(self):
-        data = {'k1': ['v1', 'v2', None], 'k2': {'k21': None, 'k22': 'v22'}}
-        expected_data = {'k1': ['v1', 'v2'], 'k2': {'k22': 'v22'}}
-
-        assert expected_data == clean_data(data)
