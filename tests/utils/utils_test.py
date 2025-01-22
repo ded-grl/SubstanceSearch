@@ -30,3 +30,9 @@ class TestUtilsClass:
         expected_slug = ''
 
         assert expected_slug == slugify(unormalized_str)
+
+    def test_slugify_encoding(self):
+        unormalized_str = 'α-pbp'
+        expected_slug = 'a-pbp'
+
+        assert expected_slug == slugify(unormalized_str)

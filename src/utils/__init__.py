@@ -1,4 +1,5 @@
 import unicodedata
+import unidecode
 import re
 from typing import Tuple
 
@@ -28,7 +29,7 @@ def slugify(value: object) -> str:
     """
     value = str(value)
     value = unicodedata.normalize('NFKD', value)
-    value = value.encode('ascii', 'ignore').decode('ascii')
+    value = unidecode.unidecode(value)
     value = re.sub(r'[^\w\s-]', '', value).strip().lower()
     value = re.sub(r'[-\s]+', '-', value)
 

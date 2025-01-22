@@ -1,5 +1,7 @@
 import pytest
 from src import create_app
+from src.data import SUBSTANCE_DATA
+from src.utils import slugify
 
 
 class TestAppClass:
@@ -20,9 +22,11 @@ class TestAppClass:
         response = client.get("/")
         assert response.status_code == 200
 
-    def test_substance_endpoint_sccuess(self, client):
-        response = client.get("/substance/alcohol")
-        assert response.status_code == 200
+    @pytest.mark.parametrize('substance_name', SUBSTANCE_DATA.keys())
+    def test_substance_endpoint_sccuess(self, client, substance_name):
+        slug = slugify(substance_name)
+        response = client.get(f"/substance/{slug}")
+        assert response.status_code == 200, f"Error rendering route[/substance/{slug}]"
 
     def test_substance_endpoint_failure(self, client):
         response = client.get("/substance/NON-EXISTENT-SUBSTANCE")
