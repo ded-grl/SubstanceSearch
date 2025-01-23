@@ -1,6 +1,6 @@
 ## Overview
 
-What's being addresed in this PR? If there are [associated issues](https://github.com/ded-grl/SubstanceSearch/issues), please link to them here.
+What's being addressed in this PR? If there are [associated issues](https://github.com/ded-grl/SubstanceSearch/issues), please link to them here.
 
 ## Changes
 

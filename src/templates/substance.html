@@ -23,7 +23,7 @@
             <h2>Categories </h2>
             <p>
                 {% for category in substance.categories %}
-                <a href="/category/{{ category|lower }}" class="category-link" style="background-color: {{ category_colors.get(category.lower(), '#7a7878') }}">
+                <a href="/category/{{ category|lower }}" class="category-link" style="background-color: var(--category-{{ category|lower }})">
                     {{ category }}
                 </a>
                 {% endfor %}
@@ -813,20 +813,19 @@
       <button class="collapsible">🔗 Sources</button>
       <div class="content sources-section">
         <ul>
-					{% set rgx = '^(.*) - (https?:\/\/.+)$' %}
           {% for source in substance['sources']['_general'] %}
-						{% if source|regex_match(rgx) %}
-							{% set parts = source|regex_match(rgx) %}
-							<li>
-									<a href="{{ parts[1] }}" target="_blank">{{ parts[0] }}</a>
-							</li>
-						{% elif source.startswith('http') %}
-							<li>
-									<a href="{{ source }}" target="_blank">{{ source }}</a>
-							</li>
-						{% else %}
-							<li>{{ source }}</li>
-						{% endif %}
+            {% set parts = match('^(.*) - (https?://.+)$', source) %}
+            {% if parts %}
+                <li>
+                        <a href="{{ parts[2] }}" rel="noopener noreferrer" target="_blank">{{ parts[1] }}</a>
+                </li>
+            {% elif match('^https?://', source) %}
+                <li>
+                        <a href="{{ source }}" rel="noopener noreferrer" target="_blank">{{ source }}</a>
+                </li>
+            {% else %}
+                <li>{{ source }}</li>
+            {% endif %}
           {% endfor %}
         </ul>
       </div>
