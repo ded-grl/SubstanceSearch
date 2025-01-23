@@ -61,21 +61,44 @@ Follow these instructions to run the app locally on your machine.
     Ensure your project folder is structured like this:
     ```
     SubstanceSearch/
+    ├── .github/
+    │   ├── ISSUE_TEMPLATE/
+    │   │   └── ...
+    │   ├── workflows/
+    │   │   └── ...
+    │   └── pull_request_template.md
+    ├── data/
+    │   ├── final_updated_drugs.json
+    │   ├── leaderboard.csv
+    │   └── ...
+    ├── src/
+    │   ├── static/
+    │   │   ├── css/
+    │   │   │   ├── style.css
+    │   │   │   └── ...
+    │   │   ├── js/
+    │   │   │   └── ...
+    │   │   ├── svg/
+    │   │   │   └── ...
+    │   │   ├── favicon.ico
+    │   │   └── ...
+    │   ├── templates/
+    │   │   ├── layout.html
+    │   │   └── ...
+    │   ├── utils/
+    │   │   └── ...
+    │   ├── __init__.py
+    │   ├── config.py
+    │   ├── data.py
+    │   ├── view.spy
+    │   └── ...
+    ├── tests/
+    │   └── ...
     ├── app.py
     ├── requirements.txt
-    ├── data/
-    │  ├── final_updated_drugs.json
-    │  └── leaderboard.csv
-    ├── templates/
-    │   ├── index.html
-    │   ├── leaderboard.html
-    │   ├── category.html
-    │   └── substance.html
-    └── static/
-        ├── styles.css
-        ├── favicon.ico
-        ├── SubstanceSearchPill.png
-        └── autocomplete.js
+    ├── README.md
+    ├── CONTRIBUTING.md
+    └── .gitignore
     ```
 
 ---
