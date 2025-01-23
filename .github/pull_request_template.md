@@ -16,7 +16,7 @@ How were these changes tested? Please include relevant testing logs or screensho
 
 ## Additional Notes
 
-Is there any other relevant context that reviewers should know about?.
+Is there any other relevant context that reviewers should know about?
 
 ## Checklist
 

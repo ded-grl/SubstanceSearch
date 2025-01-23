@@ -37,3 +37,6 @@ jobs:
         
       - name: Security check with Bandit
         run: bandit -r . 
+
+      - name: Run Pytest
+        run: pytest
