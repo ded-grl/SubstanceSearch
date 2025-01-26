@@ -68,7 +68,7 @@ Follow these instructions to run the app locally on your machine.
     │   │   └── ...
     │   └── pull_request_template.md
     ├── data/
-    │   ├── final_updated_drugs.json
+    │   ├── tripsit.json
     │   ├── leaderboard.csv
     │   └── ...
     ├── src/

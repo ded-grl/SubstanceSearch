@@ -1,7 +1,7 @@
 import re
 import json
 
-with open('final_updated_drugs.json', 'r', encoding='utf8') as f:
+with open('tripsit.json', 'r', encoding='utf8') as f:
 		drugs = json.load(f)
 
 for drug in drugs:
