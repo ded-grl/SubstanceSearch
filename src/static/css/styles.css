@@ -411,3 +411,18 @@ input[type="text"]::placeholder {
 		grid-template-columns: repeat(2, fit-content(100%));
 	}
 }
+
+.substance-svg {
+	width: 250px;
+	height: 250px;
+	object-fit: contain;
+	background-color: transparent;
+	mix-blend-mode: multiply;
+	filter: brightness(1.1);
+}
+
+/* Invert SVG colors in dark mode */
+body.dark .substance-svg {
+	mix-blend-mode: screen;
+	filter: invert(1) hue-rotate(180deg);
+}
