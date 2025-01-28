@@ -21,6 +21,21 @@ body.dark {
 	--chart-grid-line: rgb(51, 51, 51, 75%);
 }
 
+.substance-svg {
+	width: 250px;
+	height: 250px;
+	object-fit: contain;
+	background-color: transparent;
+	mix-blend-mode: multiply;
+	filter: brightness(1.1);
+}
+
+/* Invert SVG colors in dark mode */
+body.dark .substance-svg {
+	mix-blend-mode: screen;
+	filter: invert(1) hue-rotate(180deg);
+}
+
 /* Title and headings */
 h1 {
 	font-size: 2.5rem;

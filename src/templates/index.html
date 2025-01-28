@@ -1,9 +1,23 @@
 {% extends "layout.html" %}
 
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="/static/css/index.css">
+{% endblock %}
+
 {% block header %}
-    <h1 style="padding-bottom: 15px;"><span role="img" aria-label="search icon" style="padding-right: 10px;">🔍</span><span>Substance Search</span></h1>
-    <input type="text" id="search" placeholder="Search for a substance..." autocomplete="off">
-    <ul id="suggestions"></ul>
+<div class="header-container">
+    <h1>Substance Search</h1>
+    <div class="settings-container">
+        <button class="nav-link" id="theme-toggle" onclick="toggleTheme()">
+            <!-- Icons from https://lucide.dev/ -->
+            <svg class="theme-icon" id="theme-icon-sun" style="display: none" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            <svg class="theme-icon" id="theme-icon-moon" style="display: none" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </button>
+    </div>
+</div>
+<input type="text" id="search" placeholder="Search for a substance..." autocomplete="off">
+<ul id="suggestions"></ul>
 {% endblock %}
 
 {% block content %}
@@ -45,5 +59,19 @@
             {% endfor %}
         </div>
     </section>
+{% endblock %}
+
+{% block footer %}
+<div class="footer-container">
+    <div class="footer-block">
+        <h2>Want to contribute?</h2>
+        <ul>
+            <li><a href="https://discord.gg/wFPB9xYRBN" rel="noopener" target="_blank">Join our Discord</a></li>
+            <li><a href="/leaderboard">Contributors</a></li>
+            <li><a href="https://github.com/ded-grl/SubstanceSearch">GitHub</a></li>
+        </ul>
+    </div>
+</div>
+<p class="tripsit-notice">💕Data provided by <a href="https://tripsit.me" target="_blank" rel="noopener"><img src="https://tripsit.me/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.081b8d2e.png&w=3840&q=75" alt="TripSit Home Page"></img></a>💕</p>
 {% endblock %}
 

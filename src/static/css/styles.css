@@ -254,54 +254,6 @@ input[type="text"]::placeholder {
 	color: var(--text-placeholder);
 }
 
-.categories h2 {
-	text-align: center;
-	font-size: 2rem;
-	margin-bottom: 20px;
-	color: var(--text-alt);
-}
-
-.category-grid {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr); /* 4 buttons per row */
-	gap: 20px 10px; /* Reduced horizontal gap (10px) and kept the vertical gap at 20px */
-	justify-items: center;
-	justify-content: center;
-	margin: 0 auto; /* Center the grid */
-}
-
-.category-card {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: var(--background-darker);
-	border-radius: 10px;
-	padding: 15px 10px;
-	text-align: center;
-	font-size: 16px;
-	font-weight: bold;
-	text-decoration: none;
-	color: #333;
-	transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-	box-shadow: 0 4px 8px var(--shadow);
-	width: 200px; /* Keeping the button width intact */
-	height: 100px;
-	box-sizing: border-box;
-}
-
-.category-card:hover {
-	background-color: var(--background-hover);
-	transform: translateY(-5px);
-	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.category-name {
-	font-size: 18px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
 .footer-container {
 	display: flex;
 	flex-direction: row;
@@ -354,20 +306,12 @@ input[type="text"]::placeholder {
 }
 
 @media (max-width: 1200px) {
-	.category-grid {
-		grid-template-columns: repeat(3, 1fr); /* 3 buttons per row for medium screens */
-	}
-
 	.footer-block ul {
 		grid-template-columns: repeat(2, fit-content(100%));
 	}
 }
 
 @media (max-width: 768px) {
-	.category-grid {
-		grid-template-columns: repeat(2, 1fr); /* 2 buttons per row for smaller screens */
-	}
-
 	h1 {
 		font-size: 2rem;
 	}
@@ -389,40 +333,14 @@ input[type="text"]::placeholder {
 		display: none;
 	}
 
-	.categories h2 {
-		font-size: 1.5rem;
-	}
-
 	.footer-block ul {
 		grid-template-columns: repeat(4, fit-content(100%));
 	}
 }
 
 @media (max-width: 480px) {
-	.category-grid {
-		grid-template-columns: repeat(1, 1fr); /* 1 button per row for very small screens */
-	}
-
-	.category-card {
-		width: 100%; /* Full width for small screens */
-	}
-
 	.footer-block ul {
 		grid-template-columns: repeat(2, fit-content(100%));
 	}
 }
 
-.substance-svg {
-	width: 250px;
-	height: 250px;
-	object-fit: contain;
-	background-color: transparent;
-	mix-blend-mode: multiply;
-	filter: brightness(1.1);
-}
-
-/* Invert SVG colors in dark mode */
-body.dark .substance-svg {
-	mix-blend-mode: screen;
-	filter: invert(1) hue-rotate(180deg);
-}
