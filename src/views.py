@@ -208,3 +208,10 @@ def category(category_slug: str) -> Response:
         substances=filtered_substances,
         theme=_fetch_theme(request)
     ))
+
+
+def disclaimer() -> Response:
+    return make_response(render_template(
+        'disclaimer.html',
+        theme=_fetch_theme(request)
+    ))
