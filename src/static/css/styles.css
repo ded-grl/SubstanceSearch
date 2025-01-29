@@ -344,3 +344,17 @@ input[type="text"]::placeholder {
 	}
 }
 
+.disclaimer-container {
+    color: var(--text);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.disclaimer-container h1,
+.disclaimer-container h2,
+.disclaimer-container p,
+.disclaimer-container .notice,
+.disclaimer-container .footer {
+    color: var(--text);
+}
