@@ -2,7 +2,7 @@ from flask import Flask
 from flask_minify import Minify
 from flask_cors import CORS
 from src.utils import slugify
-from src.views import cache, home, leaderboard, autocomplete, substance, category, disclaimer
+from src.views import cache, home, leaderboard, autocomplete, substance, category
 from src.config import DefaultConfig
 from re import match
 
@@ -34,6 +34,5 @@ def create_app() -> Flask:
     app.add_url_rule("/autocomplete", view_func=autocomplete)
     app.add_url_rule("/substance/<path:slug>", view_func=substance)
     app.add_url_rule("/category/<path:category_slug>", view_func=category)
-    app.add_url_rule("/disclaimer", view_func=disclaimer)
 
     return app
