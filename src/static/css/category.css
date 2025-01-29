@@ -54,21 +54,6 @@ h1 {
 	color: #2980b9;
 }
 
-.back-button {
-	display: inline-block;
-	padding: 10px 20px;
-	background-color: #3498db;
-	color: white;
-	text-decoration: none;
-	border-radius: 5px;
-	transition: background-color 0.3s ease;
-	text-align: center;
-	margin-top: 20px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-}
-
 @media (max-width: 480px) {
 	h1 {
 		font-size: 2rem;
@@ -76,10 +61,5 @@ h1 {
 
 	.substance-name {
 		font-size: 16px;
-	}
-
-	.back-button {
-		width: 100%;
-		padding: 15px;
 	}
 }
