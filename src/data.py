@@ -18,7 +18,7 @@ def _validate_substance_data(substance_data: Dict) -> None:
 
 
 def _init_substance_data() -> Dict:
-    path = os.path.join('data', 'final_updated_drugs.json')
+    path = os.path.join('data', 'tripsit.json')
     assert os.path.exists(
         path), 'Error loading substance data. Unable to find data source file.'
 

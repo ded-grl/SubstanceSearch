@@ -26,9 +26,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./data/final_validated_drugs.json
-          key: json-validation-${{ hashFiles('./data/final_updated_drugs.json') }}
+          key: json-validation-${{ hashFiles('./data/tripsit.json') }}
           restore-keys: |
-            json-validation-${{ hashFiles('./data/final_updated_drugs.json') }}
+            json-validation-${{ hashFiles('./data/tripsit.json') }}
 
       - name: Validate JSON
         id: validate
@@ -36,7 +36,7 @@ jobs:
         uses: sergeysova/jq-action@v2
         with:
           cmd: |
-            jq -r . ./data/final_updated_drugs.json > ./data/final_validated_drugs.json
+            jq -r . ./data/tripsit.json > ./data/final_validated_drugs.json
           multiline: true
 
       - name: Print formatted JSON data
