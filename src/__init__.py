@@ -1,10 +1,12 @@
-from flask import Flask
-from flask_minify import Minify
-from flask_cors import CORS
-from src.utils import slugify
-from src.views import cache, home, leaderboard, autocomplete, substance, category
-from src.config import DefaultConfig
 from re import match
+
+from flask import Flask
+from flask_cors import CORS
+from flask_minify import Minify
+
+from src.config import DefaultConfig
+from src.utils import slugify
+from src.views import autocomplete, cache, category, home, leaderboard, substance
 
 
 def create_app() -> Flask:
@@ -14,13 +16,16 @@ def create_app() -> Flask:
     # override config with any environment variables prefixed with `FLASK_`
     app.config.from_prefixed_env()
 
-    CORS(app, resources={
-        r"/autocomplete": {
-            "origins": app.config['CORS_ORIGINS'],
-            "methods": ["GET"],
-            "allow_headers": ["Content-Type"]
-        }
-    })
+    CORS(
+        app,
+        resources={
+            r"/autocomplete": {
+                "origins": app.config["CORS_ORIGINS"],
+                "methods": ["GET"],
+                "allow_headers": ["Content-Type"],
+            }
+        },
+    )
     Minify(app=app, html=True, js=True, cssless=True)
 
     cache.init_app(app, config={"CACHE_TYPE": "SimpleCache"})

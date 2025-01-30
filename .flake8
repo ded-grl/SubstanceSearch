@@ -1,0 +1,10 @@
+[flake8]
+exclude =
+    .git
+    .github
+    __pycache__
+    pytest_cache
+    .venv
+# conform with black specification
+max-line-length = 88
+extend-ignore = E203,E701

@@ -1,7 +1,8 @@
-import unicodedata
-import unidecode
 import re
+import unicodedata
 from typing import Tuple
+
+import unidecode
 
 
 def validate_slug(slug: str) -> Tuple[bool, str]:
@@ -16,7 +17,7 @@ def validate_slug(slug: str) -> Tuple[bool, str]:
         return False, "Invalid slug length"
 
     # Validate slug format
-    if not re.match(r'^[a-zA-Z0-9-]+$', slug):
+    if not re.match(r"^[a-zA-Z0-9-]+$", slug):
         return False, "Invalid slug format"
 
     return True, ""
@@ -28,13 +29,13 @@ def slugify(value: object) -> str:
     Only allows alphanumeric characters and single hyphens.
     """
     value = str(value)
-    value = unicodedata.normalize('NFKD', value)
+    value = unicodedata.normalize("NFKD", value)
     value = unidecode.unidecode(value)
-    value = re.sub(r'[^\w\s-]', '', value).strip().lower()
-    value = re.sub(r'[-\s]+', '-', value)
+    value = re.sub(r"[^\w\s-]", "", value).strip().lower()
+    value = re.sub(r"[-\s]+", "-", value)
 
     # Additional validation to prevent empty or malicious slugs
-    if not value or value.startswith('-') or value.endswith('-'):
-        return ''
+    if not value or value.startswith("-") or value.endswith("-"):
+        return ""
 
     return value
