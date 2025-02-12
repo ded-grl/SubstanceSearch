@@ -1,0 +1,35 @@
+h1 {
+    text-align: center;
+}
+
+main h2 {
+    border-bottom: 2px solid var(--text-alt);
+    padding-bottom: 0.5rem;
+}
+
+p {
+    padding: 1rem 0;
+}
+
+.notice {
+    padding: 1.5rem;
+    background-color: #fff3cd;
+    border-left: 0.75rem solid #ffcc00;
+    margin: 2.5rem 0;
+}
+
+.dark .notice {
+    background-color: #cc8800;
+    border-color: #ccc1ab;
+}
+
+.notice .bold {
+    font-weight: bold;
+}
+
+.last-updated {
+    text-align: center;
+    font-size: 1rem;
+    color: var(--text-alt);
+    margin: 2rem 0 0 0;
+}
