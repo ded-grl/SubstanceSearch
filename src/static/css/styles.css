@@ -78,6 +78,7 @@ body.dark {
 body {
 	font-family: "Helvetica Neue", sans-serif;
 	background-color: var(--background);
+    color: var(--text);
 	margin: 0;
 	padding: 0;
 }
@@ -99,6 +100,10 @@ header > h1 {
 main {
 	margin-bottom: auto;
 	flex-grow: 1;
+}
+
+p {
+    line-height: 1.6;
 }
 
 /* Header styles */
@@ -160,12 +165,12 @@ main {
 	content: "💻";
 }
 
-#leaderboard-link {
+#disclaimer-link {
 	background-color: #9185b5;
 }
 
-#leaderboard-link::after {
-	content: "🏆";
+#disclaimer-link::after {
+	content: "🗒️";
 }
 
 #theme-toggle {
@@ -329,7 +334,7 @@ input[type="text"]::placeholder {
 		display: none;
 	}
 
-	#leaderboard-link {
+	#disclaimer-link {
 		display: none;
 	}
 
