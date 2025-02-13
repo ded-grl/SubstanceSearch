@@ -47,17 +47,36 @@ Follow these instructions to run the app locally on your machine.
      pip --version
      ```
 
+3. **Git**: Install Git [here](https://git-scm.com/downloads).
+    - Verify the installation by running:
+    ```bash
+    git --version
+    ```
+
 ---
 
 ### **Installation**
 
-1. **Install Required Libraries**
+1. **Clone the package**
+    Run the following command to clone the repository and change the working directory to the repo.
+    ```bash
+    git clone https://github.com/ded-grl/SubstanceSearch.git && cd SubstanceSearch
+    ```
+
+2. **Create Virtual Environment**
+    Create a virtual environment with
+    ```bash
+    python3 -m venv .venv
+    ```
+    and activate it with [the command that corresponds to your operating system and shell](https://docs.python.org/3/library/venv.html#how-venvs-work).
+
+3. **Install Required Libraries**
     Run the following command to install all dependencies:
     ```bash
     pip install -r requirements.txt
     ```
 
-2. **Directory Structure**
+4. **Directory Structure**
     Ensure your project folder is structured like this:
     ```
     SubstanceSearch/
@@ -105,13 +124,19 @@ Follow these instructions to run the app locally on your machine.
 
 ### **Running the App**
 
-1. **Start the Flask Server**
+1. **Activate the Virtual Environment**
+    Run the command to [activate the virtual environment](https://docs.python.org/3/library/venv.html#how-venvs-work). For `bash` or `zsh`, run
+    ```bash
+    source .venv/bin/activate
+    ```
+
+2. **Start the Flask Server**
     Navigate to the project directory and run:
     ```bash
     python app.py
     ```
 
-2. **Access the App**
+3. **Access the App**
     Open your browser and visit:
     ```
     http://127.0.0.1:5000/
