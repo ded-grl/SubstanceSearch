@@ -667,9 +667,15 @@
     {% endif %}
 
     <!-- Helpful Links Section -->
-    {% if substance.get('links') %}
-        <h2>Helpful Links</h2>
-        <div class="links-container">
+	<h2>Helpful Links</h2>
+
+	<div class="links-container">
+		<a href="https://www.drugs.com/imprints.php?action=search&drugname={{ substance.name|urlencode }}" class="modern-link" target="_blank">
+		💊 Pill Identifier
+		</a>
+    	{% if substance.get('links') %}
+        
+        
         {% if substance['links'].get('experiences') %}
             <a href="{{ substance['links']['experiences'] }}" class="modern-link" target="_blank">
             📘 Experience Reports
@@ -685,8 +691,11 @@
             📚 TiHKAL
             </a>
         {% endif %}
-        </div>
+
+        
     {% endif %}
+	</div>
+</div>
 
     <!-- Known Combinations Section -->
     {% if substance.get('combos') %}
