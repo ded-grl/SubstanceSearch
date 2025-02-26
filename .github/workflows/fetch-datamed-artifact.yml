@@ -17,9 +17,11 @@ jobs:
         run: mkdir -p data/datamed
         
       - name: Get latest artifact
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           # Get the latest artifact ID
-          ARTIFACT_ID=$(curl -s \
+          ARTIFACT_ID=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
             "https://api.github.com/repos/57/datamed/actions/artifacts" \
             | jq '.artifacts[0].id')
           
@@ -29,7 +31,7 @@ jobs:
           fi
           
           # Download the artifact
-          curl -L \
+          curl -L -H "Authorization: Bearer $GITHUB_TOKEN" \
             "https://api.github.com/repos/57/datamed/actions/artifacts/$ARTIFACT_ID/zip" \
             --output artifact.zip
           
