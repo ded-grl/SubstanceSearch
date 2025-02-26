@@ -23,7 +23,7 @@ Visit the [Discord Server](https://discord.gg/wFPB9xYRBN) to get started and sel
 3. **Contribute**: Join our community to submit resources, give feedback, or contribute code.
 
 ## Acknowledgments
-- 💕 **Data Powered by TripSit**: Leveraging TripSit's expertise to enhance the quality and reliability of our substance information.
+- 💕 **Data Powered by TripSit and PsychonautWiki**: See more information about data collection [here](https://github.com/57/datamed)
 - 🌟 Supported by an amazing community of harm reduction advocates and contributors.
 
 **Website**: [SubstanceSearch.org](https://substancesearch.org)  
