@@ -3,6 +3,7 @@ from flask_minify import Minify
 from flask_cors import CORS
 from src.utils import slugify
 from src.views import cache, home, leaderboard, autocomplete, substance, category, disclaimer
+from src.api import api_substance, api_substance_source
 from src.config import DefaultConfig
 from re import match
 
@@ -16,6 +17,11 @@ def create_app() -> Flask:
 
     CORS(app, resources={
         r"/autocomplete": {
+            "origins": app.config['CORS_ORIGINS'],
+            "methods": ["GET"],
+            "allow_headers": ["Content-Type"]
+        },
+        r"/api/*": {
             "origins": app.config['CORS_ORIGINS'],
             "methods": ["GET"],
             "allow_headers": ["Content-Type"]
@@ -35,5 +41,9 @@ def create_app() -> Flask:
     app.add_url_rule("/substance/<path:slug>", view_func=substance)
     app.add_url_rule("/category/<path:category_slug>", view_func=category)
     app.add_url_rule("/disclaimer", view_func=disclaimer)
+
+    # register API routes
+    app.add_url_rule("/api/substance/<path:slug>", view_func=api_substance)
+    app.add_url_rule("/api/substance/<path:slug>/<source>", view_func=api_substance_source)
 
     return app
