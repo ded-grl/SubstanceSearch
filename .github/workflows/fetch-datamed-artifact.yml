@@ -1,6 +1,9 @@
 name: Fetch Datamed Artifact
 
 on:
+  push:
+    branches:
+      - "57/datamed"
   workflow_dispatch:  # Manual trigger
   schedule:
     - cron: '0 0 * * *'  # Run daily at midnight UTC
