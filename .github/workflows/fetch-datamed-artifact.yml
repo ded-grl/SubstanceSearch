@@ -1,12 +1,9 @@
 name: Fetch Datamed Artifact
 
 on:
-  push:
-    branches:
-      - "57/datamed"
   workflow_dispatch:  # Manual trigger
   schedule:
-    - cron: '0 0 * * *'  # Run daily at midnight UTC ddd
+    - cron: '0 0 * * *'  # Run daily at midnight UTC
 
 permissions:
   contents: write
@@ -50,5 +47,5 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/datamed/
-          git commit -m "Update datamed data from latest artifact" || echo "No changes to commit"
+          git commit -m "data: update datamed artifact" || echo "No changes to commit"
           git push 
