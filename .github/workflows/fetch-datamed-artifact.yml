@@ -8,6 +8,9 @@ on:
   schedule:
     - cron: '0 0 * * *'  # Run daily at midnight UTC ddd
 
+permissions:
+  contents: write
+
 jobs:
   fetch-artifact:
     runs-on: ubuntu-latest
