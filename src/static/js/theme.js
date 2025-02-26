@@ -6,9 +6,14 @@ const THEME_CFG = {
 	}),
 };
 
+const cookies = Cookies.withAttributes({
+	expires: 365,
+	secure: window.location.protocol === "https:",
+	sameSite: "strict",
+})
+
 function fetchTheme() {
-    console.log(Cookies.get());
-	let theme = Cookies.get(THEME_CFG.COOKIE_NAME);
+	let theme = cookies.get(THEME_CFG.COOKIE_NAME);
 	if (theme) {
 		// if user has theme cookie set but it's not in the
 		// accepted list, default to the first theme in the list
@@ -20,7 +25,6 @@ function fetchTheme() {
 
 		return theme;
 	}
-    console.log('Theme not in cookie')
 
 	// check if user has dark mode enabled
 	if (window.matchMedia?.("(prefers-color-scheme: dark)")?.matches) {
@@ -36,8 +40,7 @@ function setTheme(theme) {
 		theme = THEME_CFG.ACCEPTED.Light;
 	}
 
-	Cookies.set(THEME_CFG.COOKIE_NAME, theme);
-    console.log(`cookies set: ${theme}`)
+	cookies.set(THEME_CFG.COOKIE_NAME, theme);
 
 	updateBodyTheme(theme);
 	updateThemeToggle(theme);
@@ -45,12 +48,10 @@ function setTheme(theme) {
 
 function toggleTheme() {
 	const theme = fetchTheme();
-    console.log(`Old theme: ${theme}`)
 	const newTheme =
 		theme === THEME_CFG.ACCEPTED.Light
 			? THEME_CFG.ACCEPTED.Dark
 			: THEME_CFG.ACCEPTED.Light;
-    console.log(`New theme: ${newTheme}`)
 
 	setTheme(newTheme);
 }
