@@ -9,850 +9,1628 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Substance Name -->
-    <h1>{{ substance.pretty_name }}</h1>
-
-    <!-- Aliases Section -->
-    {% if substance.get('aliases') %}
-        <p><strong>Aliases:</strong> {{ ', '.join(substance.get('aliases', [])) }}</p>
-    {% endif %}
-
-    <!-- Categories Section -->
-    <div class="substance-header">
-        <div class="substance-info">
-            <h2>Categories </h2>
-            <p>
-                {% for category in substance.categories %}
-                <a href="/category/{{ category|lower }}" class="category-link" style="background-color: var(--category-{{ category|lower }})">
-                    {{ category }}
-                </a>
-                {% endfor %}
-            </p>
+    <div class="substance-page">
+        <!-- Header Row -->
+        <div class="page-header">
+            <h1>{{ substance.pretty_name }}</h1>
+            
+            <!-- Data Source Switcher -->
+            <div class="data-source-switcher">
+                <label for="data-source">Data Source</label>
+                <select id="data-source" onchange="switchDataSource(this.value)">
+                    {% for source in available_sources %}
+                    <option value="{{ source }}" {% if source == current_source %}selected{% endif %}>
+                        {{ source|title }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
 
-        {% if substance.name + '.svg' in svg_files %}
-        <img src="/static/svg/{{ substance.name }}.svg" alt="{{ substance.pretty_name }} structure" class="substance-svg">
+        <!-- Aliases Section -->
+        {% if substance.get('aliases') %}
+            <p><strong>Aliases:</strong> {{ ', '.join(substance.get('aliases', [])) }}</p>
+        {% endif %}
+
+        <div class="substance-header">
+            <div class="substance-info">
+                <h2>Categories</h2>
+                <div class="category-list">
+                    {% if substance.categories and substance.categories|length > 0 %}
+                        {% for category in substance.categories %}
+                        <a href="/category/{{ category|lower }}" class="category-link" style="background-color: var(--category-{{ category|lower }})">
+                            {{ category }}
+                        </a>
+                        {% endfor %}
+                    {% else %}
+                        <p class="no-data-message">No category data available from {{ current_source|title }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if substance.name|lower + '.svg' in svg_files %}
+            <img src="/static/svg/{{ substance.name|lower }}.svg" alt="{{ substance.name }} structure" class="substance-svg">
+            {% endif %}
+        </div>
+
+        <!-- Summary -->
+        {% if substance.get('properties', {}).get('summary') %}
+            <h2>Summary</h2>
+            <p>{{ substance['properties']['summary'] }}</p>
+        {% endif %}
+
+        {% if substance.get('dosage') %}
+            <!-- Dose Information -->
+            <div class="dose-info-container">
+                <!-- WARNING Banner -->
+                {% if substance['properties'].get('warning') or substance['properties'].get('avoid') %}
+                    <div class="warning-banner">
+                    {% if substance['properties'].get('warning') %}
+                        ⚠️ WARNING: {{ substance['properties']['warning'] }}
+                    {% endif %}
+                    {% if substance['properties'].get('avoid') %}
+                        ⚠️ AVOID: {{ substance['properties']['avoid'] }}
+                    {% endif %}
+                    </div>
+                {% endif %}
+
+                <!-- NOTE Banner -->
+                {% if substance['properties'].get('note') %}
+                    <div class="note-banner">
+                        ⚠️ {{ substance['properties']['note'] }}
+                    </div>
+                {% endif %}
+
+                <!-- Dosage Chart and Table Section -->
+                <h2>Dose Information</h2>
+                <div class="chart-table-container">
+                    <div class="chart-container">
+                        <canvas id="doseChart" style="max-height: 250px; width: 100%;"></canvas>
+                        <div id="doseLegend" class="dose-legend"></div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead id="doseTableHead"></thead>
+                            <tbody id="doseTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <!-- Onset, Duration & After-effects -->
+        <div class="onset-duration-container">
+            <div class="onset-duration-box">
+            <h2>Onset, Duration & After-effects</h2>
+            <ul>
+                {% if substance.get('timing', {}).get('onset') %}
+                <li><strong>Onset:</strong>
+                    <ul>
+                        {% if substance['timing']['onset'].get('value') %}
+                        <li>{{ substance['timing']['onset']['value']['value'] }} {{ substance['timing']['onset']['value'].get('unit', '') }}</li>
+                        {% else %}
+                            {% for roa, data in substance['timing']['onset'].items() %}
+                                {% if roa != 'value' %}
+                                <li><strong>{{ roa|title }}:</strong> {{ data['value'] }} {{ data.get('unit', '') }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if substance.get('timing', {}).get('duration') %}
+                <li><strong>Duration:</strong>
+                    <ul>
+                        {% if substance['timing']['duration'].get('value') %}
+                        <li>{{ substance['timing']['duration']['value']['value'] }} {{ substance['timing']['duration']['value'].get('unit', '') }}</li>
+                        {% else %}
+                            {% for roa, data in substance['timing']['duration'].items() %}
+                                {% if roa != 'value' %}
+                                <li><strong>{{ roa|title }}:</strong> {{ data['value'] }} {{ data.get('unit', '') }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if substance.get('timing', {}).get('aftereffects') %}
+                <li><strong>After-effects:</strong>
+                    <ul>
+                        {% if substance['timing']['aftereffects'].get('value') %}
+                        <li>{{ substance['timing']['aftereffects']['value']['value'] }} {{ substance['timing']['aftereffects']['value'].get('unit', '') }}</li>
+                        {% else %}
+                            {% for roa, data in substance['timing']['aftereffects'].items() %}
+                                {% if roa != 'value' %}
+                                <li><strong>{{ roa|title }}:</strong> {{ data['value'] }} {{ data.get('unit', '') }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+            </div>
+
+            <!-- Time Course Graph -->
+            {% if substance.get('timing') %}
+            <div class="time-course-container">
+                <div class="chart-container">
+                    <canvas id="timeChart" style="max-height: 250px; width: 100%;"></canvas>
+                    <div id="timeLegend" class="time-legend"></div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Effects Section -->
+        {% if substance.get('effects') or substance.get('effects_detailed') %}
+            <h2>Effects</h2>
+            <div class="effects-box">
+                <ul>
+                    {% if substance.get('effects_detailed') %}
+                        {% for effect in substance['effects_detailed'] %}
+                            <li>
+                                {% if effect.url %}
+                                    <a href="{{ effect.url }}" target="_blank" rel="noopener noreferrer">{{ effect.name }}</a>
+                                {% else %}
+                                    {{ effect.name }}
+                                {% endif %}
+                                {% if effect.category %}
+                                    <span class="effect-category">({{ effect.category }})</span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        {% for effect in substance.get('effects', []) %}
+                            <li>{{ effect }}</li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <!-- Additional Effects Section -->
+        {% if substance.get('pweffects') and substance.get('effects') %}
+            <button class="collapsible">📊 Additional Effects</button>
+            <div class="content">
+                <ul>
+                    {% for effect in substance['pweffects'] %}
+                    <li>{{ effect }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <!-- Helpful Links Section -->
+        <h2>Helpful Links</h2>
+        <div class="links-container">
+            <a href="https://www.drugs.com/imprints.php?action=search&drugname={{ substance.name|urlencode }}" class="modern-link" target="_blank">
+                💊 Pill Identifier
+            </a>
+            <a href="https://erowid.org/experiences/subs/exp_{{ substance.name|title }}.shtml" class="modern-link" target="_blank">
+                📘 Experience Reports (Erowid)
+            </a>
+            {% if substance.get('links') %}
+                {% if substance['links'].get('pihkal') %}
+                    <a href="{{ substance['links']['pihkal'] }}" class="modern-link" target="_blank">
+                        📖 PiHKAL
+                    </a>
+                {% endif %}
+                {% if substance['links'].get('tihkal') %}
+                    <a href="{{ substance['links']['tihkal'] }}" class="modern-link" target="_blank">
+                        📚 TiHKAL
+                    </a>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <!-- Known Combinations Section -->
+        <h2>Known Combinations</h2>
+        {% if substance.get('interactions') and (substance['interactions'].get('dangerous') or substance['interactions'].get('unsafe') or substance['interactions'].get('caution')) %}
+            <!-- Dangerous Section -->
+            {% if substance['interactions'].get('dangerous') %}
+                <button class="collapsible">☠️ Dangerous ☠️</button>
+                <div class="content">
+                    <p>These combinations are considered extremely harmful and should always be avoided.</p>
+                    {% for combo in substance['interactions']['dangerous'] %}
+                        <div class="combo-box dangerous">
+                            <strong>{{ combo }}</strong>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Unsafe Section -->
+            {% if substance['interactions'].get('unsafe') %}
+                <button class="collapsible">🛑 Unsafe 🛑</button>
+                <div class="content">
+                    <p>There is considerable risk of physical harm when taking these combinations, they should be avoided where possible.</p>
+                    {% for combo in substance['interactions']['unsafe'] %}
+                        <div class="combo-box unsafe">
+                            <strong>{{ combo }}</strong>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Caution Section -->
+            {% if substance['interactions'].get('caution') %}
+                <button class="collapsible">⚠️ Caution ⚠️</button>
+                <div class="content">
+                    <p>These combinations are not usually physically harmful, but may produce undesirable effects.</p>
+                    {% for combo in substance['interactions']['caution'] %}
+                        <div class="combo-box caution">
+                            <strong>{{ combo }}</strong>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% else %}
+            <p class="no-data-message">No interaction data available from {{ current_source|title }}</p>
+        {% endif %}
+
+        <!-- Studies & Links Section -->
+        {% if substance.get('sources', {}).get('_general') or substance.get('links') %}
+            <h2>Studies & References</h2>
+            
+            {% if substance.get('links', {}).get('research') %}
+            <button class="collapsible">📚 Research Papers</button>
+            <div class="content sources-section">
+                <ul>
+                    {% for link in substance['links']['research'] %}
+                        <li>
+                            <a href="{{ link }}" rel="noopener noreferrer" target="_blank">{{ link }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if substance.get('links', {}).get('wikipedia') %}
+            <button class="collapsible">📖 Wikipedia</button>
+            <div class="content sources-section">
+                <ul>
+                    {% for link in substance['links']['wikipedia'] %}
+                        <li>
+                            <a href="{{ link }}" rel="noopener noreferrer" target="_blank">{{ link }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if substance.get('sources', {}).get('_general') %}
+            <button class="collapsible">🔬 Scientific Sources</button>
+            <div class="content sources-section">
+                <ul>
+                    {% for source in substance['sources']['_general'] %}
+                        {% set parts = match('^(.*) - (https?://.+)$', source) %}
+                        {% if parts %}
+                            <li>
+                                <a href="{{ parts[2] }}" rel="noopener noreferrer" target="_blank">{{ parts[1] }}</a>
+                            </li>
+                        {% elif match('^https?://', source) %}
+                            <li>
+                                <a href="{{ source }}" rel="noopener noreferrer" target="_blank">{{ source }}</a>
+                            </li>
+                        {% else %}
+                            <li>{{ source }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if substance.get('links', {}).get('general') %}
+            <button class="collapsible">🌐 General References</button>
+            <div class="content sources-section">
+                <ul>
+                    {% for link in substance['links']['general'] %}
+                        {% set parts = match('^(.*) - (https?://.+)$', link) %}
+                        {% if parts %}
+                            <li>
+                                <a href="{{ parts[2] }}" rel="noopener noreferrer" target="_blank">{{ parts[1] }}</a>
+                            </li>
+                        {% elif match('^https?://', link) %}
+                            <li>
+                                <a href="{{ link }}" rel="noopener noreferrer" target="_blank">{{ link }}</a>
+                            </li>
+                        {% else %}
+                            <li>{{ link }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if substance.get('links', {}).get('experiences') %}
+            <button class="collapsible">📝 Experience Reports</button>
+            <div class="content sources-section">
+                <ul>
+                    {% for link in substance['links']['experiences'] %}
+                        <li>
+                            <a href="{{ link }}" rel="noopener noreferrer" target="_blank">{{ link }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <style>
+            .sources-section {
+                display: none;
+                padding: 1rem;
+                background: var(--background-secondary);
+                border-radius: 0 0 0.5rem 0.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .sources-section ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .sources-section li {
+                margin-bottom: 0.75rem;
+                line-height: 1.4;
+            }
+
+            .sources-section a {
+                color: var(--link);
+                text-decoration: none;
+                word-break: break-word;
+            }
+
+            .sources-section a:hover {
+                text-decoration: underline;
+            }
+
+            button.collapsible {
+                background-color: var(--background-secondary);
+                color: var(--text-primary);
+                cursor: pointer;
+                padding: 1rem;
+                width: 100%;
+                border: none;
+                text-align: left;
+                outline: none;
+                font-size: 1rem;
+                border-radius: 0.5rem;
+                margin-top: 0.5rem;
+                transition: background-color 0.2s;
+            }
+
+            button.collapsible:hover {
+                background-color: var(--background-darker);
+            }
+
+            button.collapsible.active {
+                border-radius: 0.5rem 0.5rem 0 0;
+            }
+
+            button.collapsible:after {
+                content: '▼';
+                font-size: 0.8rem;
+                float: right;
+                margin-left: 5px;
+                transition: transform 0.2s ease;
+            }
+
+            button.collapsible.active:after {
+                transform: rotate(180deg);
+            }
+            </style>
         {% endif %}
     </div>
 
-    <!-- Summary -->
-    {% if substance.get('properties', {}).get('summary') %}
-        <h2>Summary</h2>
-        <p>{{ substance['properties']['summary'] }}</p>
-    {% endif %}
-
-    {% if substance.get('formatted_dose') %}
-        <!-- Dose Information -->
-        <div class="dose-info-container" style="margin: 0; padding: 0;">
-        <!-- WARNING Banner -->
-        {% if substance['properties'].get('warning') or substance['properties'].get('avoid') %}
-            <div class="warning-banner">
-            {% if substance['properties'].get('warning') %}
-                ⚠️ WARNING: {{ substance['properties']['warning'] }}
-            {% endif %}
-            {% if substance['properties'].get('avoid') %}
-                ⚠️ AVOID: {{ substance['properties']['avoid'] }}
-            {% endif %}
-            </div>
-        {% endif %}
-        </div>
-
-        <!-- NOTE or dose_note Banner extracted from the dose or duration fields -->
-        {% set dose_note = None %}
-        {% set duration_note = None %}
-
-        {% if 'NOTE:' in substance.get('properties', {}).get('dose', '') %}
-        {% set dose_note = substance['properties']['dose'].split('NOTE: ')[1] %}
-        {% elif 'Note:' in substance.get('properties', {}).get('dose', '') %}
-        {% set dose_note = substance['properties']['dose'].split('Note: ')[1] %}
-        {% endif %}
-
-        {% if 'NOTE:' in substance.get('properties', {}).get('duration', '') %}
-        {% set duration_note = substance['properties']['duration'].split('NOTE: ')[1] %}
-        {% elif 'Note:' in substance.get('properties', {}).get('duration', '') %}
-        {% set duration_note = substance['properties']['duration'].split('Note: ')[1] %}
-        {% endif %}
-
-        {% if dose_note or duration_note %}
-        <div class="note-banner">
-            {% if dose_note %}
-            ⚠️ {{ dose_note }}
-            {% endif %}
-            {% if duration_note %}
-            <br>⚠️ {{ duration_note }}
-            {% endif %}
-        </div>
-        {% endif %}
-
-        <!-- Dosage Chart and Table Section -->
-        <h2>Dose Information</h2>
-        <!-- Container for the chart and table -->
-        <div class="chart-table-container">
-        <!-- Chart and legend -->
-        <div class="chart-container">
-            <canvas id="doseChart" style="max-height: 250px; width: 100%;"></canvas>
-            <!-- Add the dosage legend below the chart -->
-            <div id="doseLegend" class="dose-legend">
-            <!-- Legend items will be added dynamically -->
-            </div>
-        </div>
-        <!-- Dosage Table -->
-        <div class="table-container">
-            <table>
-            <thead id="doseTableHead">
-                <tr>
-                <!-- Headers will be added dynamically -->
-                </tr>
-            </thead>
-            <tbody id="doseTableBody">
-                <!-- Rows will be added dynamically -->
-            </tbody>
-            </table>
-        </div>
-        </div>
-    {% endif %}
+    <!-- JavaScript for collapsible sections -->
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        for (var i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
 
     <!-- JavaScript for Dosage Chart -->
     <script>
-			let chart;
-			let shouldAnimate = true;
+        let chart;
+        let shouldAnimate = true;
 
-			function renderDosageChart() {
-				if (chart) chart?.destroy?.();
-				var ctx = document.getElementById('doseChart').getContext('2d');
+        function renderDosageChart() {
+            if (chart) chart?.destroy?.();
+            var ctx = document.getElementById('doseChart').getContext('2d');
 
-				// Fetch dose data from formatted_dose
-				var doseData = {{ substance.get('formatted_dose', {}) | tojson }};
-				var roas = Object.keys(doseData);
+            // Fetch dose data from routes
+            var doseData = JSON.parse('{{ substance.get("dosage", {}).get("routes", {}) | tojson | safe }}');
+            var roas = Object.keys(doseData);
 
-				// Define dose levels and colors
-				var doseLevels = ['Light', 'Common', 'Strong', 'Heavy'];
-				const bodyStyles = getComputedStyle(document.body);
-				var doseColors = {
-					'Light': bodyStyles.getPropertyValue('--chart-green'),
-					'Common': bodyStyles.getPropertyValue('--chart-orange'),
-					'Strong': bodyStyles.getPropertyValue('--chart-red-orange'),
-					'Heavy': bodyStyles.getPropertyValue('--chart-red')
-				};
+            // Define dose levels and colors
+            var doseLevels = ['threshold', 'light', 'common', 'strong', 'heavy'];
+            const bodyStyles = getComputedStyle(document.body);
+            var doseColors = {
+                'threshold': bodyStyles.getPropertyValue('--chart-blue'),
+                'light': bodyStyles.getPropertyValue('--chart-green'),
+                'common': bodyStyles.getPropertyValue('--chart-orange'),
+                'strong': bodyStyles.getPropertyValue('--chart-red-orange'),
+                'heavy': bodyStyles.getPropertyValue('--chart-red')
+            };
 
-				// Units and their multipliers to a base unit (e.g., mg)
-				var unitMultipliers = {
-					'g': 1000,
-					'mg': 1,
-					'μg': 0.001,
-					'ug': 0.001,
-					'µg': 0.001,
-					'ml': 1  // Adjust as necessary for your context
-				};
+            // Units and their multipliers to a base unit (e.g., mg)
+            var unitMultipliers = {
+                'g': 1000,
+                'mg': 1,
+                'μg': 0.001,
+                'ug': 0.001,
+                'µg': 0.001,
+                'ml': 1  // Adjust as necessary for your context
+            };
 
-				// Prepare to store parsed data and dose segments
-				var parsedDoseData = {};
-				var roaSegments = {};
-				var roaMinDose = {};
-				var roaMaxDose = {};
-				var overallMinDose = 0; // Start from zero
-				var overallMaxDose = 0;
-				var unitsUsed = new Set();
+            // Prepare to store parsed data and dose segments
+            var parsedDoseData = {};
+            var roaSegments = {};
+            var roaMinDose = {};
+            var roaMaxDose = {};
+            var overallMinDose = 0;
+            var overallMaxDose = 0;
+            var unitsUsed = new Set();
 
-				// Helper function to parse dose values
-				function parseDose(doseStr) {
-					if (!doseStr || doseStr.toLowerCase() === 'no data') return null;
+            // Helper function to parse dose values
+            function parseDose(doseValue, unit) {
+                if (!doseValue || typeof doseValue === 'undefined') return null;
 
-					// Regular expressions to match dose units and values
-					var rangeRegex = /([\d\.]+)\s*(μg|ug|µg|mg|g|ml)?\s*-\s*([\d\.]+)\s*(μg|ug|µg|mg|g|ml)?\s*(\+)?/i;
-					var singleValueRegex = /([\d\.]+)\s*(μg|ug|µg|mg|g|ml)?\s*(\+)?/i;
+                // Handle single numeric value (for threshold and heavy)
+                if (typeof doseValue === 'number') {
+                    return {
+                        low: doseValue,
+                        high: doseValue,
+                        unit: unit,
+                        display: doseValue + ' ' + unit
+                    };
+                }
 
-					var isOpenEnded = false;
-					var low = null, high = null;
-					var unit = 'mg'; // Default unit
+                // Handle min/max object
+                if (doseValue.min !== undefined && doseValue.max !== undefined) {
+                    return {
+                        low: doseValue.min,
+                        high: doseValue.max,
+                        unit: unit,
+                        display: doseValue.min + '-' + doseValue.max + ' ' + unit
+                    };
+                }
 
-					// Check for range values
-					var match = doseStr.match(rangeRegex);
-					if (match) {
-						low = parseFloat(match[1]);
-						var lowUnit = match[2] ? match[2].toLowerCase() : unit;
+                return null;
+            }
 
-						high = parseFloat(match[3]);
-						var highUnit = match[4] ? match[4].toLowerCase() : unit;
+            // Step 1: Parse all doses and collect units used
+            roas.forEach(function(roa) {
+                parsedDoseData[roa] = {};
+                var roaData = doseData[roa];
+                unitsUsed.add(roaData.units);
 
-						unit = highUnit || lowUnit; // Prefer high unit, else low unit
-						isOpenEnded = !!match[5];
-					} else {
-						// Check for single values
-						match = doseStr.match(singleValueRegex);
-						if (match) {
-							low = parseFloat(match[1]);
-							high = low;
-							unit = match[2] ? match[2].toLowerCase() : unit;
-							isOpenEnded = !!match[3];
-						}
-					}
+                doseLevels.forEach(function(level) {
+                    var doseValue = roaData[level];
+                    var parsedDose = parseDose(doseValue, roaData.units);
+                    parsedDoseData[roa][level] = parsedDose;
+                });
+            });
 
-					if (low === null || isNaN(low)) return null;
-					unitsUsed.add(unit);
+            // Step 2: Determine the unit to use for plotting
+            var selectedUnit = null;
+            var unitPriority = ['µg', 'μg', 'ug', 'mg', 'g', 'ml'];
+            for (var i = 0; i < unitPriority.length; i++) {
+                var unit = unitPriority[i];
+                if (unitsUsed.has(unit)) {
+                    selectedUnit = unit;
+                    break;
+                }
+            }
 
-					return {
-						low: low,
-						high: high,
-						unit: unit,
-						isOpenEnded: isOpenEnded,
-						display: doseStr.trim()
-					};
-				}
+            if (!selectedUnit) {
+                selectedUnit = 'mg'; // Default to mg if no units are found
+            }
 
-				// Step 1: Parse all doses and collect units used
-				roas.forEach(function (roa) {
-					parsedDoseData[roa] = {};
-					doseLevels.forEach(function (level) {
-						var doseStr = doseData[roa][level];
-						var parsedDose = parseDose(doseStr);
+            // Step 3: Convert all doses to the selected unit and update overall max dose
+            roas.forEach(function(roa) {
+                var boundaries = new Set([0]); // Always include 0
+                doseLevels.forEach(function(level) {
+                    var parsedDose = parsedDoseData[roa][level];
+                    if (parsedDose) {
+                        // Convert doses to the selected unit
+                        var multiplier = unitMultipliers[parsedDose.unit] / unitMultipliers[selectedUnit];
+                        parsedDose.low *= multiplier;
+                        parsedDose.high *= multiplier;
+                        parsedDose.unit = selectedUnit;
 
-						if (parsedDose) {
-							parsedDoseData[roa][level] = parsedDose;
-						} else {
-							parsedDoseData[roa][level] = null;
-						}
-					});
-				});
+                        boundaries.add(parsedDose.low);
+                        boundaries.add(parsedDose.high);
+                        
+                        overallMaxDose = Math.max(overallMaxDose, parsedDose.high);
+                    }
+                });
 
-				// Step 2: Determine the unit to use for plotting
-				var selectedUnit = null;
-				var unitPriority = ['µg', 'μg', 'ug', 'mg', 'g', 'ml']; // Prioritize smaller units
-				for (var i = 0; i < unitPriority.length; i++) {
-					var unit = unitPriority[i];
-					if (unitsUsed.has(unit)) {
-						selectedUnit = unit;
-						break;
-					}
-				}
+                // Build segments
+                var sortedBoundaries = Array.from(boundaries).sort((a, b) => a - b);
+                var segments = [];
+                
+                for (var i = 0; i < sortedBoundaries.length - 1; i++) {
+                    var startDose = sortedBoundaries[i];
+                    var endDose = sortedBoundaries[i + 1];
 
-				if (!selectedUnit) {
-					selectedUnit = 'mg'; // Default to mg if no units are found
-				}
+                    // Find applicable dose level
+                    var applicableLevel = null;
+                    for (var j = doseLevels.length - 1; j >= 0; j--) {
+                        var level = doseLevels[j];
+                        var dose = parsedDoseData[roa][level];
+                        if (dose && startDose >= dose.low && endDose <= dose.high) {
+                            applicableLevel = level;
+                            break;
+                        }
+                    }
 
-				// Step 3: Convert all doses to the selected unit and update overall max dose
-				roas.forEach(function (roa) {
-					doseLevels.forEach(function (level) {
-						var parsedDose = parsedDoseData[roa][level];
+                    if (applicableLevel) {
+                        segments.push({
+                            startDose: startDose,
+                            endDose: endDose,
+                            doseLevel: applicableLevel
+                        });
+                    }
+                }
 
-						if (parsedDose) {
-							// Convert doses to the selected unit
-							var multiplier = 1;
-							var doseUnit = parsedDose.unit;
-							if (unitMultipliers[doseUnit]) {
-								multiplier = unitMultipliers[doseUnit] / unitMultipliers[selectedUnit];
-							} else {
-								// If the unit is unknown, assume multiplier is 1
-								multiplier = 1;
-							}
+                if (segments.length > 0) {
+                    roaSegments[roa] = segments;
+                    roaMinDose[roa] = 0;
+                    roaMaxDose[roa] = segments[segments.length - 1].endDose;
+                }
+            });
 
-							parsedDose.low *= multiplier;
-							parsedDose.high *= multiplier;
-							parsedDose.unit = selectedUnit; // Set unit to selectedUnit
+            // Prepare data for the chart using valid RoAs
+            var data = roas.map(function (roa) {
+                return [roaMinDose[roa], roaMaxDose[roa]];
+            });
 
-							// Adjust for open-ended doses
-							if (parsedDose.isOpenEnded) {
-								parsedDose.high += parsedDose.high * 0.25; // Extend by 25%
-							}
+            // Configure the chart
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: roas,
+                    datasets: [{
+                        label: 'Dosage',
+                        data: data,
+                        backgroundColor: function (context) {
+                            var index = context.dataIndex;
+                            var chart = context.chart;
+                            var xScale = chart.scales.x;
+                            var ctx = chart.ctx;
 
-							// Update max dose value
-							overallMaxDose = Math.max(overallMaxDose, parsedDose.high);
-						}
-					});
-				});
+                            var roa = roas[index];
+                            var segments = roaSegments[roa];
+                            if (!segments || segments.length === 0) {
+                                return bodyStyles.getPropertyValue('--chart-transparent');
+                            }
 
-				// If no valid dose data is available, hide the chart and legend
-				if (overallMaxDose === 0) {
-					document.getElementById('doseChart').style.display = 'none';
-					document.getElementById('doseLegend').style.display = 'none';
-					var noDataMessage = document.createElement('p');
-					noDataMessage.textContent = 'No dosage data available.';
-					document.getElementById('doseChart').parentElement.appendChild(noDataMessage);
-					return;
-				}
+                            // Get the pixel positions for start and end of the bar
+                            var barStartValue = roaMinDose[roa];
+                            var barEndValue = roaMaxDose[roa];
 
-				// Prepare data and segments for each ROA
-				var validRoas = []; // Will hold the ROAs with valid data
+                            if (barStartValue === undefined || barEndValue === undefined || isNaN(barStartValue) || isNaN(barEndValue)) {
+                                return bodyStyles.getPropertyValue('--chart-transparent');
+                            }
 
-				roas.forEach(function (roa) {
-					var doseLevelsData = parsedDoseData[roa];
-					var boundaries = new Set();
+                            var barStartPixel = xScale.getPixelForValue(barStartValue);
+                            var barEndPixel = xScale.getPixelForValue(barEndValue);
 
-					// Collect all dose boundaries (low and high doses)
-					doseLevels.forEach(function (level) {
-						var dose = doseLevelsData[level];
-						if (dose) {
-							boundaries.add(dose.low);
-							boundaries.add(dose.high);
-						}
-					});
+                            if (!isFinite(barStartPixel) || !isFinite(barEndPixel)) {
+                                return bodyStyles.getPropertyValue('--chart-transparent');
+                            }
 
-					// Ensure zero is included for starting point
-					boundaries.add(0);
+                            // Create gradient from barStartPixel to barEndPixel
+                            var gradient = ctx.createLinearGradient(barStartPixel, 0, barEndPixel, 0);
 
-					// Convert boundaries to array and sort
-					var sortedBoundaries = Array.from(boundaries).sort(function (a, b) { return a - b; });
+                            var totalDoseRange = barEndValue - barStartValue;
 
-					if (sortedBoundaries.length < 2) {
-						// Not enough data to create segments
-						return;
-					}
+                            segments.forEach(function (segment) {
+                                var startPos = (segment.startDose - barStartValue) / totalDoseRange;
+                                var endPos = (segment.endDose - barStartValue) / totalDoseRange;
 
-					// Build segments with associated dosage levels
-					var segments = [];
-					for (var i = 0; i < sortedBoundaries.length - 1; i++) {
-						var startDose = sortedBoundaries[i];
-						var endDose = sortedBoundaries[i + 1];
+                                var color = doseColors[segment.doseLevel];
 
-						// Determine the highest dosage level applicable in this segment
-						var applicableLevels = doseLevels.filter(function (level) {
-							var dose = doseLevelsData[level];
-							if (dose) {
-								// For 'Light' level, adjust startDose to zero
-								var doseLow = level === 'Light' ? 0 : dose.low;
-								return startDose < dose.high && endDose > doseLow;
-							}
-							return false;
-						});
-						var highestLevel = applicableLevels[applicableLevels.length - 1]; // Last level is the highest
+                                // Clamp positions between 0 and 1
+                                startPos = Math.max(0, Math.min(1, startPos));
+                                endPos = Math.max(0, Math.min(1, endPos));
 
-						if (highestLevel) {
-							var dose = doseLevelsData[highestLevel];
-							var isOpenEnded = dose.isOpenEnded && endDose >= dose.high;
+                                gradient.addColorStop(startPos, color);
+                                gradient.addColorStop(endPos, color);
+                            });
 
-							// For 'Light' dose, create a gradient from transparent to light green
-							segments.push({
-								startDose: startDose,
-								endDose: endDose,
-								doseLevel: highestLevel,
-								isOpenEnded: isOpenEnded,
-								isLight: highestLevel === 'Light'
-							});
-						}
-					}
+                            return gradient;
+                        },
+                        borderWidth: 0,
+                        barThickness: 'flex',
+                        maxBarThickness: 30,
+                    }]
+                },
+                options: {
+                    animation: shouldAnimate,
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            min: 0, // Start from zero
+                            max: overallMaxDose + (overallMaxDose * 0.05),
+                            title: {
+                                display: true,
+                                text: 'Dose (' + selectedUnit + ')',
+                                color: bodyStyles.getPropertyValue('--chart-text'),
+                            },
+                            ticks: {
+                                color: bodyStyles.getPropertyValue('--chart-text-dim'),
+                            },
+                            border: {
+                                color: bodyStyles.getPropertyValue('--chart-grid-line')
+                            },
+                            grid: {
+                                color: bodyStyles.getPropertyValue('--chart-grid-line'),
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                display: false
+                            },
+                            barPercentage: roas.length === 1 ? 0.5 : 0.8,
+                            categoryPercentage: roas.length === 1 ? 0.8 : 0.9,
+                            ticks: {
+                                color: bodyStyles.getPropertyValue('--chart-text-dim'),
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    var index = tooltipItem.dataIndex;
+                                    var roa = roas[index];
+                                    var segments = roaSegments[roa];
+                                    if (segments && segments.length > 0) {
+                                        var label = roa + ':';
+                                        segments.forEach(function (segment) {
+                                            var doseLevel = segment.doseLevel;
+                                            var doseLevelData = parsedDoseData[roa][doseLevel];
+                                            label += '\n' + doseLevel + ': ' + doseLevelData.display;
+                                        });
+                                        return label;
+                                    } else {
+                                        return roa + ': No data';
+                                    }
+                                }
+                            }
+                        },
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                generateLabels: function (chart) {
+                                    return doseLevels.map(function (level) {
+                                        return {
+                                            text: level,
+                                            fontColor: bodyStyles.getPropertyValue('--chart-text'),
+                                            fillStyle: doseColors[level],
+                                            strokeStyle: doseColors[level],
+                                            lineWidth: 0,
+                                            hidden: false
+                                        };
+                                    });
+                                }
+                            }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            top: 10,
+                            bottom: 10
+                        }
+                    }
+                }
+            });
 
-					if (segments.length > 0) {
-						roaSegments[roa] = segments;
+            // Render the dosage table
+            renderDosageTable();
 
-						// Store min and max doses for this ROA
-						roaMinDose[roa] = 0; // Start from zero
-						roaMaxDose[roa] = segments[segments.length - 1].endDose;
+            function renderDosageTable() {
+                var doseTableHead = document.getElementById('doseTableHead');
+                var doseTableBody = document.getElementById('doseTableBody');
 
-						validRoas.push(roa);
-					}
-				});
+                // Clear existing table content
+                doseTableHead.innerHTML = '';
+                doseTableBody.innerHTML = '';
 
-				// Prepare data for the chart using valid RoAs
-				var data = validRoas.map(function (roa) {
-					return [roaMinDose[roa], roaMaxDose[roa]];
-				});
+                // Create table headers
+                var headerRow = document.createElement('tr');
+                var roaHeader = document.createElement('th');
+                roaHeader.textContent = 'ROA';
+                headerRow.appendChild(roaHeader);
 
-				// Configure the chart
-				chart = new Chart(ctx, {
-					type: 'bar',
-					data: {
-						labels: validRoas,
-						datasets: [{
-							label: 'Dosage',
-							data: data,
-							backgroundColor: function (context) {
-								var index = context.dataIndex;
-								var chart = context.chart;
-								var xScale = chart.scales.x;
-								var ctx = chart.ctx;
+                doseLevels.forEach(function (level) {
+                    var th = document.createElement('th');
+                    th.textContent = level;
+                    headerRow.appendChild(th);
+                });
+                doseTableHead.appendChild(headerRow);
 
-								var roa = validRoas[index];
-								var segments = roaSegments[roa];
-								if (!segments || segments.length === 0) {
-									return bodyStyles.getPropertyValue('--chart-transparent');
-								}
+                // Create table rows
+                roas.forEach(function (roa) {
+                    var row = document.createElement('tr');
+                    var roaCell = document.createElement('td');
+                    roaCell.textContent = roa;
+                    row.appendChild(roaCell);
 
-								// Get the pixel positions for start and end of the bar
-								var barStartValue = roaMinDose[roa];
-								var barEndValue = roaMaxDose[roa];
+                    doseLevels.forEach(function (level) {
+                        var dose = parsedDoseData[roa][level];
+                        var cell = document.createElement('td');
+                        cell.style.backgroundColor = doseColors[level];
+                        cell.style.color = 'var(--text);';
+                        cell.style.padding = '5px';
+                        cell.style.textAlign = 'center';
 
-								if (barStartValue === undefined || barEndValue === undefined || isNaN(barStartValue) || isNaN(barEndValue)) {
-									return bodyStyles.getPropertyValue('--chart-transparent');
-								}
+                        if (dose) {
+                            cell.textContent = dose.display;
+                        } else {
+                            cell.textContent = 'No data';
+                            cell.style.backgroundColor = 'var(--background-darker)';
+                        }
+                        row.appendChild(cell);
+                    });
+                    doseTableBody.appendChild(row);
+                });
+            }
+        }
 
-								var barStartPixel = xScale.getPixelForValue(barStartValue);
-								var barEndPixel = xScale.getPixelForValue(barEndValue);
+        // Call the renderDosageChart function when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            renderDosageChart();
 
-								if (!isFinite(barStartPixel) || !isFinite(barEndPixel)) {
-									return bodyStyles.getPropertyValue('--chart-transparent');
-								}
+            // watches for theme changes on the body elem
+            const observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    if (mutation.attributeName === 'class') {
+                        shouldAnimate = false;
+                        renderDosageChart();
+                    }
+                });
+            });
 
-								// Create gradient from barStartPixel to barEndPixel
-								var gradient = ctx.createLinearGradient(barStartPixel, 0, barEndPixel, 0);
+            observer.observe(document.body, {
+                attributes: true,
+                attributeFilter: ['class'],
+            });
 
-								var totalDoseRange = barEndValue - barStartValue;
-
-								segments.forEach(function (segment) {
-									var startPos = (segment.startDose - barStartValue) / totalDoseRange;
-									var endPos = (segment.endDose - barStartValue) / totalDoseRange;
-
-									var color = doseColors[segment.doseLevel];
-
-									// Clamp positions between 0 and 1
-									startPos = Math.max(0, Math.min(1, startPos));
-									endPos = Math.max(0, Math.min(1, endPos));
-
-									if (segment.isLight && segment.startDose === 0) {
-										// For 'Light' dose starting at zero, fade from transparent to light green
-										gradient.addColorStop(0, bodyStyles.getPropertyValue('--chart-transparent')); // Transparent
-										gradient.addColorStop(endPos, color);
-									} else if (segment.isOpenEnded) {
-										// For open-ended segments, fade out to transparent
-										var midPos = (startPos + endPos) / 2;
-										gradient.addColorStop(startPos, color);
-										gradient.addColorStop(midPos, color);
-										gradient.addColorStop(endPos, bodyStyles.getPropertyValue('--chart-transparent')); // Fade to transparent
-									} else {
-										gradient.addColorStop(startPos, color);
-										gradient.addColorStop(endPos, color);
-									}
-								});
-
-								return gradient;
-							},
-							borderWidth: 0,
-							barThickness: 'flex',
-							maxBarThickness: 30,
-						}]
-					},
-					options: {
-						animation: shouldAnimate,
-						indexAxis: 'y',
-						responsive: true,
-						maintainAspectRatio: false,
-						scales: {
-							x: {
-								type: 'linear',
-								min: 0, // Start from zero
-								max: overallMaxDose + (overallMaxDose * 0.05),
-								title: {
-									display: true,
-									text: 'Dose (' + selectedUnit + ')',
-									color: bodyStyles.getPropertyValue('--chart-text'),
-								},
-								ticks: {
-									color: bodyStyles.getPropertyValue('--chart-text-dim'),
-								},
-								border: {
-									color: bodyStyles.getPropertyValue('--chart-grid-line')
-								},
-								grid: {
-									color: bodyStyles.getPropertyValue('--chart-grid-line'),
-								}
-							},
-							y: {
-								beginAtZero: true,
-								grid: {
-									display: false
-								},
-								barPercentage: validRoas.length === 1 ? 0.5 : 0.8,
-								categoryPercentage: validRoas.length === 1 ? 0.8 : 0.9,
-								ticks: {
-									color: bodyStyles.getPropertyValue('--chart-text-dim'),
-								}
-							}
-						},
-						plugins: {
-							tooltip: {
-								callbacks: {
-									label: function (tooltipItem) {
-										var index = tooltipItem.dataIndex;
-										var roa = validRoas[index];
-										var segments = roaSegments[roa];
-										if (segments && segments.length > 0) {
-											var label = roa + ':';
-											segments.forEach(function (segment) {
-												var doseLevel = segment.doseLevel;
-												var doseLevelData = parsedDoseData[roa][doseLevel];
-												label += '\n' + doseLevel + ': ' + doseLevelData.display;
-											});
-											return label;
-										} else {
-											return roa + ': No data';
-										}
-									}
-								}
-							},
-							legend: {
-								display: true,
-								position: 'bottom',
-								labels: {
-									generateLabels: function (chart) {
-										return doseLevels.map(function (level) {
-											return {
-												text: level,
-												fontColor: bodyStyles.getPropertyValue('--chart-text'),
-												fillStyle: doseColors[level],
-												strokeStyle: doseColors[level],
-												lineWidth: 0,
-												hidden: false
-											};
-										});
-									}
-								}
-							}
-						},
-						layout: {
-							padding: {
-								top: 10,
-								bottom: 10
-							}
-						}
-					}
-				});
-
-				// Render the dosage table
-				renderDosageTable();
-
-				function renderDosageTable() {
-					var doseTableHead = document.getElementById('doseTableHead');
-					var doseTableBody = document.getElementById('doseTableBody');
-
-					// Clear existing table content
-					doseTableHead.innerHTML = '';
-					doseTableBody.innerHTML = '';
-
-					// Create table headers
-					var headerRow = document.createElement('tr');
-					var roaHeader = document.createElement('th');
-					roaHeader.textContent = 'ROA';
-					headerRow.appendChild(roaHeader);
-
-					doseLevels.forEach(function (level) {
-						var th = document.createElement('th');
-						th.textContent = level;
-						headerRow.appendChild(th);
-					});
-					doseTableHead.appendChild(headerRow);
-
-					// Create table rows
-					validRoas.forEach(function (roa) {
-						var row = document.createElement('tr');
-						var roaCell = document.createElement('td');
-						roaCell.textContent = roa;
-						row.appendChild(roaCell);
-
-						doseLevels.forEach(function (level) {
-							var dose = parsedDoseData[roa][level];
-							var cell = document.createElement('td');
-							cell.style.backgroundColor = doseColors[level];
-							cell.style.color = 'var(--text);';
-							cell.style.padding = '5px';
-							cell.style.textAlign = 'center';
-
-							if (dose) {
-								cell.textContent = dose.display;
-							} else {
-								cell.textContent = 'No data';
-								cell.style.backgroundColor = 'var(--background-darker)';
-							}
-							row.appendChild(cell);
-						});
-						doseTableBody.appendChild(row);
-					});
-				}
-			}
-
-			// Call the renderDosageChart function when the DOM is fully loaded
-			document.addEventListener('DOMContentLoaded', function () {
-				renderDosageChart();
-
-				// watches for theme changes on the body elem
-				const observer = new MutationObserver(function (mutations) {
-					mutations.forEach(function (mutation) {
-						if (mutation.attributeName === 'class') {
-							shouldAnimate = false;
-							renderDosageChart();
-						}
-					});
-				});
-
-				observer.observe(document.body, {
-					attributes: true,
-					attributeFilter: ['class'],
-				});
-
-				// re-render whenever the window has finished resizing
-				let lastX = window.innerWidth;
-				window.addEventListener('resize', (ev) => {
-					if (lastX === window.innerWidth) return;
-					lastX = window.innerWidth;
-					shouldAnimate = false;
-					debounce(renderDosageChart, 250);
-				});
-			});
+            // re-render whenever the window has finished resizing
+            let lastX = window.innerWidth;
+            window.addEventListener('resize', (ev) => {
+                if (lastX === window.innerWidth) return;
+                lastX = window.innerWidth;
+                shouldAnimate = false;
+                debounce(renderDosageChart, 250);
+            });
+        });
     </script>
-
-    <!-- Onset, Duration & After-effects -->
-    <div class="onset-duration-container">
-        <div class="onset-duration-box">
-        <h2>Onset, Duration & After-effects</h2>
-        <ul>
-            {% if substance.get('formatted_onset') %}
-            <li><strong>Onset:</strong>
-                {% if 'value' in substance['formatted_onset'] %}
-                {{ substance['formatted_onset']['value'] }} {{ substance['formatted_onset'].get('_unit', '') }}
-                {% else %}
-                <ul>
-                    {% for method, time in substance['formatted_onset'].items() %}
-                    {% if method != '_unit' %}
-                        <li><strong>{{ method }}:</strong> {{ time }} {{ substance['formatted_onset'].get('_unit', '') }}</li>
-                    {% endif %}
-                    {% endfor %}
-                </ul>
-                {% endif %}
-            </li>
-            {% endif %}
-            {% if substance.get('formatted_duration') %}
-            <li><strong>Duration:</strong>
-                {% if 'value' in substance['formatted_duration'] %}
-                {{ substance['formatted_duration']['value'] }} {{ substance['formatted_duration'].get('_unit', '') }}
-                {% else %}
-                <ul>
-                    {% for method, time in substance['formatted_duration'].items() %}
-                    {% if method != '_unit' %}
-                        <li><strong>{{ method }}:</strong> {{ time }} {{ substance['formatted_duration'].get('_unit', '') }}</li>
-                    {% endif %}
-                    {% endfor %}
-                </ul>
-                {% endif %}
-            </li>
-            {% endif %}
-            {% if substance.get('formatted_aftereffects') %}
-            <li><strong>After-effects:</strong>
-                {% if 'value' in substance['formatted_aftereffects'] %}
-                {{ substance['formatted_aftereffects']['value'] }} {{ substance['formatted_aftereffects'].get('_unit', '') }}
-                {% else %}
-                <ul>
-                    {% for method, time in substance['formatted_aftereffects'].items() %}
-                    {% if method != '_unit' %}
-                        <li><strong>{{ method }}:</strong> {{ time }} {{ substance['formatted_aftereffects'].get('_unit', '') }}</li>
-                    {% endif %}
-                    {% endfor %}
-                </ul>
-                {% endif %}
-            </li>
-            {% endif %}
-        </ul>
-        </div>
-    </div>
-
-    <!-- Effects Section -->
-    {% if substance.get('formatted_effects') %}
-        <h2>Effects</h2>
-        <div class="effects-box">
-        <ul>
-            {% for effect in substance['formatted_effects'] %}
-            <li>{{ effect }}</li>
-            {% endfor %}
-        </ul>
-        </div>
-    {% endif %}
-
-    <!-- Additional Effects Section -->
-    {% if substance.get('pweffects') and substance.get('formatted_effects') %}
-        <button class="collapsible">📊 Additional Effects</button>
-        <div class="content">
-        <ul>
-            {% for effect in substance['pweffects'] %}
-            <li>{{ effect }}</li>
-            {% endfor %}
-        </ul>
-        </div>
-    {% endif %}
-
-    <!-- Helpful Links Section -->
-	<h2>Helpful Links</h2>
-
-	<div class="links-container">
-		<a href="https://www.drugs.com/imprints.php?action=search&drugname={{ substance.name|urlencode }}" class="modern-link" target="_blank">
-		💊 Pill Identifier
-		</a>
-    	{% if substance.get('links') %}
-        
-        
-        {% if substance['links'].get('experiences') %}
-            <a href="{{ substance['links']['experiences'] }}" class="modern-link" target="_blank">
-            📘 Experience Reports
-            </a>
-        {% endif %}
-        {% if substance['links'].get('pihkal') %}
-            <a href="{{ substance['links']['pihkal'] }}" class="modern-link" target="_blank">
-            📖 PiHKAL
-            </a>
-        {% endif %}
-        {% if substance['links'].get('tihkal') %}
-            <a href="{{ substance['links']['tihkal'] }}" class="modern-link" target="_blank">
-            📚 TiHKAL
-            </a>
-        {% endif %}
-
-        
-    {% endif %}
-	</div>
-</div>
-
-    <!-- Known Combinations Section -->
-    {% if substance.get('combos') %}
-        <h2>Known Combinations</h2>
-
-        <!-- Dangerous Section -->
-        {% set dangerous_combos = [] %}
-        {% for combo, data in substance['combos'].items() %}
-        {% if data['status'] == 'Dangerous' and data.get('note') %}
-            {% set _ = dangerous_combos.append({'combo': combo, 'note': data['note']}) %}
-        {% endif %}
-        {% endfor %}
-        {% if dangerous_combos %}
-        <button class="collapsible">☠️ Dangerous ☠️</button>
-        <div class="content">
-            <p>These combinations are considered extremely harmful and should always be avoided.</p>
-            {% for combo_data in dangerous_combos %}
-            <div class="combo-box dangerous">
-                <strong>{{ combo_data.combo }}:</strong> {{ combo_data.note }}
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        <!-- Unsafe Section -->
-        {% set unsafe_combos = [] %}
-        {% for combo, data in substance['combos'].items() %}
-        {% if data['status'] == 'Unsafe' and data.get('note') %}
-            {% set _ = unsafe_combos.append({'combo': combo, 'note': data['note']}) %}
-        {% endif %}
-        {% endfor %}
-        {% if unsafe_combos %}
-        <button class="collapsible">🛑 Unsafe 🛑</button>
-        <div class="content">
-            <p>There is considerable risk of physical harm when taking these combinations, they should be avoided where possible.</p>
-            {% for combo_data in unsafe_combos %}
-            <div class="combo-box unsafe">
-                <strong>{{ combo_data.combo }}:</strong> {{ combo_data.note }}
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        <!-- Caution Section -->
-        {% set caution_combos = [] %}
-        {% for combo, data in substance['combos'].items() %}
-        {% if data['status'] == 'Caution' and data.get('note') %}
-            {% set _ = caution_combos.append({'combo': combo, 'note': data['note']}) %}
-        {% endif %}
-        {% endfor %}
-        {% if caution_combos %}
-        <button class="collapsible">⚠️ Caution ⚠️</button>
-        <div class="content">
-            <p>These combinations are not usually physically harmful, but may produce undesirable effects.</p>
-            {% for combo_data in caution_combos %}
-            <div class="combo-box caution">
-                <strong>{{ combo_data.combo }}:</strong> {{ combo_data.note }}
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        <!-- Low Risk & Synergy Section -->
-        {% set low_risk_synergy_combos = [] %}
-        {% for combo, data in substance['combos'].items() %}
-        {% if data['status'] == 'Low Risk & Synergy' and data.get('note') %}
-            {% set _ = low_risk_synergy_combos.append({'combo': combo, 'note': data['note']}) %}
-        {% endif %}
-        {% endfor %}
-        {% if low_risk_synergy_combos %}
-        <button class="collapsible">↗ Low Risk & Synergy ↗</button>
-        <div class="content">
-            <p>These drugs work together to cause an effect greater than the sum of their parts.</p>
-            {% for combo_data in low_risk_synergy_combos %}
-            <div class="combo-box low-risk-synergy">
-                <strong>{{ combo_data.combo }}:</strong> {{ combo_data.note }}
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        <!-- Low Risk & No Synergy Section -->
-        {% set low_risk_no_synergy_combos = [] %}
-        {% for combo, data in substance['combos'].items() %}
-        {% if data['status'] == 'Low Risk & No Synergy' and data.get('note') %}
-            {% set _ = low_risk_no_synergy_combos.append({'combo': combo, 'note': data['note']}) %}
-        {% endif %}
-        {% endfor %}
-        {% if low_risk_no_synergy_combos %}
-        <button class="collapsible">➡ Low Risk & No Synergy ➡</button>
-        <div class="content">
-            <p>Effects are additive. The combination is unlikely to cause any adverse or undesirable reaction.</p>
-            {% for combo_data in low_risk_no_synergy_combos %}
-            <div class="combo-box low-risk-no-synergy">
-                <strong>{{ combo_data.combo }}:</strong> {{ combo_data.note }}
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        <!-- Low Risk & Decrease Section -->
-        {% set low_risk_decrease_combos = [] %}
-        {% for combo, data in substance['combos'].items() %}
-        {% if data['status'] == 'Low Risk & Decrease' and data.get('note') %}
-            {% set _ = low_risk_decrease_combos.append({'combo': combo, 'note': data['note']}) %}
-        {% endif %}
-        {% endfor %}
-        {% if low_risk_decrease_combos %}
-        <button class="collapsible">↘ Low Risk & Decrease ↘</button>
-        <div class="content">
-            <p>Effects are subtractive. The combination is unlikely to cause any adverse or undesirable reaction.</p>
-            {% for combo_data in low_risk_decrease_combos %}
-            <div class="combo-box low-risk-decrease">
-                <strong>{{ combo_data.combo }}:</strong> {{ combo_data.note }}
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-    {% endif %}
-
-    <!-- Studies Section -->
-    {% if substance.get('sources', {}).get('_general') %}
-      <h2>Studies</h2>
-      <button class="collapsible">🔗 Sources</button>
-      <div class="content sources-section">
-        <ul>
-          {% for source in substance['sources']['_general'] %}
-            {% set parts = match('^(.*) - (https?://.+)$', source) %}
-            {% if parts %}
-                <li>
-                        <a href="{{ parts[2] }}" rel="noopener noreferrer" target="_blank">{{ parts[1] }}</a>
-                </li>
-            {% elif match('^https?://', source) %}
-                <li>
-                        <a href="{{ source }}" rel="noopener noreferrer" target="_blank">{{ source }}</a>
-                </li>
-            {% else %}
-                <li>{{ source }}</li>
-            {% endif %}
-          {% endfor %}
-        </ul>
-      </div>
-    {% endif %}
 
     <script>
-    // JavaScript to handle collapsible sections
-    var coll = document.getElementsByClassName("collapsible");
-    for (var i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var content = this.nextElementSibling;
-        if (content.style.display === "block") {
-            content.style.display = "none";
-        } else {
-            content.style.display = "block";
-        }
-        });
+    function switchDataSource(source) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('source', source);
+        window.location.href = url.toString();
     }
     </script>
+
+    <script>
+    function renderTimeChart() {
+        var ctx = document.getElementById('timeChart').getContext('2d');
+        
+        // Get timing data
+        var timingData = JSON.parse('{{ substance.get("timing", {}) | tojson | safe }}');
+        var roas = Object.keys(timingData.onset || {}).filter(roa => roa !== 'value');
+        
+        // Colors for different phases
+        const bodyStyles = getComputedStyle(document.body);
+        var phaseColors = {
+            'onset': bodyStyles.getPropertyValue('--chart-blue'),
+            'duration': bodyStyles.getPropertyValue('--chart-green'),
+            'aftereffects': bodyStyles.getPropertyValue('--chart-orange')
+        };
+
+        // Helper function to parse time ranges
+        function parseTimeRange(value) {
+            if (!value) return null;
+            let range = value.split('-').map(Number);
+            return range.length === 2 ? {min: range[0], max: range[1]} : {min: range[0], max: range[0]};
+        }
+
+        // Convert all times to minutes for consistency
+        function convertToMinutes(value, unit) {
+            if (!value || !unit) return 0;
+            switch(unit.toLowerCase()) {
+                case 'hours': return value * 60;
+                case 'days': return value * 24 * 60;
+                case 'weeks': return value * 7 * 24 * 60;
+                default: return value; // Assuming minutes
+            }
+        }
+
+        // Format time for display
+        function formatTime(minutes) {
+            if (minutes >= 1440) { // More than 24 hours
+                return (minutes/1440).toFixed(1) + 'd';
+            }
+            const hours = Math.floor(minutes/60);
+            const mins = Math.round(minutes % 60);
+            if (hours > 0) {
+                return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
+            }
+            return `${mins}m`;
+        }
+
+        // Prepare datasets for each ROA
+        let datasets = [];
+        let maxTime = 0;
+
+        // Define peak intensity (0.85 instead of 1.0 to leave room at top)
+        const peakIntensity = 0.85;
+
+        roas.forEach((roa, index) => {
+            let dataPoints = [];
+            let timeOffset = 0;
+            
+            // Process onset
+            if (timingData.onset && timingData.onset[roa]) {
+                let onset = parseTimeRange(timingData.onset[roa].value);
+                if (onset) {
+                    let onsetMinutes = convertToMinutes(onset.max, timingData.onset[roa].unit);
+                    // Create smooth onset curve with sigmoid-like function
+                    for (let i = 0; i <= 20; i++) {
+                        let x = (onsetMinutes * i) / 20;
+                        // Modified sigmoid function for smoother onset
+                        let progress = i / 20;
+                        let y = peakIntensity / (1 + Math.exp(-12 * (progress - 0.5)));
+                        dataPoints.push({x, y});
+                    }
+                    timeOffset = onsetMinutes;
+                    maxTime = Math.max(maxTime, onsetMinutes);
+                }
+            }
+
+            // Process duration
+            if (timingData.duration && (timingData.duration[roa] || timingData.duration.value)) {
+                let duration = timingData.duration[roa] ? 
+                    parseTimeRange(timingData.duration[roa].value) :
+                    parseTimeRange(timingData.duration.value.value);
+                let unit = timingData.duration[roa] ? 
+                    timingData.duration[roa].unit :
+                    timingData.duration.value.unit;
+                
+                if (duration) {
+                    let durationMinutes = convertToMinutes(duration.max, unit);
+                    // Add plateau points - just two points for a straight line
+                    dataPoints.push({x: timeOffset, y: peakIntensity});
+                    dataPoints.push({x: timeOffset + durationMinutes, y: peakIntensity});
+                    timeOffset += durationMinutes;
+                    maxTime = Math.max(maxTime, timeOffset);
+                }
+            }
+
+            // Process after-effects with gradual decline
+            if (timingData.aftereffects && (timingData.aftereffects[roa] || timingData.aftereffects.value)) {
+                let aftereffects = timingData.aftereffects[roa] ? 
+                    parseTimeRange(timingData.aftereffects[roa].value) :
+                    parseTimeRange(timingData.aftereffects.value.value);
+                let unit = timingData.aftereffects[roa] ? 
+                    timingData.aftereffects[roa].unit :
+                    timingData.aftereffects.value.unit;
+                
+                if (aftereffects) {
+                    let afterMinutes = convertToMinutes(aftereffects.max, unit);
+                    // Create linear decline
+                    dataPoints.push({x: timeOffset, y: peakIntensity});
+                    dataPoints.push({x: timeOffset + afterMinutes, y: 0});
+                    maxTime = Math.max(maxTime, timeOffset + afterMinutes);
+                }
+            }
+
+            if (dataPoints.length > 0) {
+                datasets.push({
+                    label: roa,
+                    data: dataPoints,
+                    borderColor: `hsl(${(index * 360/roas.length)}, 70%, 60%)`,
+                    backgroundColor: `hsla(${(index * 360/roas.length)}, 70%, 60%, 0.1)`,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0,
+                });
+            }
+        });
+
+        // Create the chart
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: 'Time',
+                            color: bodyStyles.getPropertyValue('--chart-text'),
+                            padding: {top: 10, bottom: 0}
+                        },
+                        min: 0,
+                        max: maxTime * 1.1,
+                        ticks: {
+                            color: bodyStyles.getPropertyValue('--chart-text-dim'),
+                            callback: formatTime,
+                            maxRotation: 45,
+                            autoSkip: true,
+                            autoSkipPadding: 40
+                        },
+                        grid: {
+                            color: bodyStyles.getPropertyValue('--chart-grid-line'),
+                        }
+                    },
+                    y: {
+                        type: 'linear',
+                        min: 0,
+                        max: 1.1, // Give more space at top
+                        display: false,
+                        grid: {
+                            drawBorder: false
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        top: 20,    // Add padding at top
+                        bottom: 10,
+                        left: 10,
+                        right: 10
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: bodyStyles.getPropertyValue('--chart-text'),
+                            usePointStyle: true,
+                            pointStyle: 'line',
+                            padding: 20
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                let time = context.parsed.x;
+                                return `${label}: ${formatTime(time)}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Call renderTimeChart when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        if (document.getElementById('timeChart')) {
+            renderTimeChart();
+        }
+    });
+    </script>
+
+    <style>
+    .substance-page {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .substance-page h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+    }
+
+    .substance-page h2 {
+        font-size: 1.8rem;
+        margin: 2rem 0 1rem;
+        color: var(--text-primary);
+    }
+
+    /* Header Layout */
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        gap: 2rem;
+    }
+
+    .page-header h1 {
+        margin: 0;
+        flex: 0 1 auto;
+        font-size: 2.5rem;
+    }
+
+    .data-source-switcher {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        background: var(--background-secondary);
+        border-radius: 0.75rem;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        margin-left: auto;
+    }
+
+    .data-source-switcher:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .data-source-switcher label {
+        font-weight: 500;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .data-source-switcher select {
+        padding: 0.35rem 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        background: var(--background-primary);
+        color: var(--text-primary);
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        outline: none;
+        min-width: 100px;
+    }
+
+    .data-source-switcher select:hover {
+        border-color: var(--border-color-hover);
+        background: var(--background-darker);
+    }
+
+    .data-source-switcher select:focus {
+        border-color: var(--accent-color, var(--link));
+        box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb, var(--link-rgb)), 0.2);
+    }
+
+    @media (max-width: 768px) {
+        .page-header {
+            flex-direction: row;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            text-align: left;
+        }
+        
+        .data-source-switcher {
+            padding: 0.5rem 0.75rem;
+        }
+        
+        .data-source-switcher select {
+            min-width: 80px;
+        }
+    }
+
+    /* Categories Section */
+    .category-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin: 1rem 0;
+    }
+
+    .category-link {
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        color: var(--text-primary);
+        text-decoration: none;
+        font-size: 0.95rem;
+    }
+
+    /* Common Box Styles */
+    .effects-box,
+    .onset-duration-box,
+    .dose-info-container,
+    .combo-box,
+    .sources-section,
+    .content {
+        background: var(--background-secondary);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Effects Section */
+    .effects-box ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        columns: 2;
+        column-gap: 2rem;
+    }
+
+    .effects-box li {
+        margin-bottom: 0.75rem;
+        break-inside: avoid;
+        padding: 0.5rem;
+        transition: all 0.2s ease;
+    }
+
+    .effects-box a {
+        color: var(--text-primary);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        position: relative;
+        font-size: 0.95rem;
+    }
+
+    .effects-box a::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        background: var(--text-primary);
+        bottom: -2px;
+        left: 0;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s ease;
+    }
+
+    .effects-box a:hover {
+        color: var(--accent-color, var(--link));
+    }
+
+    .effects-box a:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+
+    .effect-category {
+        color: var(--text-secondary);
+        font-size: 0.85em;
+        margin-left: 0.75rem;
+        opacity: 0.8;
+        font-style: italic;
+    }
+
+    /* Warning and Note Banners */
+    .warning-banner,
+    .note-banner {
+        padding: 1rem 1.5rem;
+        border-radius: 0.75rem;
+        margin: 1rem 0;
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    .warning-banner {
+        background-color: rgba(220, 53, 69, 0.15);
+        border-left: 4px solid #dc3545;
+    }
+
+    .note-banner {
+        background-color: rgba(255, 193, 7, 0.15);
+        border-left: 4px solid #ffc107;
+    }
+
+    .warning-banner ⚠️,
+    .note-banner ⚠️ {
+        margin-right: 0.5rem;
+    }
+
+    /* Combo Boxes */
+    .combo-box {
+        margin: 0.75rem 0;
+        padding: 1rem 1.5rem;
+        border-radius: 0.75rem;
+        color: var(--text-primary);
+        font-weight: 500;
+    }
+
+    .combo-box.dangerous {
+        background-color: rgba(220, 53, 69, 0.15);
+        border-left: 4px solid #dc3545;
+    }
+
+    .combo-box.unsafe {
+        background-color: rgba(255, 145, 0, 0.15);
+        border-left: 4px solid #ff9100;
+    }
+
+    .combo-box.caution {
+        background-color: rgba(255, 193, 7, 0.15);
+        border-left: 4px solid #ffc107;
+    }
+
+    /* Known Combinations Section */
+    .content p {
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    button.collapsible.active + .content {
+        border-top: none;
+        background: var(--background-secondary);
+        padding: 1.5rem;
+        border-radius: 0 0 0.75rem 0.75rem;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+        .combo-box {
+            background: var(--background-secondary);
+            margin: 0.5rem 0;
+            padding: 1rem;
+        }
+        
+        button.collapsible.active + .content {
+            padding: 1rem;
+        }
+    }
+
+    /* Links Section */
+    .links-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+
+    .modern-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.75rem 1.25rem;
+        color: var(--link);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    /* Collapsible Sections */
+    button.collapsible {
+        background-color: var(--background-secondary);
+        color: var(--text-primary);
+        cursor: pointer;
+        padding: 1rem 1.5rem;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 1rem;
+        border-radius: 0.75rem;
+        margin-top: 0.75rem;
+    }
+
+    button.collapsible:hover {
+        background-color: var(--background-darker);
+    }
+
+    button.collapsible.active {
+        border-radius: 0.75rem 0.75rem 0 0;
+    }
+
+    button.collapsible:after {
+        content: '▼';
+        font-size: 0.8rem;
+        float: right;
+        margin-left: 5px;
+        transition: transform 0.3s ease;
+    }
+
+    button.collapsible.active:after {
+        transform: rotate(180deg);
+    }
+
+    .content {
+        display: none;
+        margin-top: 0;
+        border-top: 1px solid var(--border-color);
+    }
+
+    /* Chart and Table Container */
+    .chart-table-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin: 1.5rem 0;
+        width: 100%;
+    }
+
+    .chart-container {
+        width: 100%;
+        min-height: 200px;
+        position: relative;
+    }
+
+    .chart-container canvas {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .table-container {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table-container table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 300px;
+    }
+
+    .table-container th,
+    .table-container td {
+        padding: 0.75rem;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+        .substance-page {
+            padding: 1rem;
+            overflow-x: hidden;  /* Prevent horizontal scrolling */
+            width: 100%;
+            max-width: 100vw;
+        }
+
+        .substance-page h1 {
+            font-size: 2rem;
+        }
+
+        .substance-page h2 {
+            font-size: 1.5rem;
+        }
+
+        .substance-header {
+            flex-direction: column;
+        }
+
+        .effects-box,
+        .onset-duration-box,
+        .dose-info-container,
+        .combo-box,
+        .sources-section,
+        .content {
+            background: none;
+            box-shadow: none;
+            padding: 0.75rem 0;
+            margin: 0.5rem 0;
+        }
+
+        .effects-box ul {
+            columns: 1;
+            font-size: 0.95rem;
+        }
+
+        .effects-box li {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 0;
+        }
+
+        .effects-box li:last-child {
+            border-bottom: none;
+        }
+
+        .effects-box a {
+            display: block;
+            padding: 0.2rem 0;
+        }
+
+        .effects-box a::after {
+            display: none;
+        }
+
+        .effect-category {
+            display: block;
+            margin-left: 0;
+            margin-top: 0.2rem;
+            font-size: 0.8em;
+        }
+
+        .warning-banner,
+        .note-banner {
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-radius: 0;
+        }
+
+        .combo-box {
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-radius: 0;
+        }
+
+        .modern-link {
+            width: 100%;
+            padding: 0.75rem 0;
+            background: none;
+            box-shadow: none;
+        }
+
+        button.collapsible {
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border-radius: 0;
+            background: none;
+        }
+
+        .content {
+            padding: 0.75rem 0;
+        }
+
+        .chart-table-container {
+            margin: 1rem -1rem;  /* Negative margin to allow full width */
+            padding: 0 1rem;
+            width: 100vw;
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
+        .chart-container {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            min-height: 150px;
+        }
+
+        .table-container {
+            margin: 1rem -1rem;
+            padding: 0 1rem;
+            width: calc(100% + 2rem);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table-container::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: var(--background-primary);
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 2px;
+        }
+
+        .table-container table {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .table-container th,
+        .table-container td {
+            padding: 0.5rem;
+            min-width: 80px;
+        }
+
+        .category-list {
+            gap: 0.5rem;
+        }
+
+        .category-link {
+            padding: 0.35rem 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        /* Fix for onset duration section */
+        .onset-duration-box {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .onset-duration-box ul {
+            padding-left: 1.5rem;
+        }
+
+        .onset-duration-box li {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
+            hyphens: auto;
+        }
+    }
+
+    /* Desktop styles */
+    @media (min-width: 769px) {
+        .chart-table-container {
+            grid-template-columns: 1fr 1fr;
+            align-items: start;
+        }
+
+        .chart-container {
+            min-height: 250px;
+        }
+
+        /* Desktop-specific styles */
+        .effects-box,
+        .onset-duration-box,
+        .dose-info-container,
+        .combo-box,
+        .sources-section,
+        .content,
+        .modern-link {
+            background: var(--background-secondary);
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-link:hover,
+        .modern-link:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .effects-box li {
+            transition: transform 0.2s ease;
+            border-radius: 0.5rem;
+        }
+
+        .effects-box li:hover {
+            transform: translateX(4px);
+            background-color: var(--background-darker);
+        }
+    }
+
+    .time-course-container {
+        margin-top: 2rem;
+        background: var(--background-secondary);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 768px) {
+        .time-course-container {
+            margin: 1rem -1rem;
+            padding: 1rem;
+            border-radius: 0;
+            box-shadow: none;
+            background: none;
+        }
+    }
+    </style>
 {% endblock %}
