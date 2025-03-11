@@ -1,0 +1,167 @@
+{% extends "layout.html" %}
+
+{% block title %}API Documentation | Substance Search{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="/static/css/api_docs.css">
+{% endblock %}
+
+{% block content %}
+<div class="api-docs">
+    <h1>API Documentation</h1>
+
+    <div class="api-section">
+        <h2>Base URL</h2>
+        <div class="endpoint-container">
+            <code class="base-url">https://substancesearch.org/api</code>
+        </div>
+    </div>
+
+    <div class="api-section">
+        <h2>Endpoints</h2>
+
+        <div class="endpoint">
+            <h3 id="get-substance">Get Substance Data</h3>
+            <div class="endpoint-container">
+                <code class="http-method">GET</code>
+                <code class="endpoint-url">/substance/{slug}</code>
+            </div>
+            <p>Returns substance data from all available sources.</p>
+
+            <h4>Path Parameters</h4>
+            <table class="params-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>slug</td>
+                        <td>string</td>
+                        <td>The URL-friendly slug of the substance (e.g., "lsd", "mdma", "ketamine")</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Response</h4>
+            <p>Returns a JSON object containing substance data from all available sources.</p>
+
+            <h4>Example Request</h4>
+            <pre><code>curl -X GET https://substancesearch.org/api/substance/lsd</code></pre>
+
+            <h4>Example Response</h4>
+            <pre><code>{
+  "tripsit": {
+    "name": "LSD",
+    "categories": ["psychedelic"],
+    "dose_units": "µg",
+    "...": "..."
+  },
+  "psychonautwiki": {
+    "name": "LSD",
+    "class": "Psychedelic",
+    "...": "..."
+  }
+}</code></pre>
+
+            <h4>Status Codes</h4>
+            <table class="params-table">
+                <thead>
+                    <tr>
+                        <th>Status Code</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>200</td>
+                        <td>Success</td>
+                    </tr>
+                    <tr>
+                        <td>400</td>
+                        <td>Bad Request - Invalid slug format</td>
+                    </tr>
+                    <tr>
+                        <td>404</td>
+                        <td>Not Found - Substance not found</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="endpoint">
+            <h3 id="get-substance-source">Get Substance Data from Specific Source</h3>
+            <div class="endpoint-container">
+                <code class="http-method">GET</code>
+                <code class="endpoint-url">/substance/{slug}/sources/{source}</code>
+            </div>
+            <p>Returns substance data from a specific source.</p>
+
+            <h4>Path Parameters</h4>
+            <table class="params-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>slug</td>
+                        <td>string</td>
+                        <td>The URL-friendly slug of the substance (e.g., "lsd", "mdma", "ketamine")</td>
+                    </tr>
+                    <tr>
+                        <td>source</td>
+                        <td>string</td>
+                        <td>The data source to retrieve information from. Available sources: tripsit, psychonautwiki</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Response</h4>
+            <p>Returns a JSON object containing substance data from the specified source.</p>
+
+            <h4>Example Request</h4>
+            <pre><code>curl -X GET https://substancesearch.org/api/substance/lsd/sources/tripsit</code></pre>
+
+            <h4>Example Response</h4>
+            <pre><code>{
+  "name": "LSD",
+  "categories": ["psychedelic"],
+  "dose_units": "µg",
+  "...": "..."
+}</code></pre>
+
+            <h4>Status Codes</h4>
+            <table class="params-table">
+                <thead>
+                    <tr>
+                        <th>Status Code</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>200</td>
+                        <td>Success</td>
+                    </tr>
+                    <tr>
+                        <td>400</td>
+                        <td>Bad Request - Invalid slug format or invalid source</td>
+                    </tr>
+                    <tr>
+                        <td>404</td>
+                        <td>Not Found - Substance not found or data not available for the specified source</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -237,4 +237,12 @@ def disclaimer() -> Response:
         'disclaimer.html',
         title='Disclaimer',
         theme=_fetch_theme(request)
+    ))
+
+@views_bp.route('/api/docs')
+def api_docs() -> Response:
+    return make_response(render_template(
+        'api_docs.html',
+        title='API Documentation',
+        theme=_fetch_theme(request)
     )) 

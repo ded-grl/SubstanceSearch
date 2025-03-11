@@ -1,0 +1,122 @@
+.api-docs {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.api-intro {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.api-section {
+    margin-bottom: 40px;
+}
+
+.endpoint {
+    margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: var(--card-bg);
+    box-shadow: 0 2px 5px var(--shadow);
+}
+
+.endpoint h3 {
+    margin-top: 0;
+    color: var(--text);
+    font-size: 1.5rem;
+}
+
+.endpoint h4 {
+    margin-top: 20px;
+    color: var(--text);
+    font-size: 1.2rem;
+}
+
+.endpoint-container {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.http-method {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.endpoint-url {
+    background-color: var(--code-bg);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.base-url {
+    background-color: var(--code-bg);
+    padding: 10px;
+    border-radius: 4px;
+    font-family: monospace;
+    display: inline-block;
+}
+
+pre {
+    background-color: var(--code-bg);
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+code {
+    font-family: monospace;
+}
+
+.params-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+.params-table th, .params-table td {
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    text-align: left;
+}
+
+.params-table th {
+    background-color: var(--table-header-bg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .api-docs {
+        padding: 10px;
+    }
+    
+    .endpoint {
+        padding: 15px;
+    }
+    
+    .params-table th, .params-table td {
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .endpoint-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .http-method {
+        margin-bottom: 5px;
+    }
+    
+    pre {
+        font-size: 0.9rem;
+    }
+} 
