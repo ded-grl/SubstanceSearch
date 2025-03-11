@@ -11,9 +11,8 @@ def _validate_substance_data(substance_data: Dict) -> None:
     Basic validation of substance data structure.
     Skips validation of any None values.
     """
-    if substance_data is None:
-        return
-
+    assert substance_data is not None
+    
     if isinstance(substance_data, dict):
         for key, value in substance_data.items():
             if isinstance(value, (dict, list)) and value is not None:
