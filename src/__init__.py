@@ -44,6 +44,6 @@ def create_app() -> Flask:
 
     # register API routes
     app.add_url_rule("/api/substance/<path:slug>", view_func=api_substance)
-    app.add_url_rule("/api/substance/<path:slug>/<source>", view_func=api_substance_source)
+    app.add_url_rule("/api/substance/<path:slug>/sources/<path:source>", view_func=api_substance_source)
 
     return app
