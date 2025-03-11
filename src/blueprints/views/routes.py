@@ -53,12 +53,21 @@ def leaderboard() -> Response:
         )
         contributors = r.json()
 
-        # sort by contributions
-        contributors.sort(key=lambda x: x['contributions'], reverse=True)
-        
-        # add rank and label the contributors
-        for i, contributor in enumerate(contributors):
-            contributor['rank'] = _rank_to_display_string(i + 1)
+        # Check if contributors is a list before processing
+        if isinstance(contributors, list):
+            # Filter out GitHub Actions bot
+            contributors = [c for c in contributors if c.get('login') != 'github-actions[bot]']
+            
+            # sort by contributions
+            contributors.sort(key=lambda x: x['contributions'], reverse=True)
+            
+            # add rank and label the contributors
+            for i, contributor in enumerate(contributors):
+                contributor['rank'] = _rank_to_display_string(i + 1)
+        else:
+            # Handle case where contributors is not a list
+            current_app.logger.warning(f"Unexpected contributors format: {type(contributors)}")
+            contributors = []  # Use an empty list as fallback
 
         return make_response(render_template(
             'leaderboard.html',
@@ -245,4 +254,10 @@ def api_docs() -> Response:
         'api_docs.html',
         title='API Documentation',
         theme=_fetch_theme(request)
-    )) 
+    ))
+
+@views_bp.route('/leaderboard/clear-cache')
+def clear_leaderboard_cache() -> Response:
+    # Clear the cache for the leaderboard route
+    cache.delete_memoized(leaderboard)
+    return make_response("Leaderboard cache cleared", 200) 
