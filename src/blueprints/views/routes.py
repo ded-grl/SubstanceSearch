@@ -139,9 +139,27 @@ def substance(slug: str) -> Response:
     # Get current source
     source = _fetch_data_source(request)
     
+    # Check if the source has data for this substance, otherwise fallback to an available source
+    if source not in substance_data or not substance_data.get(source):
+        # Use the first source that has data as fallback
+        for available_source in AVAILABLE_SOURCES:
+            if available_source in substance_data and substance_data.get(available_source):
+                source = available_source
+                break
+    
     # Get the substance data for the selected source
     substance_info = substance_data.get(source, {})
     substance_info['name'] = substance_name  # Ensure the name is included
+    
+    # Always use TripSit categories if available
+    if 'tripsit' in substance_data and substance_data['tripsit'].get('categories'):
+        substance_info['categories'] = substance_data['tripsit']['categories']
+    
+    # Filter available sources to only those that actually have data for this substance
+    substance_available_sources = []
+    for src in AVAILABLE_SOURCES:
+        if src in substance_data and substance_data.get(src):
+            substance_available_sources.append(src)
     
     # SVG_FILES is a set, so check if the SVG exists in the set
     svg_filename = f"{substance_name.lower()}.svg"
@@ -155,7 +173,7 @@ def substance(slug: str) -> Response:
         substance=substance_info,  # Use 'substance' as the variable name to match the template
         substance_name=substance_name,
         current_source=source,
-        available_sources=AVAILABLE_SOURCES,
+        available_sources=substance_available_sources,
         all_sources_data=all_sources_data,
         svg_files=SVG_FILES,
         theme=_fetch_theme(request)

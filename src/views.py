@@ -202,9 +202,17 @@ def substance(slug: str) -> Response:
     substance_data = RAW_SUBSTANCE_DATA.get(substance_name, {})
     if not substance_data:
         return make_response("Substance not found", 404)
-
+    
     # Get current source
     source = _fetch_data_source(request)
+    
+    # Check if the source has data for this substance, otherwise fallback to an available source
+    if source not in substance_data or not substance_data.get(source):
+        # Use the first source that has data as fallback
+        for available_source in AVAILABLE_SOURCES:
+            if available_source in substance_data and substance_data.get(available_source):
+                source = available_source
+                break
     
     # Get the substance data for the selected source
     substance_info = substance_data.get(source, {})
@@ -213,13 +221,19 @@ def substance(slug: str) -> Response:
     if 'tripsit' in substance_data and substance_data['tripsit'].get('categories'):
         substance_info['categories'] = substance_data['tripsit']['categories']
     
+    # Filter available sources to only those that actually have data for this substance
+    substance_available_sources = []
+    for src in AVAILABLE_SOURCES:
+        if src in substance_data and substance_data.get(src):
+            substance_available_sources.append(src)
+    
     # Create response
     response = make_response(render_template(
         'substance.html',
         substance=substance_info,
         substance_name=substance_name,
         current_source=source,
-        available_sources=AVAILABLE_SOURCES,
+        available_sources=substance_available_sources,
         all_sources_data=substance_data,
         svg_files=SVG_FILES,
         theme=_fetch_theme(request)
