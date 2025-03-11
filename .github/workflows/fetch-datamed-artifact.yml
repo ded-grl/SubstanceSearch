@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ssh-key: ${{secrets.GITHUB_ACTIONS_DEPLOY_KEY}}
         
       - name: Create directories
         run: mkdir -p data/datamed
