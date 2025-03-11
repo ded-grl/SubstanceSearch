@@ -116,14 +116,14 @@ def _init_slug_to_substance_name_map(substance_data: Dict, source: DataSource = 
 
     return map
 
-def get_substance_data_for_source(source: DataSource = 'tripsit') -> Dict:
-    """
-    Get substance data for a specific source.
-    """
-    return _get_substance_data_for_source(RAW_SUBSTANCE_DATA, source)
-
 # Initialize raw data that contains all sources
 RAW_SUBSTANCE_DATA = _init_substance_data()
+
+# Pre-process and cache substance data for each available source
+CACHED_SUBSTANCE_DATA = {
+    source: _get_substance_data_for_source(RAW_SUBSTANCE_DATA, source) 
+    for source in AVAILABLE_SOURCES
+}
 
 # Initialize data structures with TripSit as default
 SVG_FILES = _init_svg_file_names()
@@ -131,3 +131,10 @@ SUBSTANCE_TRIE = _init_substance_trie(RAW_SUBSTANCE_DATA)
 # Always use TripSit data for categories
 CATEGORY_CARD_NAMES = _init_category_card_names(RAW_SUBSTANCE_DATA, 'tripsit')
 SLUG_TO_SUBSTANCE_NAME = _init_slug_to_substance_name_map(RAW_SUBSTANCE_DATA)
+
+def get_substance_data_for_source(source: DataSource = 'tripsit') -> Dict:
+    """
+    Get substance data for a specific source.
+    Returns cached data to avoid reprocessing on every call.
+    """
+    return CACHED_SUBSTANCE_DATA[source]
