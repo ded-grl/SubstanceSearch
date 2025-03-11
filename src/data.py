@@ -41,53 +41,8 @@ def _init_substance_data() -> Dict[str, Dict]:
     Raises AssertionError if data validation fails.
     """
     path = os.path.join('data', 'datamed', 'data.json')
-    if not os.path.exists(path):
-        # If data.json doesn't exist, try to load and merge from raw files
-        tripsit_path = os.path.join('data', 'datamed', 'raw_tripsit.json')
-        psychonaut_path = os.path.join('data', 'datamed', 'raw_psychonaut.json')
-        substances_path = os.path.join('data', 'datamed', 'substances.json')
-        
-        if not all(os.path.exists(p) for p in [tripsit_path, psychonaut_path, substances_path]):
-            raise FileNotFoundError('Missing required data files')
-            
-        try:
-            # Load raw data
-            with open(tripsit_path, encoding='utf-8') as f:
-                tripsit_data = json.load(f)
-            with open(psychonaut_path, encoding='utf-8') as f:
-                psychonaut_data = json.load(f)
-            with open(substances_path, encoding='utf-8') as f:
-                substances = json.load(f).get('substances', [])
-                
-            # Convert to dictionaries keyed by substance name
-            merged_data = {}
-            
-            # Process TripSit data
-            for substance in tripsit_data:
-                name = substance.get('name', '').lower()
-                if name and name in substances:
-                    if name not in merged_data:
-                        merged_data[name] = {}
-                    merged_data[name]['tripsit'] = substance
-                    
-            # Process PsychonautWiki data
-            for substance in psychonaut_data:
-                name = substance.get('name', '').lower()
-                if name and name in substances:
-                    if name not in merged_data:
-                        merged_data[name] = {}
-                    merged_data[name]['psychonautwiki'] = substance
-                    
-            # Save merged data
-            with open(path, 'w', encoding='utf-8') as f:
-                json.dump(merged_data, f, indent=2)
-                
-            return merged_data
-            
-        except json.JSONDecodeError as e:
-            raise json.JSONDecodeError(f'Invalid JSON in raw data files: {str(e)}', e.doc, e.pos)
     
-    # Load from existing data.json
+    # Load from data.json
     try:
         with open(path, encoding='utf-8') as f:
             data = json.load(f)
@@ -106,6 +61,8 @@ def _init_substance_data() -> Dict[str, Dict]:
         _validate_substance_data(data)
         return data
         
+    except FileNotFoundError:
+        raise FileNotFoundError('Data file (data.json) not found. This file should exist in the repository. Please clone the repository again or fetch the data files.')
     except json.JSONDecodeError as e:
         raise json.JSONDecodeError(f'Invalid JSON in data file: {str(e)}', e.doc, e.pos)
 
