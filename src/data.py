@@ -6,6 +6,9 @@ from typing import Set, List, Dict, Optional, Literal
 
 DataSource = Literal['tripsit', 'psychonautwiki']
 
+AVAILABLE_SOURCES: List[DataSource] = ['tripsit', 'psychonautwiki']
+DEFAULT_SOURCE: DataSource = 'tripsit'
+
 def _validate_substance_data(substance_data: Dict) -> None:
     """
     Basic validation of substance data structure.
@@ -55,7 +58,7 @@ def _init_substance_data() -> Dict[str, Dict]:
         for substance_name, substance_data in data.items():
             if not isinstance(substance_data, dict):
                 raise AssertionError(f'Invalid data format for substance {substance_name}')
-            if not any(source in substance_data for source in ['tripsit', 'psychonautwiki']):
+            if not any(source in substance_data for source in AVAILABLE_SOURCES):
                 raise AssertionError(f'Substance {substance_name} missing required source data')
         
         _validate_substance_data(data)
@@ -128,7 +131,3 @@ SUBSTANCE_TRIE = _init_substance_trie(RAW_SUBSTANCE_DATA)
 # Always use TripSit data for categories
 CATEGORY_CARD_NAMES = _init_category_card_names(RAW_SUBSTANCE_DATA, 'tripsit')
 SLUG_TO_SUBSTANCE_NAME = _init_slug_to_substance_name_map(RAW_SUBSTANCE_DATA)
-
-# Default source
-DEFAULT_SOURCE: DataSource = 'tripsit'
-AVAILABLE_SOURCES: List[DataSource] = ['tripsit', 'psychonautwiki']
