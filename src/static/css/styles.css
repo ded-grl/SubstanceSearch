@@ -35,6 +35,11 @@ body.light {
 	--category-stimulant: #ffd700;
 	--category-supplement: #98fb98;
 	--category-tentative: #c9d562;
+	/* API documentation variables */
+	--card-bg: #ffffff;
+	--code-bg: #f5f5f5;
+	--border-color: #ddd;
+	--table-header-bg: #f0f0f0;
 }
 
 body.dark {
@@ -48,8 +53,8 @@ body.dark {
 	--text-placeholder: #8b8b8b;
 	--border: #444;
 	--border-alt: #555;
-	--shadow: rgba(255, 255, 255, 0.1);
-	--shadow-hover: rgba(255, 255, 255, 0.2);
+	--shadow: rgba(0, 0, 0, 0.2);
+	--shadow-hover: rgba(0, 0, 0, 0.4);
 	--category-antidepressant: #ff4500;
 	--category-barbiturate: #f08080;
 	--category-benzodiazepine: #c9a570;
@@ -73,6 +78,11 @@ body.dark {
 	--category-stimulant: #ccad00;
 	--category-supplement: #67d367;
 	--category-tentative: #b7be72;
+	/* API documentation variables */
+	--card-bg: #1e1e1e;
+	--code-bg: #2a2a2a;
+	--border-color: #444;
+	--table-header-bg: #333;
 }
 
 body {
@@ -170,7 +180,7 @@ p {
 }
 
 #disclaimer-link::after {
-	content: "🗒️";
+	content: "⚠️";
 }
 
 #theme-toggle {
@@ -318,7 +328,7 @@ input[type="text"]::placeholder {
 
 @media (max-width: 768px) {
 	h1 {
-		font-size: 2rem;
+		font-size: 2em;
 	}
 
 	.footer-container {
@@ -326,7 +336,6 @@ input[type="text"]::placeholder {
 	}
 
 	#home-link::after {
-		margin: 0;
 		content: "";
 	}
 
@@ -339,7 +348,7 @@ input[type="text"]::placeholder {
 	}
 
 	.footer-block ul {
-		grid-template-columns: repeat(4, fit-content(100%));
+		flex-direction: column;
 	}
 }
 

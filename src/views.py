@@ -10,11 +10,15 @@ from flask import (
 from flask_caching import Cache, CachedResponse
 import os
 from src.data import (
-    SUBSTANCE_DATA,
+    RAW_SUBSTANCE_DATA,
     SUBSTANCE_TRIE,
     CATEGORY_CARD_NAMES,
     SVG_FILES,
-    SLUG_TO_SUBSTANCE_NAME
+    SLUG_TO_SUBSTANCE_NAME,
+    get_substance_data_for_source,
+    DEFAULT_SOURCE,
+    AVAILABLE_SOURCES,
+    DataSource
 )
 import requests
 import csv
@@ -39,6 +43,24 @@ def _fetch_theme(request: Request) -> str:
         return 'light'
 
     return theme
+
+
+def _fetch_data_source(request: Request) -> DataSource:
+    """
+    Fetch data source from request cookies or query params.
+    """
+    # First check query params
+    source = request.args.get('source', '').lower()
+    
+    # Then check cookies
+    if not source:
+        source = request.cookies.get('DataSource', '').lower()
+    
+    # Validate source
+    if source in AVAILABLE_SOURCES:
+        return source
+    
+    return DEFAULT_SOURCE
 
 
 cache = Cache()
@@ -139,9 +161,25 @@ def leaderboard() -> Response:
 def autocomplete() -> Response:
     query = request.args.get('query', '').lower()
     limit = request.args.get('limit', 10)
+    source = _fetch_data_source(request)
+    
     result_substance_names = set(SUBSTANCE_TRIE.search_substring(query))
     sorted_result_substance_names = sorted(result_substance_names, key=lambda substance_name: distance(substance_name.lower(), query.lower()))
-    result_substances = [SUBSTANCE_DATA.get(substance_name) for substance_name in sorted_result_substance_names]
+    
+    # Get data from user's preferred source
+    substance_data = get_substance_data_for_source(source)
+    result_substances = []
+    
+    # Process each substance to include TripSit categories
+    for substance_name in sorted_result_substance_names:
+        substance = substance_data.get(substance_name)
+        if substance:
+            # Get TripSit categories if available
+            tripsit_data = get_substance_data_for_source('tripsit')
+            if substance_name in tripsit_data and tripsit_data[substance_name].get('categories'):
+                substance['categories'] = tripsit_data[substance_name]['categories']
+            result_substances.append(substance)
+    
     results = [{
         'pretty_name': substance.get('pretty_name', 'Unknown'),
         'aliases': substance.get('aliases', []),
@@ -159,17 +197,52 @@ def substance(slug: str) -> Response:
 
     decoded_slug = unquote(slug)
     substance_name = SLUG_TO_SUBSTANCE_NAME.get(decoded_slug.lower(), '')
-    substance_data = SUBSTANCE_DATA.get(substance_name, None)
-
-    if substance_data is None:
+    
+    # Get data from both sources
+    substance_data = RAW_SUBSTANCE_DATA.get(substance_name, {})
+    if not substance_data:
         return make_response("Substance not found", 404)
-
-    return make_response(render_template(
+    
+    # Get current source
+    source = _fetch_data_source(request)
+    
+    # Check if the source has data for this substance, otherwise fallback to an available source
+    if source not in substance_data or not substance_data.get(source):
+        # Use the first source that has data as fallback
+        for available_source in AVAILABLE_SOURCES:
+            if available_source in substance_data and substance_data.get(available_source):
+                source = available_source
+                break
+    
+    # Get the substance data for the selected source
+    substance_info = substance_data.get(source, {})
+    
+    # Always use TripSit categories if available
+    if 'tripsit' in substance_data and substance_data['tripsit'].get('categories'):
+        substance_info['categories'] = substance_data['tripsit']['categories']
+    
+    # Filter available sources to only those that actually have data for this substance
+    substance_available_sources = []
+    for src in AVAILABLE_SOURCES:
+        if src in substance_data and substance_data.get(src):
+            substance_available_sources.append(src)
+    
+    # Create response
+    response = make_response(render_template(
         'substance.html',
-        substance=substance_data,
+        substance=substance_info,
+        substance_name=substance_name,
+        current_source=source,
+        available_sources=substance_available_sources,
+        all_sources_data=substance_data,
         svg_files=SVG_FILES,
         theme=_fetch_theme(request)
     ))
+    
+    # Set source cookie
+    response.set_cookie('DataSource', source)
+    
+    return response
 
 
 # Route for displaying substances in a category
@@ -180,10 +253,14 @@ def category(category_slug: str) -> Response:
         return make_response(slug_validation_error_mesage, 400)
 
     decoded_slug = unquote(category_slug).lower()
+    user_source = _fetch_data_source(request)
+    
+    # Always use TripSit data for category listings
+    tripsit_data = get_substance_data_for_source('tripsit')
 
     # Map of slugified category names to their original form
     category_name_mapping = {}
-    for substance in SUBSTANCE_DATA.values():
+    for substance in tripsit_data.values():
         for category in substance.get('categories', []):
             category_slugified = slugify(category)
             category_name_mapping[category_slugified] = category.capitalize()
@@ -193,21 +270,33 @@ def category(category_slug: str) -> Response:
     if not category_name:
         return make_response("Category not found", 404)
 
-    # Filter substances that belong to the category
+    # Filter substances that belong to the category using TripSit data
     filtered_substances = {}
-    for substance_name, details in SUBSTANCE_DATA.items():
+    for substance_name, details in tripsit_data.items():
         if any(slugify(cat) == decoded_slug for cat in details.get('categories', [])):
-            filtered_substances[substance_name] = details
+            # Get substance data from user's preferred source
+            source_data = get_substance_data_for_source(user_source)
+            if substance_name in source_data:
+                filtered_substances[substance_name] = source_data[substance_name]
+            else:
+                # Fallback to TripSit data if substance not found in preferred source
+                filtered_substances[substance_name] = details
 
     if not filtered_substances:
         return make_response("Category not found", 404)
 
-    return make_response(render_template(
+    response = make_response(render_template(
         'category.html',
         category_name=category_name,
         substances=filtered_substances,
+        current_source=user_source,
         theme=_fetch_theme(request)
     ))
+    
+    # Set source cookie
+    response.set_cookie('DataSource', user_source)
+    
+    return response
 
 
 # Route for disclaimer page

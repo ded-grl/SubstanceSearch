@@ -12,9 +12,9 @@
 
     <!-- Display substances in the category with card-like layout -->
     <div class="substance-grid">
-        {% for substance_name, details in substances.items() %}
-        <a class="substance-card" href="/substance/{{ slugify(substance_name) }}" class="substance-link">
-            <div class="substance-name">{{ details.pretty_name }}</div>
+        {% for substance in substances %}
+        <a class="substance-card" href="/substance/{{ substance.slug }}" class="substance-link">
+            <div class="substance-name">{{ substance.name }}</div>
         </a>
         {% endfor %}
     </div>
