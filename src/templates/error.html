@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <h1 class="display-4 text-danger mb-4"><i class="fas fa-exclamation-triangle"></i></h1>
+                    <h2 class="mb-4">Error</h2>
+                    <p class="lead mb-4">{{ message }}</p>
+                    <a href="/" class="btn btn-primary">Go Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

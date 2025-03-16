@@ -366,10 +366,16 @@ th {
 
 .substance-header {
 	display: flex;
-	flex-wrap: wrap;
+	justify-content: space-between;
 	align-items: flex-start;
-	gap: 20px;
-	margin-bottom: 20px;
+	margin-bottom: 2rem;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.substance-header h1 {
+	margin: 0;
+	flex: 1;
 }
 
 .substance-info {
@@ -389,7 +395,7 @@ th {
 @media (max-width: 768px) {
 	.substance-header {
 		flex-direction: column;
-		align-items: center;
+		align-items: stretch;
 	}
 
 	.substance-svg {
@@ -406,4 +412,38 @@ th {
 		margin-bottom: 8px;
 		display: inline-block;
 	}
+
+	.data-source-switcher {
+		width: 100%;
+		justify-content: space-between;
+	}
+}
+
+.data-source-switcher {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem;
+	background: var(--background-darker);
+	border-radius: 0.5rem;
+	margin-bottom: 1rem;
+}
+
+.data-source-switcher label {
+	font-weight: 500;
+	color: var(--text);
+}
+
+.data-source-switcher select {
+	padding: 0.25rem 0.5rem;
+	border: 1px solid var(--border-color);
+	border-radius: 0.25rem;
+	background: var(--background-primary);
+	color: var(--text);
+	font-size: 0.9rem;
+	cursor: pointer;
+}
+
+.data-source-switcher select:hover {
+	border-color: var(--border-color-hover);
 }

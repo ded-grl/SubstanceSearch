@@ -21,10 +21,10 @@
             </tr>
         </thead>
         <tbody>
-            {% for row in leaderboard_data %}
+            {% for row in contributors %}
                 <tr>
                     <td>{{ row.rank }}</td>
-                    <td>{{ row.contributor }}</td>
+                    <td>{{ row.login }}</td>
                     <td>{{ row.contributions }}</td>
                 </tr>
             {% endfor %}
