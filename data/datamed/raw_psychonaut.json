@@ -19038,14 +19038,9 @@
   {
     "addictionPotential": "highly addictive with a high potential for abuse",
     "commonNames": [
-      "α-PVP",
-      "alpha-PVP",
-      "Flakka",
-      "Flak",
-      "O-2387",
-      "β-ketone-prolintane",
-      "Prolintanone",
-      "Gravel"
+      "α-PHP",
+      "alpha-PHP",
+      "PV7"
     ],
     "dangerousInteractions": [
       {
@@ -19292,7 +19287,7 @@
             "max": 15,
             "min": 5
           },
-          "heavy": 25,
+          "heavy": null,
           "light": {
             "max": 5,
             "min": 1
@@ -19356,8 +19351,8 @@
         },
         "duration": {
           "afterglow": {
-            "max": 12,
-            "min": 4,
+            "max": 48,
+            "min": 1,
             "units": "hours"
           },
           "comeup": null,
@@ -19378,7 +19373,7 @@
             "units": "hours"
           },
           "total": {
-            "max": 6,
+            "max": 8,
             "min": 2,
             "units": "hours"
           }
@@ -19389,48 +19384,48 @@
         "bioavailability": null,
         "dose": {
           "common": {
-            "max": 15,
+            "max": 10,
             "min": 5
           },
-          "heavy": 25,
+          "heavy": null,
           "light": {
             "max": 5,
             "min": 2
           },
           "strong": {
-            "max": 25,
-            "min": 15
+            "max": 20,
+            "min": 10
           },
           "threshold": 1,
           "units": "mg"
         },
         "duration": {
           "afterglow": {
-            "max": 3,
+            "max": 8,
             "min": 1,
             "units": "hours"
           },
           "comeup": null,
           "duration": null,
           "offset": {
-            "max": 30,
-            "min": 15,
-            "units": "minutes"
+            "max": 4,
+            "min": 1,
+            "units": "hours"
           },
           "onset": {
-            "max": 60,
-            "min": 20,
-            "units": "seconds"
+            "max": 8,
+            "min": 2,
+            "units": "minutes"
           },
           "peak": {
-            "max": 6,
-            "min": 3,
+            "max": 90,
+            "min": 30,
             "units": "minutes"
           },
           "total": {
-            "max": 60,
-            "min": 30,
-            "units": "minutes"
+            "max": 5,
+            "min": 2,
+            "units": "hours"
           }
         },
         "name": "smoked"
@@ -26627,18 +26622,7 @@
   },
   {
     "addictionPotential": "highly addictive with a high potential for abuse",
-    "commonNames": [
-      "Cocaine",
-      "Coke",
-      "Coca",
-      "Crack",
-      "Blow",
-      "Girl",
-      "White",
-      "Snow",
-      "Nose Candy",
-      "Chari"
-    ],
+    "commonNames": null,
     "dangerousInteractions": [
       {
         "name": "ΑMT",
@@ -26823,10 +26807,6 @@
         "url": "https://psychonautwiki.org/wiki/Increased_bodily_temperature"
       },
       {
-        "name": "Sleepiness",
-        "url": "https://psychonautwiki.org/wiki/Sleepiness"
-      },
-      {
         "name": "Mania",
         "url": "https://psychonautwiki.org/wiki/Mania"
       },
@@ -26852,92 +26832,7 @@
       }
     ],
     "name": "Cocaine",
-    "roas": [
-      {
-        "bioavailability": null,
-        "dose": {
-          "common": {
-            "max": 60,
-            "min": 30
-          },
-          "heavy": 90,
-          "light": {
-            "max": 30,
-            "min": 10
-          },
-          "strong": {
-            "max": 90,
-            "min": 60
-          },
-          "threshold": 5,
-          "units": "mg"
-        },
-        "duration": {
-          "afterglow": null,
-          "comeup": {
-            "max": 15,
-            "min": 5,
-            "units": "minutes"
-          },
-          "duration": null,
-          "offset": {
-            "max": 30,
-            "min": 10,
-            "units": "minutes"
-          },
-          "onset": {
-            "max": 10,
-            "min": 1,
-            "units": "minutes"
-          },
-          "peak": {
-            "max": 30,
-            "min": 15,
-            "units": "minutes"
-          },
-          "total": {
-            "max": 90,
-            "min": 10,
-            "units": "minutes"
-          }
-        },
-        "name": "insufflated"
-      },
-      {
-        "bioavailability": null,
-        "dose": null,
-        "duration": {
-          "afterglow": null,
-          "comeup": {
-            "max": 2,
-            "min": 1,
-            "units": "minutes"
-          },
-          "duration": null,
-          "offset": {
-            "max": 5,
-            "min": 1,
-            "units": "minutes"
-          },
-          "onset": {
-            "max": 5,
-            "min": 3,
-            "units": "seconds"
-          },
-          "peak": {
-            "max": 10,
-            "min": 2,
-            "units": "minutes"
-          },
-          "total": {
-            "max": 15,
-            "min": 5,
-            "units": "minutes"
-          }
-        },
-        "name": "smoked"
-      }
-    ],
+    "roas": [],
     "uncertainInteractions": [
       {
         "name": "Psilocybin mushrooms",
@@ -29619,214 +29514,6 @@
         "url": null
       }
     ]
-  },
-  {
-    "addictionPotential": "moderately addictive with a high potential for abuse",
-    "commonNames": [
-      "Dextropropoxyphene",
-      "Propoxyphene",
-      "Darvon"
-    ],
-    "dangerousInteractions": [
-      {
-        "name": "SNRIs",
-        "url": null
-      },
-      {
-        "name": "Alcohol",
-        "url": "https://psychonautwiki.org/wiki/Alcohol"
-      },
-      {
-        "name": "Benzodiazepines",
-        "url": "https://psychonautwiki.org/wiki/Benzodiazepines"
-      },
-      {
-        "name": "Dextromethorphan",
-        "url": "https://psychonautwiki.org/wiki/Dextromethorphan"
-      },
-      {
-        "name": "GHB",
-        "url": "https://psychonautwiki.org/wiki/GHB"
-      },
-      {
-        "name": "GBL",
-        "url": "https://psychonautwiki.org/wiki/GBL"
-      },
-      {
-        "name": "Ketamine",
-        "url": "https://psychonautwiki.org/wiki/Ketamine"
-      },
-      {
-        "name": "Methoxetamine",
-        "url": "https://psychonautwiki.org/wiki/Methoxetamine"
-      },
-      {
-        "name": "Tramadol",
-        "url": "https://psychonautwiki.org/wiki/Tramadol"
-      },
-      {
-        "name": "Talk:Grapefruit",
-        "url": "https://psychonautwiki.org/wiki/Talk:Grapefruit"
-      },
-      {
-        "name": "MAOI",
-        "url": "https://psychonautwiki.org/wiki/MAOI"
-      },
-      {
-        "name": "Serotonin",
-        "url": "https://psychonautwiki.org/wiki/Serotonin"
-      },
-      {
-        "name": "Selective serotonin reuptake inhibitor",
-        "url": "https://psychonautwiki.org/wiki/Selective_serotonin_reuptake_inhibitor"
-      },
-      {
-        "name": "5-Hydroxytryptophan",
-        "url": "https://psychonautwiki.org/wiki/5-Hydroxytryptophan"
-      }
-    ],
-    "effects": [
-      {
-        "name": "Nausea",
-        "url": "https://psychonautwiki.org/wiki/Nausea"
-      },
-      {
-        "name": "Difficulty urinating",
-        "url": "https://psychonautwiki.org/wiki/Difficulty_urinating"
-      },
-      {
-        "name": "Dizziness",
-        "url": "https://psychonautwiki.org/wiki/Dizziness"
-      },
-      {
-        "name": "Itchiness",
-        "url": "https://psychonautwiki.org/wiki/Itchiness"
-      },
-      {
-        "name": "Constipation",
-        "url": "https://psychonautwiki.org/wiki/Constipation"
-      },
-      {
-        "name": "Physical euphoria",
-        "url": "https://psychonautwiki.org/wiki/Physical_euphoria"
-      },
-      {
-        "name": "Pupil constriction",
-        "url": "https://psychonautwiki.org/wiki/Pupil_constriction"
-      },
-      {
-        "name": "Dream potentiation",
-        "url": "https://psychonautwiki.org/wiki/Dream_potentiation"
-      },
-      {
-        "name": "Cognitive euphoria",
-        "url": "https://psychonautwiki.org/wiki/Cognitive_euphoria"
-      },
-      {
-        "name": "Sedation",
-        "url": "https://psychonautwiki.org/wiki/Sedation"
-      },
-      {
-        "name": "Appetite suppression",
-        "url": "https://psychonautwiki.org/wiki/Appetite_suppression"
-      },
-      {
-        "name": "Respiratory depression",
-        "url": "https://psychonautwiki.org/wiki/Respiratory_depression"
-      },
-      {
-        "name": "Pain relief",
-        "url": "https://psychonautwiki.org/wiki/Pain_relief"
-      },
-      {
-        "name": "Cough suppression",
-        "url": "https://psychonautwiki.org/wiki/Cough_suppression"
-      },
-      {
-        "name": "Anxiety suppression",
-        "url": "https://psychonautwiki.org/wiki/Anxiety_suppression"
-      },
-      {
-        "name": "Confusion",
-        "url": "https://psychonautwiki.org/wiki/Confusion"
-      },
-      {
-        "name": "Compulsive redosing",
-        "url": "https://psychonautwiki.org/wiki/Compulsive_redosing"
-      },
-      {
-        "name": "Decreased libido",
-        "url": "https://psychonautwiki.org/wiki/Decreased_libido"
-      },
-      {
-        "name": "Orgasm depression",
-        "url": "https://psychonautwiki.org/wiki/Orgasm_depression"
-      }
-    ],
-    "name": "Dextropropoxyphene",
-    "roas": [
-      {
-        "bioavailability": null,
-        "dose": {
-          "common": {
-            "max": 100,
-            "min": 65
-          },
-          "heavy": 200,
-          "light": {
-            "max": 65,
-            "min": 30
-          },
-          "strong": {
-            "max": 200,
-            "min": 100
-          },
-          "threshold": 15,
-          "units": "mg"
-        },
-        "duration": {
-          "afterglow": {
-            "max": 6,
-            "min": 1,
-            "units": "hours"
-          },
-          "comeup": null,
-          "duration": null,
-          "offset": null,
-          "onset": {
-            "max": 30,
-            "min": 20,
-            "units": "minutes"
-          },
-          "peak": {
-            "max": 4,
-            "min": 1,
-            "units": "hours"
-          },
-          "total": null
-        },
-        "name": "oral"
-      }
-    ],
-    "uncertainInteractions": [
-      {
-        "name": "MAOI",
-        "url": "https://psychonautwiki.org/wiki/MAOI"
-      },
-      {
-        "name": "Nitrous",
-        "url": "https://psychonautwiki.org/wiki/Nitrous"
-      },
-      {
-        "name": "PCP",
-        "url": "https://psychonautwiki.org/wiki/PCP"
-      },
-      {
-        "name": "Stimulants",
-        "url": "https://psychonautwiki.org/wiki/Stimulants"
-      }
-    ],
-    "unsafeInteractions": null
   },
   {
     "addictionPotential": "extremely physically and psychologically addictive",
@@ -46045,8 +45732,8 @@
         "url": "https://psychonautwiki.org/wiki/Muscle_cramp"
       },
       {
-        "name": "Frequent urination",
-        "url": "https://psychonautwiki.org/wiki/Frequent_urination"
+        "name": "Difficulty urinating",
+        "url": "https://psychonautwiki.org/wiki/Difficulty_urinating"
       },
       {
         "name": "Spontaneous bodily sensations",
