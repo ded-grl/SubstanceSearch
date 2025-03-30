@@ -19917,10 +19917,16 @@
   {
     "addictionPotential": "has high abuse potential and can cause psychological dependence with chronic use",
     "commonNames": [
-      "Amphetamine",
-      "Speed",
-      "Adderall",
-      "Pep"
+      "Cocaine",
+      "Coke",
+      "Coca",
+      "Crack",
+      "Blow",
+      "Girl",
+      "White",
+      "Snow",
+      "Nose Candy",
+      "Chari"
     ],
     "dangerousInteractions": [
       {
@@ -20152,159 +20158,85 @@
         "bioavailability": null,
         "dose": {
           "common": {
-            "max": 30,
-            "min": 15
-          },
-          "heavy": 50,
-          "light": {
-            "max": 15,
-            "min": 6
-          },
-          "strong": {
-            "max": 50,
+            "max": 60,
             "min": 30
           },
-          "threshold": 4,
+          "heavy": 90,
+          "light": {
+            "max": 30,
+            "min": 10
+          },
+          "strong": {
+            "max": 90,
+            "min": 60
+          },
+          "threshold": 5,
           "units": "mg"
         },
         "duration": {
-          "afterglow": {
-            "max": 4,
-            "min": 2,
-            "units": "hours"
-          },
+          "afterglow": null,
           "comeup": {
-            "max": 90,
-            "min": 30,
+            "max": 15,
+            "min": 5,
             "units": "minutes"
           },
           "duration": null,
           "offset": {
-            "max": 3,
-            "min": 1.5,
-            "units": "hours"
+            "max": 30,
+            "min": 10,
+            "units": "minutes"
           },
           "onset": {
-            "max": 5,
+            "max": 10,
             "min": 1,
             "units": "minutes"
           },
           "peak": {
-            "max": 2,
-            "min": 1,
-            "units": "hours"
+            "max": 30,
+            "min": 15,
+            "units": "minutes"
           },
           "total": {
-            "max": 6,
-            "min": 3,
-            "units": "hours"
+            "max": 90,
+            "min": 10,
+            "units": "minutes"
           }
         },
         "name": "insufflated"
       },
       {
         "bioavailability": null,
-        "dose": {
-          "common": {
-            "max": 30,
-            "min": 15
-          },
-          "heavy": 50,
-          "light": {
-            "max": 15,
-            "min": 6
-          },
-          "strong": {
-            "max": 50,
-            "min": 30
-          },
-          "threshold": 4,
-          "units": "mg"
-        },
+        "dose": null,
         "duration": {
           "afterglow": null,
           "comeup": {
-            "max": 10,
-            "min": 2,
-            "units": "seconds"
-          },
-          "duration": null,
-          "offset": {
             "max": 2,
             "min": 1,
-            "units": "hours"
-          },
-          "onset": {
-            "max": 10,
-            "min": 2,
-            "units": "seconds"
-          },
-          "peak": {
-            "max": 4,
-            "min": 2,
-            "units": "hours"
-          },
-          "total": {
-            "max": 6,
-            "min": 3,
-            "units": "hours"
-          }
-        },
-        "name": "intravenous"
-      },
-      {
-        "bioavailability": null,
-        "dose": {
-          "common": {
-            "max": 25,
-            "min": 10
-          },
-          "heavy": 50,
-          "light": {
-            "max": 10,
-            "min": 5
-          },
-          "strong": {
-            "max": 50,
-            "min": 25
-          },
-          "threshold": 2.5,
-          "units": "mg"
-        },
-        "duration": {
-          "afterglow": {
-            "max": 6,
-            "min": 3,
-            "units": "hours"
-          },
-          "comeup": {
-            "max": 135,
-            "min": 30,
             "units": "minutes"
           },
           "duration": null,
           "offset": {
-            "max": 3,
-            "min": 2,
-            "units": "hours"
-          },
-          "onset": {
-            "max": 45,
-            "min": 30,
+            "max": 5,
+            "min": 1,
             "units": "minutes"
           },
+          "onset": {
+            "max": 5,
+            "min": 3,
+            "units": "seconds"
+          },
           "peak": {
-            "max": 4,
-            "min": 2.5,
-            "units": "hours"
+            "max": 10,
+            "min": 2,
+            "units": "minutes"
           },
           "total": {
-            "max": 8,
-            "min": 6,
-            "units": "hours"
+            "max": 15,
+            "min": 5,
+            "units": "minutes"
           }
         },
-        "name": "oral"
+        "name": "smoked"
       }
     ],
     "uncertainInteractions": [
@@ -22155,10 +22087,16 @@
   {
     "addictionPotential": "has high abuse potential and can cause psychological dependence with chronic use",
     "commonNames": [
-      "Amphetamine",
-      "Speed",
-      "Adderall",
-      "Pep"
+      "Cocaine",
+      "Coke",
+      "Coca",
+      "Crack",
+      "Blow",
+      "Girl",
+      "White",
+      "Snow",
+      "Nose Candy",
+      "Chari"
     ],
     "dangerousInteractions": [
       {
@@ -22390,159 +22328,85 @@
         "bioavailability": null,
         "dose": {
           "common": {
-            "max": 30,
-            "min": 15
-          },
-          "heavy": 50,
-          "light": {
-            "max": 15,
-            "min": 6
-          },
-          "strong": {
-            "max": 50,
+            "max": 60,
             "min": 30
           },
-          "threshold": 4,
+          "heavy": 90,
+          "light": {
+            "max": 30,
+            "min": 10
+          },
+          "strong": {
+            "max": 90,
+            "min": 60
+          },
+          "threshold": 5,
           "units": "mg"
         },
         "duration": {
-          "afterglow": {
-            "max": 4,
-            "min": 2,
-            "units": "hours"
-          },
+          "afterglow": null,
           "comeup": {
-            "max": 90,
-            "min": 30,
+            "max": 15,
+            "min": 5,
             "units": "minutes"
           },
           "duration": null,
           "offset": {
-            "max": 3,
-            "min": 1.5,
-            "units": "hours"
+            "max": 30,
+            "min": 10,
+            "units": "minutes"
           },
           "onset": {
-            "max": 5,
+            "max": 10,
             "min": 1,
             "units": "minutes"
           },
           "peak": {
-            "max": 2,
-            "min": 1,
-            "units": "hours"
+            "max": 30,
+            "min": 15,
+            "units": "minutes"
           },
           "total": {
-            "max": 6,
-            "min": 3,
-            "units": "hours"
+            "max": 90,
+            "min": 10,
+            "units": "minutes"
           }
         },
         "name": "insufflated"
       },
       {
         "bioavailability": null,
-        "dose": {
-          "common": {
-            "max": 30,
-            "min": 15
-          },
-          "heavy": 50,
-          "light": {
-            "max": 15,
-            "min": 6
-          },
-          "strong": {
-            "max": 50,
-            "min": 30
-          },
-          "threshold": 4,
-          "units": "mg"
-        },
+        "dose": null,
         "duration": {
           "afterglow": null,
           "comeup": {
-            "max": 10,
-            "min": 2,
-            "units": "seconds"
-          },
-          "duration": null,
-          "offset": {
             "max": 2,
             "min": 1,
-            "units": "hours"
-          },
-          "onset": {
-            "max": 10,
-            "min": 2,
-            "units": "seconds"
-          },
-          "peak": {
-            "max": 4,
-            "min": 2,
-            "units": "hours"
-          },
-          "total": {
-            "max": 6,
-            "min": 3,
-            "units": "hours"
-          }
-        },
-        "name": "intravenous"
-      },
-      {
-        "bioavailability": null,
-        "dose": {
-          "common": {
-            "max": 25,
-            "min": 10
-          },
-          "heavy": 50,
-          "light": {
-            "max": 10,
-            "min": 5
-          },
-          "strong": {
-            "max": 50,
-            "min": 25
-          },
-          "threshold": 2.5,
-          "units": "mg"
-        },
-        "duration": {
-          "afterglow": {
-            "max": 6,
-            "min": 3,
-            "units": "hours"
-          },
-          "comeup": {
-            "max": 135,
-            "min": 30,
             "units": "minutes"
           },
           "duration": null,
           "offset": {
-            "max": 3,
-            "min": 2,
-            "units": "hours"
-          },
-          "onset": {
-            "max": 45,
-            "min": 30,
+            "max": 5,
+            "min": 1,
             "units": "minutes"
           },
+          "onset": {
+            "max": 5,
+            "min": 3,
+            "units": "seconds"
+          },
           "peak": {
-            "max": 4,
-            "min": 2.5,
-            "units": "hours"
+            "max": 10,
+            "min": 2,
+            "units": "minutes"
           },
           "total": {
-            "max": 8,
-            "min": 6,
-            "units": "hours"
+            "max": 15,
+            "min": 5,
+            "units": "minutes"
           }
         },
-        "name": "oral"
+        "name": "smoked"
       }
     ],
     "uncertainInteractions": [
@@ -29514,6 +29378,214 @@
         "url": null
       }
     ]
+  },
+  {
+    "addictionPotential": "moderately addictive with a high potential for abuse",
+    "commonNames": [
+      "Dextropropoxyphene",
+      "Propoxyphene",
+      "Darvon"
+    ],
+    "dangerousInteractions": [
+      {
+        "name": "SNRIs",
+        "url": null
+      },
+      {
+        "name": "Alcohol",
+        "url": "https://psychonautwiki.org/wiki/Alcohol"
+      },
+      {
+        "name": "Benzodiazepines",
+        "url": "https://psychonautwiki.org/wiki/Benzodiazepines"
+      },
+      {
+        "name": "Dextromethorphan",
+        "url": "https://psychonautwiki.org/wiki/Dextromethorphan"
+      },
+      {
+        "name": "GHB",
+        "url": "https://psychonautwiki.org/wiki/GHB"
+      },
+      {
+        "name": "GBL",
+        "url": "https://psychonautwiki.org/wiki/GBL"
+      },
+      {
+        "name": "Ketamine",
+        "url": "https://psychonautwiki.org/wiki/Ketamine"
+      },
+      {
+        "name": "Methoxetamine",
+        "url": "https://psychonautwiki.org/wiki/Methoxetamine"
+      },
+      {
+        "name": "Tramadol",
+        "url": "https://psychonautwiki.org/wiki/Tramadol"
+      },
+      {
+        "name": "Talk:Grapefruit",
+        "url": "https://psychonautwiki.org/wiki/Talk:Grapefruit"
+      },
+      {
+        "name": "MAOI",
+        "url": "https://psychonautwiki.org/wiki/MAOI"
+      },
+      {
+        "name": "Serotonin",
+        "url": "https://psychonautwiki.org/wiki/Serotonin"
+      },
+      {
+        "name": "Selective serotonin reuptake inhibitor",
+        "url": "https://psychonautwiki.org/wiki/Selective_serotonin_reuptake_inhibitor"
+      },
+      {
+        "name": "5-Hydroxytryptophan",
+        "url": "https://psychonautwiki.org/wiki/5-Hydroxytryptophan"
+      }
+    ],
+    "effects": [
+      {
+        "name": "Nausea",
+        "url": "https://psychonautwiki.org/wiki/Nausea"
+      },
+      {
+        "name": "Difficulty urinating",
+        "url": "https://psychonautwiki.org/wiki/Difficulty_urinating"
+      },
+      {
+        "name": "Dizziness",
+        "url": "https://psychonautwiki.org/wiki/Dizziness"
+      },
+      {
+        "name": "Itchiness",
+        "url": "https://psychonautwiki.org/wiki/Itchiness"
+      },
+      {
+        "name": "Constipation",
+        "url": "https://psychonautwiki.org/wiki/Constipation"
+      },
+      {
+        "name": "Physical euphoria",
+        "url": "https://psychonautwiki.org/wiki/Physical_euphoria"
+      },
+      {
+        "name": "Pupil constriction",
+        "url": "https://psychonautwiki.org/wiki/Pupil_constriction"
+      },
+      {
+        "name": "Dream potentiation",
+        "url": "https://psychonautwiki.org/wiki/Dream_potentiation"
+      },
+      {
+        "name": "Cognitive euphoria",
+        "url": "https://psychonautwiki.org/wiki/Cognitive_euphoria"
+      },
+      {
+        "name": "Sedation",
+        "url": "https://psychonautwiki.org/wiki/Sedation"
+      },
+      {
+        "name": "Appetite suppression",
+        "url": "https://psychonautwiki.org/wiki/Appetite_suppression"
+      },
+      {
+        "name": "Respiratory depression",
+        "url": "https://psychonautwiki.org/wiki/Respiratory_depression"
+      },
+      {
+        "name": "Pain relief",
+        "url": "https://psychonautwiki.org/wiki/Pain_relief"
+      },
+      {
+        "name": "Cough suppression",
+        "url": "https://psychonautwiki.org/wiki/Cough_suppression"
+      },
+      {
+        "name": "Anxiety suppression",
+        "url": "https://psychonautwiki.org/wiki/Anxiety_suppression"
+      },
+      {
+        "name": "Confusion",
+        "url": "https://psychonautwiki.org/wiki/Confusion"
+      },
+      {
+        "name": "Compulsive redosing",
+        "url": "https://psychonautwiki.org/wiki/Compulsive_redosing"
+      },
+      {
+        "name": "Decreased libido",
+        "url": "https://psychonautwiki.org/wiki/Decreased_libido"
+      },
+      {
+        "name": "Orgasm depression",
+        "url": "https://psychonautwiki.org/wiki/Orgasm_depression"
+      }
+    ],
+    "name": "Dextropropoxyphene",
+    "roas": [
+      {
+        "bioavailability": null,
+        "dose": {
+          "common": {
+            "max": 100,
+            "min": 65
+          },
+          "heavy": 200,
+          "light": {
+            "max": 65,
+            "min": 30
+          },
+          "strong": {
+            "max": 200,
+            "min": 100
+          },
+          "threshold": 15,
+          "units": "mg"
+        },
+        "duration": {
+          "afterglow": {
+            "max": 6,
+            "min": 1,
+            "units": "hours"
+          },
+          "comeup": null,
+          "duration": null,
+          "offset": null,
+          "onset": {
+            "max": 30,
+            "min": 20,
+            "units": "minutes"
+          },
+          "peak": {
+            "max": 4,
+            "min": 1,
+            "units": "hours"
+          },
+          "total": null
+        },
+        "name": "oral"
+      }
+    ],
+    "uncertainInteractions": [
+      {
+        "name": "MAOI",
+        "url": "https://psychonautwiki.org/wiki/MAOI"
+      },
+      {
+        "name": "Nitrous",
+        "url": "https://psychonautwiki.org/wiki/Nitrous"
+      },
+      {
+        "name": "PCP",
+        "url": "https://psychonautwiki.org/wiki/PCP"
+      },
+      {
+        "name": "Stimulants",
+        "url": "https://psychonautwiki.org/wiki/Stimulants"
+      }
+    ],
+    "unsafeInteractions": null
   },
   {
     "addictionPotential": "extremely physically and psychologically addictive",
