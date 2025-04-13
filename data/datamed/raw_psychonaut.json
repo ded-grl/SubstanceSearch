@@ -19038,9 +19038,14 @@
   {
     "addictionPotential": "highly addictive with a high potential for abuse",
     "commonNames": [
-      "α-PHP",
-      "alpha-PHP",
-      "PV7"
+      "α-PVP",
+      "alpha-PVP",
+      "Flakka",
+      "Flak",
+      "O-2387",
+      "β-ketone-prolintane",
+      "Prolintanone",
+      "Gravel"
     ],
     "dangerousInteractions": [
       {
@@ -19287,7 +19292,7 @@
             "max": 15,
             "min": 5
           },
-          "heavy": null,
+          "heavy": 25,
           "light": {
             "max": 5,
             "min": 1
@@ -19351,8 +19356,8 @@
         },
         "duration": {
           "afterglow": {
-            "max": 48,
-            "min": 1,
+            "max": 12,
+            "min": 4,
             "units": "hours"
           },
           "comeup": null,
@@ -19373,7 +19378,7 @@
             "units": "hours"
           },
           "total": {
-            "max": 8,
+            "max": 6,
             "min": 2,
             "units": "hours"
           }
@@ -19384,48 +19389,48 @@
         "bioavailability": null,
         "dose": {
           "common": {
-            "max": 10,
+            "max": 15,
             "min": 5
           },
-          "heavy": null,
+          "heavy": 25,
           "light": {
             "max": 5,
             "min": 2
           },
           "strong": {
-            "max": 20,
-            "min": 10
+            "max": 25,
+            "min": 15
           },
           "threshold": 1,
           "units": "mg"
         },
         "duration": {
           "afterglow": {
-            "max": 8,
+            "max": 3,
             "min": 1,
             "units": "hours"
           },
           "comeup": null,
           "duration": null,
           "offset": {
-            "max": 4,
-            "min": 1,
-            "units": "hours"
-          },
-          "onset": {
-            "max": 8,
-            "min": 2,
+            "max": 30,
+            "min": 15,
             "units": "minutes"
           },
+          "onset": {
+            "max": 60,
+            "min": 20,
+            "units": "seconds"
+          },
           "peak": {
-            "max": 90,
-            "min": 30,
+            "max": 6,
+            "min": 3,
             "units": "minutes"
           },
           "total": {
-            "max": 5,
-            "min": 2,
-            "units": "hours"
+            "max": 60,
+            "min": 30,
+            "units": "minutes"
           }
         },
         "name": "smoked"
@@ -26622,7 +26627,18 @@
   },
   {
     "addictionPotential": "highly addictive with a high potential for abuse",
-    "commonNames": null,
+    "commonNames": [
+      "Cocaine",
+      "Coke",
+      "Coca",
+      "Crack",
+      "Blow",
+      "Girl",
+      "White",
+      "Snow",
+      "Nose Candy",
+      "Chari"
+    ],
     "dangerousInteractions": [
       {
         "name": "ΑMT",
@@ -26832,7 +26848,92 @@
       }
     ],
     "name": "Cocaine",
-    "roas": [],
+    "roas": [
+      {
+        "bioavailability": null,
+        "dose": {
+          "common": {
+            "max": 60,
+            "min": 30
+          },
+          "heavy": 90,
+          "light": {
+            "max": 30,
+            "min": 10
+          },
+          "strong": {
+            "max": 90,
+            "min": 60
+          },
+          "threshold": 5,
+          "units": "mg"
+        },
+        "duration": {
+          "afterglow": null,
+          "comeup": {
+            "max": 15,
+            "min": 5,
+            "units": "minutes"
+          },
+          "duration": null,
+          "offset": {
+            "max": 30,
+            "min": 10,
+            "units": "minutes"
+          },
+          "onset": {
+            "max": 10,
+            "min": 1,
+            "units": "minutes"
+          },
+          "peak": {
+            "max": 30,
+            "min": 15,
+            "units": "minutes"
+          },
+          "total": {
+            "max": 90,
+            "min": 10,
+            "units": "minutes"
+          }
+        },
+        "name": "insufflated"
+      },
+      {
+        "bioavailability": null,
+        "dose": null,
+        "duration": {
+          "afterglow": null,
+          "comeup": {
+            "max": 2,
+            "min": 1,
+            "units": "minutes"
+          },
+          "duration": null,
+          "offset": {
+            "max": 5,
+            "min": 1,
+            "units": "minutes"
+          },
+          "onset": {
+            "max": 5,
+            "min": 3,
+            "units": "seconds"
+          },
+          "peak": {
+            "max": 10,
+            "min": 2,
+            "units": "minutes"
+          },
+          "total": {
+            "max": 15,
+            "min": 5,
+            "units": "minutes"
+          }
+        },
+        "name": "smoked"
+      }
+    ],
     "uncertainInteractions": [
       {
         "name": "Psilocybin mushrooms",
@@ -50490,6 +50591,10 @@
       {
         "name": "Analysis depression",
         "url": "https://psychonautwiki.org/wiki/Analysis_depression"
+      },
+      {
+        "name": "Trouble Urinating",
+        "url": "https://psychonautwiki.org/wiki/Trouble_Urinating"
       }
     ],
     "name": "Nitrous",
@@ -56953,16 +57058,8 @@
   {
     "addictionPotential": "moderately addictive with a high potential for abuse",
     "commonNames": [
-      "Cocaine",
-      "Coke",
-      "Coca",
-      "Crack",
-      "Blow",
-      "Girl",
-      "White",
-      "Snow",
-      "Nose Candy",
-      "Chari"
+      "Dichloropane",
+      "RTI-111"
     ],
     "dangerousInteractions": [
       {
@@ -57094,38 +57191,88 @@
         "bioavailability": null,
         "dose": {
           "common": {
-            "max": 60,
-            "min": 30
+            "max": 40,
+            "min": 20
           },
-          "heavy": 90,
+          "heavy": 60,
           "light": {
-            "max": 30,
+            "max": 20,
             "min": 10
           },
           "strong": {
-            "max": 90,
-            "min": 60
+            "max": 60,
+            "min": 40
           },
-          "threshold": 5,
+          "threshold": 3,
           "units": "mg"
         },
         "duration": {
           "afterglow": null,
           "comeup": {
-            "max": 15,
-            "min": 5,
+            "max": 30,
+            "min": 15,
             "units": "minutes"
           },
           "duration": null,
           "offset": {
-            "max": 30,
-            "min": 10,
+            "max": 90,
+            "min": 60,
             "units": "minutes"
           },
           "onset": {
-            "max": 10,
-            "min": 1,
+            "max": 30,
+            "min": 15,
             "units": "minutes"
+          },
+          "peak": {
+            "max": 90,
+            "min": 60,
+            "units": "minutes"
+          },
+          "total": {
+            "max": 4,
+            "min": 2,
+            "units": "hours"
+          }
+        },
+        "name": "insufflated"
+      },
+      {
+        "bioavailability": null,
+        "dose": {
+          "common": {
+            "max": 20,
+            "min": 7.5
+          },
+          "heavy": 50,
+          "light": {
+            "max": 7.5,
+            "min": 2.5
+          },
+          "strong": {
+            "max": 50,
+            "min": 20
+          },
+          "threshold": 2.5,
+          "units": "mg"
+        },
+        "duration": {
+          "afterglow": null,
+          "comeup": {
+            "max": 60,
+            "min": 15,
+            "units": "seconds"
+          },
+          "duration": null,
+          "offset": {
+            "max": 40,
+            "min": 20,
+            "units": "minutes"
+          },
+          "onset": {
+            "max": 60,
+            "min": 15,
+            "units": "seconds"
           },
           "peak": {
             "max": 30,
@@ -57133,42 +57280,8 @@
             "units": "minutes"
           },
           "total": {
-            "max": 90,
-            "min": 10,
-            "units": "minutes"
-          }
-        },
-        "name": "insufflated"
-      },
-      {
-        "bioavailability": null,
-        "dose": null,
-        "duration": {
-          "afterglow": null,
-          "comeup": {
-            "max": 2,
-            "min": 1,
-            "units": "minutes"
-          },
-          "duration": null,
-          "offset": {
-            "max": 5,
-            "min": 1,
-            "units": "minutes"
-          },
-          "onset": {
-            "max": 5,
-            "min": 3,
-            "units": "seconds"
-          },
-          "peak": {
-            "max": 10,
-            "min": 2,
-            "units": "minutes"
-          },
-          "total": {
-            "max": 15,
-            "min": 5,
+            "max": 75,
+            "min": 40,
             "units": "minutes"
           }
         },
